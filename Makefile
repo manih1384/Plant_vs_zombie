@@ -1,0 +1,22 @@
+# Variables
+CXX = g++  # The C++ compiler
+CXXFLAGS = -std=c++17  # Compiler flags (you can set your C++ standard here)
+LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system  # Libraries to link with SFML
+SOURCES = main.cpp  # The source files (add more if you have other files)
+OBJECTS = $(SOURCES:.cpp=.o)  # Object files derived from source files
+TARGET = my_sfml_app  # The output executable name
+
+# Default target to compile and link the program
+all: $(TARGET)
+
+# Compile object files
+%.o: %.cpp
+	$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+# Link object files to create the executable
+$(TARGET): $(OBJECTS)
+	$(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
+
+# Clean target to remove object files and the executable
+clean:
+	rm -f $(OBJECTS) $(TARGET)
