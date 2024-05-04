@@ -10,3 +10,11 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/System.hpp>
+
+
+
+int main(int argc, char const *argv[])
+{
+    /* code */
+    return 0;
+}
