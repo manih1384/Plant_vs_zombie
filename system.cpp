@@ -4,6 +4,7 @@ system::system(int width, int height)
     window.create(VideoMode(width, height), "PLANTS_VS_ZOMBIES", Style::Close);
     window.setFramerateLimit(60);
     state = IN_GAME;
+    background.loadFromFile("files/Images/Frontyard.png");
 }
 
 system::~system()

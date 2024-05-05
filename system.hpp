@@ -31,6 +31,7 @@ private:
     State state;
     void render();
     void update();
+    Texture background;
     void handle_events();
     void handle_mouse_press(Event ev);
     void handle_mouse_release(Event ev);
