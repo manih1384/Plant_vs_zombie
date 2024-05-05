@@ -25,7 +25,7 @@ enum State
     EXIT
 
 };
-class system
+class System
 {
 private:
     State state;
@@ -36,8 +36,8 @@ private:
     void handle_mouse_press(Event ev);
     void handle_mouse_release(Event ev);
 public:
-    system(int width, int height);
-    ~system();
+    System(int width, int height);
+    ~System();
     RenderWindow window;
     void run();
 };

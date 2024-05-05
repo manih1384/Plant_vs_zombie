@@ -1,5 +1,5 @@
 #include "system.hpp"
-system::system(int width, int height)
+System::System(int width, int height)
 {
     window.create(VideoMode(width, height), "PLANTS_VS_ZOMBIES", Style::Close);
     window.setFramerateLimit(60);
@@ -7,10 +7,10 @@ system::system(int width, int height)
     background.loadFromFile("files/Images/Frontyard.png");
 }
 
-system::~system()
+System::~System()
 {
 }
-void system::run()
+void System::run()
 {
     while (window.isOpen() && state != EXIT)
     {
@@ -19,7 +19,11 @@ void system::run()
         handle_events();
     }
 }
-void system::handle_events()
+void System::update()
+{
+    
+}
+void System::handle_events()
 {
     Event event;
     while (window.pollEvent(event))
@@ -40,7 +44,7 @@ void system::handle_events()
         }
     }
 }
-void system::render()
+void System::render()
 {
     window.clear();
     switch (state)
@@ -53,7 +57,7 @@ void system::render()
         break;
     }
 }
-void system::handle_mouse_release(Event ev)
+void System::handle_mouse_release(Event ev)
 {
     if(ev.mouseButton.button==Mouse::Right)
     return;
@@ -68,22 +72,7 @@ void system::handle_mouse_release(Event ev)
         break;
     }
 }
-void system::handle_mouse_release(Event ev)
-{
-    if(ev.mouseButton.button==Mouse::Right)
-    return;
-    Vector2f pos={ev.mouseButton.x,ev.mouseButton.y};
-    switch (state)
-    {
-    case IN_GAME:
-        
-        break;
-    
-    default:
-        break;
-    }
-}
-void system::handle_mouse_press(Event ev)
+void System::handle_mouse_press(Event ev)
 {
     if(ev.mouseButton.button==Mouse::Right)
     return;

@@ -16,7 +16,7 @@ using namespace sf;
 int main()
 {
     // Create a system object with the desired window size
-    system game(800, 600);
+    System game(1400,600);
 
     // Run the game
     game.run();
