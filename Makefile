@@ -15,7 +15,7 @@ all: $(TARGET)
 	$(CXX) -c $(CXXFLAGS) -o $@ $<
 
 # Link object files to create the executable
-$(TARGET): $(OBJECTS) 
+$(TARGET): $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
 
 # Clean target to remove object files and the executable
