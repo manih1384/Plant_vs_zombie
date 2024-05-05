@@ -37,6 +37,8 @@ private:
     void handle_events();
     void handle_mouse_press(Event ev);
     void handle_mouse_release(Event ev);
+    vector<vector<Vector2i>> playground(5,vector<Vector2i>(9));
+    void makeplayground(vector<vector<Vector2i>> &playground);
     Peashooter peashooter;
 public:
     System(int width, int height);

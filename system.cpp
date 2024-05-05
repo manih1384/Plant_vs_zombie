@@ -1,4 +1,5 @@
 #include "system.hpp"
+#include "global.hpp"
 System::System(int width, int height)
 {
     window.create(VideoMode(width, height), "PLANTS_VS_ZOMBIES", Style::Close);
@@ -92,4 +93,18 @@ void System::handle_mouse_press(Event ev)
     default:
         break;
     }
+}
+
+
+void System::makeplayground(vector<vector<Vector2i>> &playground){
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            playground[i][j].x= X0 + i*DX;
+            playground[i][j].y= Y0 + j*DY;
+        }
+        
+    }
+    
 }
