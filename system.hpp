@@ -32,6 +32,7 @@ private:
     void render();
     void update();
     Texture background;
+    Sprite sprite;
     void handle_events();
     void handle_mouse_press(Event ev);
     void handle_mouse_release(Event ev);

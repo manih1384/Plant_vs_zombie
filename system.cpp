@@ -5,6 +5,8 @@ System::System(int width, int height)
     window.setFramerateLimit(60);
     state = IN_GAME;
     background.loadFromFile("files/Images/Frontyard.png");
+    sprite.setTexture(background);
+    sprite.setPosition(0,0);
 }
 
 System::~System()
@@ -50,7 +52,7 @@ void System::render()
     switch (state)
     {
     case IN_GAME:
-        
+        window.draw(sprite);
         break;
     
     default:
