@@ -6,13 +6,9 @@
 class Peashooter {
 public:
     Peashooter();
-    void drawInCart(sf::RenderWindow &window);
     void drawPlanted(sf::RenderWindow &window, sf::Vector2f position);
 
 private:
-    sf::Texture textureInCart;
-    sf::Sprite spriteInCart;
-
     sf::Texture texturePlanted;
     sf::Sprite spritePlanted;
 };
