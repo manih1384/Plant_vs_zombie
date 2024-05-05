@@ -15,25 +15,33 @@
 using namespace std;
 using namespace sf;
 
+enum State
+{
+    IN_GAME,
+    PAUSE_MENU,
+    MAIN_MENU,
+    VICTORY,
+    GAMEOVER,
+    EXIT
+
+};
 class system
 {
 private:
+    State state;
     void render();
     void update();
+    void handle_events();
+    void handle_mouse_press(Event ev);
+    void handle_mouse_release(Event ev);
 public:
     system(int width, int height);
     ~system();
-    RenderWindow Window;
+    RenderWindow window;
     void run();
 };
 
-system::system(int width, int height)
-{
-}
 
-system::~system()
-{
-}
 
 
 
