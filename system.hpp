@@ -18,11 +18,13 @@ using namespace sf;
 class system
 {
 private:
-    
+    void render();
+    void update();
 public:
     system(int width, int height);
     ~system();
     RenderWindow Window;
+    void run();
 };
 
 system::system(int width, int height)
