@@ -54,7 +54,7 @@ void System::render()
     {
     case IN_GAME:
          window.draw(sprite);
-         peashooter.drawInCart(window);
+
          peashooter.drawPlanted(window,{495,280});
         break;
     
