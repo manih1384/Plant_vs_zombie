@@ -97,6 +97,7 @@ void System::handle_mouse_press(Event ev)
 
 
 void System::makeplayground(vector<vector<Vector2i>> &playground){
+    playground.resize(5,vector<Vector2i>(9));
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 9; j++)
