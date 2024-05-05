@@ -12,6 +12,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/System.hpp>
+#include "peashooter.hpp"
 using namespace std;
 using namespace sf;
 
@@ -36,6 +37,7 @@ private:
     void handle_events();
     void handle_mouse_press(Event ev);
     void handle_mouse_release(Event ev);
+    Peashooter peashooter;
 public:
     System(int width, int height);
     ~System();

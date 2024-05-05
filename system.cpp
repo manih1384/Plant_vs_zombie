@@ -6,7 +6,6 @@ System::System(int width, int height)
     state = IN_GAME;
     background.loadFromFile("files/Images/Frontyard.png");
     sprite.setTexture(background);
-    sprite.setPosition(0,0);
 }
 
 System::~System()
@@ -16,6 +15,7 @@ void System::run()
 {
     while (window.isOpen() && state != EXIT)
     {
+
         update();
         render();
         handle_events();
@@ -49,15 +49,19 @@ void System::handle_events()
 void System::render()
 {
     window.clear();
+
     switch (state)
     {
     case IN_GAME:
-        window.draw(sprite);
+         window.draw(sprite);
+         peashooter.drawInCart(window);
+         peashooter.drawPlanted(window,{495,280});
         break;
     
     default:
         break;
     }
+    window.display();
 }
 void System::handle_mouse_release(Event ev)
 {
