@@ -18,7 +18,7 @@ using namespace std;
 
 
 
-
+const string IMAGEFILE = "files/Images";
 const int WIDTH = 1400;
 const int HEIGHT = 600;
 const int DX= 80;
