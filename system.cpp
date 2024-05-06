@@ -55,8 +55,9 @@ void System::render()
     {
     case IN_GAME:
          window.draw(sprite);
-
          peashooter.drawPlanted(window,{495,280});
+         sunflower.drawPlanted(window,{495,380});
+         wallnut.drawPlanted(window,{495,480});
         break;
     
     default:

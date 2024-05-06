@@ -2,8 +2,8 @@
 CXX = g++  # The C++ compiler
 CXXFLAGS = -std=c++20  # Compiler flags (you can set your C++ standard here)
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system  # Libraries to link with SFML
-SOURCES = main.cpp system.cpp peashooter.cpp # The source files (add more if you have other files)
-HEADERS = system.hpp peashooter.hpp global.hpp
+SOURCES = main.cpp system.cpp peashooter.cpp sunflower.cpp wallnut.cpp# The source files (add more if you have other files)
+HEADERS = system.hpp peashooter.hpp global.hpp sunflower.hpp wallnut.hpp
 OBJECTS = $(SOURCES:.cpp=.o)  # Object files derived from source files
 TARGET = pvz.out  # The output executable name
 
