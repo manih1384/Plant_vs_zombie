@@ -1,8 +1,12 @@
 #include "zombie.hpp"
+#include "global.hpp"
 
-Zombie::Zombie(int health, float speed, const sf::Vector2f& startPos, const sf::Texture& texture)
+
+
+Zombie::Zombie(int health, float speed, const sf::Vector2f& startPos)
     : health(health), speed(speed), position(startPos) {
-    sprite.setTexture(texture);
+    Texture.loadFromFile("files/Images/Zombie_healthy.png");
+    sprite.setTexture(Texture);
     sprite.setPosition(position);
 }
 

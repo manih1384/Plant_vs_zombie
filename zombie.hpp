@@ -5,7 +5,7 @@
 
 class Zombie {
 public:
-    Zombie(int health, float speed, const sf::Vector2f& startPos, const sf::Texture& texture);
+    Zombie(int health, float speed, const sf::Vector2f& startPos);
 
     void move();
     void takeDamage(int damage);
@@ -18,6 +18,7 @@ private:
     float speed;
     sf::Vector2f position; 
     sf::Sprite sprite; 
+    sf::Texture Texture;
 };
 
 #endif // ZOMBIE_HPP
