@@ -17,6 +17,10 @@ System::System(int width, int height)
         std::cerr << "Error loading background texture" << std::endl;
         // Handle error appropriately
     }
+
+    bbackground.loadFromFile("files/Images/Losing_Message.png");
+    bsprite.setTexture(bbackground);
+    bsprite.scale(3.0f, 2.0f);
     sprite.setTexture(background);
     // Ensure playground has at least one row and one column
     if (!playground.empty() && playground[0].size() > 0)
@@ -39,17 +43,19 @@ void System::run()
 }
 void System::update()
 {
-    for (int i = 0; i < zombies.size(); i++)
+    if (state == IN_GAME)
     {
-        if (!zombies[i]->checkcollision(playground))
+        for (int i = 0; i < zombies.size(); i++)
         {
-            zombies[i]->move();
+            if (!zombies[i]->checkcollision(playground))
+            {
+                zombies[i]->move();
+            }
+            else
+            {
+                state = GAMEOVER;
+            }
         }
-        else
-        {
-            state=GAMEOVER;
-        }
-        
     }
 }
 void System::handle_events()
@@ -89,10 +95,7 @@ void System::render()
         // cout << zombies[0].get_pos().x << "aa"<<zombies[0].get_pos().y<<endl;
         break;
     case GAMEOVER:
-        background.loadFromFile("files/Images/Losing_Message.png");
-        sprite.setTexture(background);
-        //sprite.scale(1.5f,1.5f);
-        window.draw(sprite);
+        window.draw(bsprite);
     default:
         break;
     }

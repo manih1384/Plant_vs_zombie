@@ -12,10 +12,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/System.hpp>
-#include "peashooter.hpp"
 #include "zombie.hpp"
-#include "sunflower.hpp"
-#include "wallnut.hpp"
+#include "plants.hpp"
 using namespace std;
 using namespace sf;
 
@@ -37,6 +35,8 @@ private:
     void update();
     Texture background;
     Sprite sprite;
+    Texture bbackground;
+    Sprite bsprite;
     Clock clock;
     void handle_events();
     void handle_mouse_press(Event ev);
