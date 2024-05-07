@@ -1,6 +1,7 @@
 #include "system.hpp"
 #include "global.hpp"
 #include "zombie.hpp"
+#include <cstdlib>
 using namespace std;
 System::System(int width, int height)
 {
@@ -22,11 +23,8 @@ System::System(int width, int height)
     bsprite.setTexture(bbackground);
     bsprite.scale(3.0f, 2.0f);
     sprite.setTexture(background);
-    // Ensure playground has at least one row and one column
-    if (!playground.empty() && playground[0].size() > 0)
-    {
-        zombies.push_back(new Zombie(playground[0][8]));
-    }
+    srand(time(NULL));
+    rng = rand();
 }
 
 System::~System()
@@ -36,8 +34,10 @@ void System::run()
 {
     while (window.isOpen() && state != EXIT)
     {
-        update();
+        srand(time(NULL));
+        rng = rand();
         render();
+        update();
         handle_events();
     }
 }
@@ -45,6 +45,13 @@ void System::update()
 {
     if (state == IN_GAME)
     {
+        Time time_passed = clock.getElapsedTime();
+        // add_zombie();
+        if (time_passed.asMilliseconds() > 1000)
+        {
+            add_zombie();
+            clock.restart();
+        }
         for (int i = 0; i < zombies.size(); i++)
         {
             if (!zombies[i]->checkcollision(playground))
@@ -91,7 +98,14 @@ void System::render()
         wallnut.drawPlanted(window, {495, 480});
 
         peashooter.drawPlanted(window, {495, 280});
-        zombies[0]->render(window);
+        if (zombies.size() != 0)
+        {
+            for (int i = 0; i < zombies.size(); i++)
+            {
+                zombies[i]->render(window);
+            }
+        }
+
         // cout << zombies[0].get_pos().x << "aa"<<zombies[0].get_pos().y<<endl;
         break;
     case GAMEOVER:
@@ -135,12 +149,22 @@ void System::handle_mouse_press(Event ev)
 void System::makeplayground(vector<vector<Vector2f>> &playground)
 {
     playground.resize(5, vector<Vector2f>(9));
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 5; i++)
     {
         for (int j = 0; j < 9; j++)
         {
             playground[i][j].x = X0 + j * DX;
             playground[i][j].y = Y0 + i * DY;
         }
+    }
+}
+
+void System::add_zombie()
+{
+    // Ensure playground has at least one row and one column
+    if (!playground.empty() && playground[0].size() > 0)
+    {
+        Zombie *new_zombie = new Zombie(playground[rng % 5][8]);
+        zombies.push_back(new_zombie);
     }
 }

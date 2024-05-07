@@ -42,6 +42,7 @@ private:
     void handle_mouse_press(Event ev);
     void handle_mouse_release(Event ev);
     void makeplayground(vector<vector<Vector2f>> &playground);
+    void add_zombie();
     Sunflower sunflower;
     Peashooter peashooter;
     Wallnut wallnut;
@@ -51,6 +52,7 @@ public:
     vector<Zombie*> zombies;
     vector<vector<Vector2f>> playground;
     RenderWindow window;
+    int rng;
     void run();
 };
 
