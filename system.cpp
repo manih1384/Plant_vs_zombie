@@ -21,10 +21,7 @@ System::System(int width, int height)
     // Ensure playground has at least one row and one column
     if (!playground.empty() && playground[0].size() > 0)
     {
-        Zombie z(playground[0][8]); 
-        cout<<playground[0][8].x;
-        cout<<playground[0][8].y;
-        zombies.push_back(z);
+        zombies.push_back(new Zombie(playground[0][8]));
     }
 }
 
@@ -44,10 +41,15 @@ void System::update()
 {
     for (int i = 0; i < zombies.size(); i++)
     {
-        if (!zombies[i].checkcollision(playground))
+        if (!zombies[i]->checkcollision(playground))
         {
-            zombies[i].move();
+            zombies[i]->move();
         }
+        else
+        {
+            state=GAMEOVER;
+        }
+        
     }
 }
 void System::handle_events()
@@ -83,10 +85,14 @@ void System::render()
         wallnut.drawPlanted(window, {495, 480});
 
         peashooter.drawPlanted(window, {495, 280});
-        zombies[0].render(window);
+        zombies[0]->render(window);
         // cout << zombies[0].get_pos().x << "aa"<<zombies[0].get_pos().y<<endl;
         break;
-
+    case GAMEOVER:
+        background.loadFromFile("files/Images/Losing_Message.png");
+        sprite.setTexture(background);
+        //sprite.scale(1.5f,1.5f);
+        window.draw(sprite);
     default:
         break;
     }

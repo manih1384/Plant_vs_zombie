@@ -37,6 +37,7 @@ private:
     void update();
     Texture background;
     Sprite sprite;
+    Clock clock;
     void handle_events();
     void handle_mouse_press(Event ev);
     void handle_mouse_release(Event ev);
@@ -47,7 +48,7 @@ private:
 public:
     System(int width, int height);
     ~System();
-     vector<Zombie> zombies;
+    vector<Zombie*> zombies;
     vector<vector<Vector2f>> playground;
     RenderWindow window;
     void run();

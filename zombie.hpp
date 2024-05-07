@@ -17,10 +17,11 @@ public:
     bool checkcollision(vector<vector<Vector2f>> playground);
     void render(RenderWindow& window);
     Vector2f get_pos();
+    FloatRect get_rect();
 
 private:
     int health=100;
-    float speed=1;
+    float speed=4;
     Vector2f position; 
     Sprite Zombie_sprite; 
     Texture Zombie_Texture;

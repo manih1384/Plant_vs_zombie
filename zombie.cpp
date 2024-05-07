@@ -54,9 +54,10 @@ bool Zombie::checkcollision(vector<vector<Vector2f>> playground)
     bool detected = false;
     for (int i = 0; i < 4; i++)
     {
-        if (position.x < playground[i][0].x || position.x > playground[i][8].x + DX)
+        if (position.x < playground[i][0].x-DX)
         {
             detected = true;
+            
         }
     }
 
@@ -64,3 +65,5 @@ bool Zombie::checkcollision(vector<vector<Vector2f>> playground)
 }
 
 Vector2f Zombie::get_pos() { return position; }
+
+FloatRect Zombie::get_rect(){return Zombie_sprite.getGlobalBounds();}
