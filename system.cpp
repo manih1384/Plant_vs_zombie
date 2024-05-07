@@ -41,6 +41,20 @@ void System::run()
         handle_events();
     }
 }
+
+void System::collision_detector()
+{
+    for (int i = 0; i < zombies.size(); i++)
+    {
+        FloatRect z_rect = zombies[i]->get_rect();
+        FloatRect p_rect = peashooter.get_rect();
+        if (z_rect.intersects(p_rect))
+        {
+            abort();
+        }
+    }
+}
+
 void System::update()
 {
     if (state == IN_GAME)
@@ -52,6 +66,7 @@ void System::update()
             add_zombie();
             clock.restart();
         }
+        collision_detector();
         for (int i = 0; i < zombies.size(); i++)
         {
             if (!zombies[i]->checkcollision(playground))
@@ -94,8 +109,8 @@ void System::render()
     {
     case IN_GAME:
         window.draw(sprite);
-        sunflower.drawPlanted(window, {495, 380});
-        wallnut.drawPlanted(window, {495, 480});
+        //sunflower.drawPlanted(window, {495, 380});
+        //wallnut.drawPlanted(window, {495, 480});
 
         peashooter.drawPlanted(window, {495, 280});
         if (zombies.size() != 0)
@@ -164,7 +179,7 @@ void System::add_zombie()
     // Ensure playground has at least one row and one column
     if (!playground.empty() && playground[0].size() > 0)
     {
-        Zombie *new_zombie = new Zombie(playground[rng % 5][8]);
+        Zombie *new_zombie = new Zombie(playground[2][8]);
         zombies.push_back(new_zombie);
     }
 }
