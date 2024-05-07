@@ -2,23 +2,28 @@
 #define ZOMBIE_HPP
 
 #include <SFML/Graphics.hpp>
-
+#include <SFML/System.hpp>
+#include <vector>
+using namespace sf;
+using namespace std;
 class Zombie {
 public:
-    Zombie(int health, float speed, const sf::Vector2f& startPos);
+    Zombie(const Vector2f& startPos);
 
     void move();
     void takeDamage(int damage);
     void attack();
     bool isAlive();
-    void draw(sf::RenderWindow& window);
+    bool checkcollision(vector<vector<Vector2f>> playground);
+    void render(RenderWindow& window);
+    Vector2f get_pos();
 
 private:
-    int health;
-    float speed;
-    sf::Vector2f position; 
-    sf::Sprite sprite; 
-    sf::Texture Texture;
+    int health=100;
+    float speed=1;
+    Vector2f position; 
+    Sprite Zombie_sprite; 
+    Texture Zombie_Texture;
 };
 
 #endif // ZOMBIE_HPP
