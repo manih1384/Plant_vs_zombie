@@ -13,6 +13,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/System.hpp>
 #include "peashooter.hpp"
+#include "zombie.hpp"
 #include "sunflower.hpp"
 #include "wallnut.hpp"
 using namespace std;
@@ -39,14 +40,15 @@ private:
     void handle_events();
     void handle_mouse_press(Event ev);
     void handle_mouse_release(Event ev);
-    vector<vector<Vector2i>> playground;
-    void makeplayground(vector<vector<Vector2i>> &playground);
+    void makeplayground(vector<vector<Vector2f>> &playground);
     Sunflower sunflower;
     Peashooter peashooter;
     Wallnut wallnut;
 public:
     System(int width, int height);
     ~System();
+     vector<Zombie> zombies;
+    vector<vector<Vector2f>> playground;
     RenderWindow window;
     void run();
 };

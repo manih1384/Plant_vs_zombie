@@ -14,8 +14,9 @@ Zombie::Zombie(const Vector2f &startPos)
     }
 
     Zombie_sprite.setTexture(Zombie_Texture);
+    Zombie_sprite.setScale(0.2f,0.2f);
     Zombie_sprite.setPosition(position);
-    Zombie_sprite.setScale(0.1f,0.1f);
+    
     // IntRect rect;
     // rect.width = 100;
     // rect.height = 100;
