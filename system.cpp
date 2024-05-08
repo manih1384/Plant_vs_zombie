@@ -44,6 +44,7 @@ void System::run()
 }
 void System::collision_detector()
 {
+
     for (int i = 0; i < zombies.size(); i++)
     {
         int j = 0;
@@ -66,6 +67,15 @@ void System::collision_detector()
                     delete plants[j];
                     plants.erase(plants.begin()+j);
                     zombies[i]->start_zombie();
+                    for (int x = 0; x < zombies.size(); x++)
+                    {
+                        if (zombies[i]->get_pos().y==zombies[x]->get_pos().y)
+                        {
+                            zombies[x]->start_zombie();
+                        }
+                        
+                    }
+                    
                     
                 }
                 else

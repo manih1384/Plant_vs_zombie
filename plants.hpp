@@ -1,7 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-
+#include<vector>
+#include "zombie.hpp"
 class Plant {
 public:
     int health;
