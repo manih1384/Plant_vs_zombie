@@ -46,13 +46,22 @@ void System::collision_detector()
 {
     for (int i = 0; i < zombies.size(); i++)
     {
-        FloatRect z_rect = zombies[i]->get_rect();
-        FloatRect p_rect = peashooter.get_rect();
-        if (z_rect.intersects(p_rect))
+        for (int j = 0; j < plants.size(); j++)
         {
-            delete zombies[i];
-            zombies.erase(zombies.begin() + i);
-            i--; // adjust the index after erasing
+            FloatRect z_rect = zombies[i]->get_rect();
+            FloatRect p_rect = plants[j]->get_rect();
+            if (z_rect.intersects(p_rect))
+            {
+                Time time_passed = attack_zombie_clock.getElapsedTime();
+                if (time_passed.asMilliseconds() > 1000)
+                {
+                    plants[j]->get_damaged(zombies[i]->attack());
+                }
+                
+                // delete zombies[i];
+                // zombies.erase(zombies.begin() + i);
+                // i--; // adjust the index after erasing
+            }
         }
     }
 }
@@ -61,11 +70,11 @@ void System::update()
 {
     if (state == IN_GAME)
     {
-        Time time_passed = clock.getElapsedTime();
+        Time time_passed = add_zombie_clock.getElapsedTime();
         if (time_passed.asMilliseconds() > 1000)
         {
             add_zombie();
-            clock.restart();
+            add_zombie_clock.restart();
         }
         collision_detector();
         for (int i = 0; i < zombies.size(); i++)
@@ -85,7 +94,7 @@ void System::update()
 void System::handle_events()
 {
     Event event;
-    bool isDragging=false;
+    bool isDragging = false;
     Vector2i intInitialClickPos;
     while (window.pollEvent(event))
     {
@@ -115,7 +124,7 @@ void System::handle_events()
                 Vector2f currentMousePos = static_cast<sf::Vector2f>(intCurrentMousePos);
                 Vector2f initialClickPos = static_cast<sf::Vector2f>(intInitialClickPos);
                 sf::Vector2f delta = currentMousePos - initialClickPos;
-                //peashooter.drawPlanted(window, {495, 280});
+                // peashooter.drawPlanted(window, {495, 280});
             }
         }
     }

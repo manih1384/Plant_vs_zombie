@@ -21,6 +21,7 @@ public:
 
 private:
     int health=100;
+    int damage=10;
     float speed=1;
     Vector2f position; 
     Sprite Zombie_sprite; 
