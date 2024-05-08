@@ -46,7 +46,8 @@ void System::collision_detector()
 {
     for (int i = 0; i < zombies.size(); i++)
     {
-        for (int j = 0; j < plants.size(); j++)
+        int j = 0;
+        while (j < plants.size())
         {
             FloatRect z_rect = zombies[i]->get_rect();
             FloatRect p_rect = plants[j]->get_rect();
@@ -60,23 +61,65 @@ void System::collision_detector()
                     plants[j]->get_damaged(zombies[i]->attack());
                     attack_zombie_clock.restart();
                 }
-                if (plants[j]->get_health()<0)
+                if (plants[j]->get_health() < 0)
                 {
-                    
                     delete plants[j];
                     plants.erase(plants.begin()+j);
-                    
                     zombies[i]->start_zombie();
+                    
                 }
-                
-                
-                // delete zombies[i];
-                // zombies.erase(zombies.begin() + i);
-                // i--; // adjust the index after erasing
+                else
+                {
+                    j++;
+                }
+            }
+            else
+            {
+                j++;
             }
         }
     }
 }
+
+// void System::collision_detector()
+// {
+//     for (int i = 0; i < zombies.size(); i++)
+//     {
+//         for (auto pit = plants.begin(); pit != plants.end();)
+//         {
+//             FloatRect z_rect = zombies[i]->get_rect();
+//             FloatRect p_rect = (*pit)->get_rect();
+//             if (z_rect.intersects(p_rect))
+//             {
+//                 zombies[i]->stop_zombie();
+//                 Time time_passed = attack_zombie_clock.getElapsedTime();
+                
+//                 if (time_passed.asMilliseconds() > 500)
+//                 {
+//                     (*pit)->get_damaged(zombies[i]->attack());
+//                     attack_zombie_clock.restart();
+//                 }
+//                 if ((*pit)->get_health()<0)
+//                 {
+//                     auto save = pit;
+//                     pit = plants.erase(save);
+//                     delete *save;
+                    
+//                     zombies[i]->start_zombie();
+//                 }
+//                 else
+//                     pit++;
+                
+                
+//                 // delete zombies[i];
+//                 // zombies.erase(zombies.begin() + i);
+//                 // i--; // adjust the index after erasing
+//             }
+//             else
+//                 pit++;
+//         }
+//     }
+// }
 
 void System::update()
 {
@@ -151,7 +194,7 @@ void System::render()
         window.draw(sprite);
         // sunflower.drawPlanted(window, {495, 380});
         // wallnut.drawPlanted(window, {495, 480});
-
+        if (!plants.empty())
         plants[0]->drawPlanted(window, {495, 280});
         if (zombies.size() != 0)
         {
