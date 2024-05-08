@@ -50,7 +50,9 @@ void System::collision_detector()
         FloatRect p_rect = peashooter.get_rect();
         if (z_rect.intersects(p_rect))
         {
-            abort();
+            delete zombies[i];
+            zombies.erase(zombies.begin() + i);
+            i--; // adjust the index after erasing
         }
     }
 }
@@ -60,7 +62,6 @@ void System::update()
     if (state == IN_GAME)
     {
         Time time_passed = clock.getElapsedTime();
-        // add_zombie();
         if (time_passed.asMilliseconds() > 1000)
         {
             add_zombie();
@@ -76,6 +77,7 @@ void System::update()
             else
             {
                 state = GAMEOVER;
+                break; // exit the loop once the game is over
             }
         }
     }
