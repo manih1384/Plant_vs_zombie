@@ -21,7 +21,7 @@ public:
 
 private:
     int health=100;
-    float speed=4;
+    float speed=1;
     Vector2f position; 
     Sprite Zombie_sprite; 
     Texture Zombie_Texture;
