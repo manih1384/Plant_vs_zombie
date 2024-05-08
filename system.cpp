@@ -83,6 +83,8 @@ void System::update()
 void System::handle_events()
 {
     Event event;
+    bool isDragging=false;
+    Vector2i intInitialClickPos;
     while (window.pollEvent(event))
     {
         switch (event.type)
@@ -93,11 +95,26 @@ void System::handle_events()
             break;
 
         case Event::MouseButtonReleased:
-            handle_mouse_release(event);
+            // handle_mouse_release(event);
+            isDragging = false;
             break;
         case Event::MouseButtonPressed:
-            handle_mouse_press(event);
+            if (event.mouseButton.button == sf::Mouse::Left)
+            {
+                Vector2i intInitialClickPos = sf::Mouse::getPosition(window);
+                bool isDragging = true;
+            }
+            // handle_mouse_press(event);
             break;
+        case Event::MouseMoved:
+            if (isDragging)
+            {
+                sf::Vector2i intCurrentMousePos = sf::Mouse::getPosition(window);
+                Vector2f currentMousePos = static_cast<sf::Vector2f>(intCurrentMousePos);
+                Vector2f initialClickPos = static_cast<sf::Vector2f>(intInitialClickPos);
+                sf::Vector2f delta = currentMousePos - initialClickPos;
+                //peashooter.drawPlanted(window, {495, 280});
+            }
         }
     }
 }
@@ -109,8 +126,8 @@ void System::render()
     {
     case IN_GAME:
         window.draw(sprite);
-        //sunflower.drawPlanted(window, {495, 380});
-        //wallnut.drawPlanted(window, {495, 480});
+        // sunflower.drawPlanted(window, {495, 380});
+        // wallnut.drawPlanted(window, {495, 480});
 
         peashooter.drawPlanted(window, {495, 280});
         if (zombies.size() != 0)
@@ -130,11 +147,12 @@ void System::render()
     }
     window.display();
 }
-void System::handle_mouse_release(Event ev)
+/*void System::handle_mouse_release(Event ev)
 {
     if (ev.mouseButton.button == Mouse::Right)
         return;
     Vector2f pos = {ev.mouseButton.x, ev.mouseButton.y};
+
     switch (state)
     {
     case IN_GAME:
@@ -149,7 +167,7 @@ void System::handle_mouse_press(Event ev)
 {
     if (ev.mouseButton.button == Mouse::Right)
         return;
-    Vector2f pos = {ev.mouseButton.x, ev.mouseButton.y};
+    Vector2i initialClickPos = Mouse::getPosition(window);
     switch (state)
     {
     case IN_GAME:
@@ -160,7 +178,7 @@ void System::handle_mouse_press(Event ev)
         break;
     }
 }
-
+*/
 void System::makeplayground(vector<vector<Vector2f>> &playground)
 {
     playground.resize(5, vector<Vector2f>(9));
