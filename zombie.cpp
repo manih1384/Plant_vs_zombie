@@ -14,9 +14,9 @@ Zombie::Zombie(const Vector2f &startPos)
     }
 
     Zombie_sprite.setTexture(Zombie_Texture);
-    Zombie_sprite.setScale(0.2f,0.2f);
+    Zombie_sprite.setScale(0.2f, 0.2f);
     Zombie_sprite.setPosition(position);
-    
+
     // IntRect rect;
     // rect.width = 100;
     // rect.height = 100;
@@ -35,12 +35,21 @@ void Zombie::takeDamage(int damage)
     health -= damage;
 }
 
+void Zombie::start_zombie()
+{
+    speed = 2;
+}
+void Zombie::stop_zombie()
+{
+    speed = 0;
+}
+
 bool Zombie::isAlive()
 {
     return health > 0;
 }
 
-void Zombie::attack()
+int Zombie::attack()
 {
     return damage;
 }
@@ -55,10 +64,9 @@ bool Zombie::checkcollision(vector<vector<Vector2f>> playground)
     bool detected = false;
     for (int i = 0; i < 4; i++)
     {
-        if (position.x < playground[i][0].x-DX)
+        if (position.x < playground[i][0].x - DX)
         {
             detected = true;
-            
         }
     }
 
@@ -67,4 +75,4 @@ bool Zombie::checkcollision(vector<vector<Vector2f>> playground)
 
 Vector2f Zombie::get_pos() { return position; }
 
-FloatRect Zombie::get_rect(){return Zombie_sprite.getGlobalBounds();}
+FloatRect Zombie::get_rect() { return Zombie_sprite.getGlobalBounds(); }

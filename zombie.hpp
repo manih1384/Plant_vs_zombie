@@ -16,6 +16,8 @@ public:
     bool isAlive();
     bool checkcollision(vector<vector<Vector2f>> playground);
     void render(RenderWindow& window);
+    void stop_zombie();
+    void start_zombie();
     Vector2f get_pos();
     FloatRect get_rect();
 

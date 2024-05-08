@@ -8,7 +8,7 @@ Peashooter::Peashooter() : Plant(100, 50)
     spritePlanted.setTexture(texturePlanted);
     spritePlanted.setScale(0.05f, 0.05f);
 }
-
+int Peashooter:: get_health(){return health;}
 void Peashooter::drawPlanted(sf::RenderWindow &window, sf::Vector2f position)
 {
     spritePlanted.setPosition(position);
@@ -29,7 +29,7 @@ Sunflower::Sunflower() : Plant(50, 25)
     spritePlanted.setTexture(texturePlanted);
     spritePlanted.setScale(0.05f, 0.05f);
 }
-
+int Sunflower:: get_health(){return health;}
 void Sunflower::drawPlanted(sf::RenderWindow &window, sf::Vector2f position)
 {
     spritePlanted.setPosition(position);
@@ -50,7 +50,7 @@ Wallnut::Wallnut() : Plant(200, 75)
     spritePlanted.setTexture(texturePlanted);
     spritePlanted.setScale(0.7f, 0.7f);
 }
-
+int Wallnut:: get_health(){return health;}
 void Wallnut::drawPlanted(sf::RenderWindow &window, sf::Vector2f position)
 {
     spritePlanted.setPosition(position);

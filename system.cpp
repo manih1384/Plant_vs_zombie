@@ -52,11 +52,23 @@ void System::collision_detector()
             FloatRect p_rect = plants[j]->get_rect();
             if (z_rect.intersects(p_rect))
             {
+                zombies[i]->stop_zombie();
                 Time time_passed = attack_zombie_clock.getElapsedTime();
-                if (time_passed.asMilliseconds() > 1000)
+                
+                if (time_passed.asMilliseconds() > 500)
                 {
                     plants[j]->get_damaged(zombies[i]->attack());
+                    attack_zombie_clock.restart();
                 }
+                if (plants[j]->get_health()<0)
+                {
+                    
+                    delete plants[j];
+                    plants.erase(plants.begin()+j);
+                    
+                    zombies[i]->start_zombie();
+                }
+                
                 
                 // delete zombies[i];
                 // zombies.erase(zombies.begin() + i);
