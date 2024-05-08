@@ -25,6 +25,7 @@ System::System(int width, int height)
     sprite.setTexture(background);
     srand(time(NULL));
     rng = rand();
+    add_plants();
 }
 
 System::~System()
@@ -42,20 +43,20 @@ void System::run()
     }
 }
 
-void System::collision_detector()
-{
-    for (int i = 0; i < zombies.size(); i++)
-    {
-        FloatRect z_rect = zombies[i]->get_rect();
-        FloatRect p_rect = peashooter.get_rect();
-        if (z_rect.intersects(p_rect))
-        {
-            delete zombies[i];
-            zombies.erase(zombies.begin() + i);
-            i--; // adjust the index after erasing
-        }
-    }
-}
+// void System::collision_detector()
+// {
+//     for (int i = 0; i < zombies.size(); i++)
+//     {
+//         FloatRect z_rect = zombies[i]->get_rect();
+//         FloatRect p_rect = peashooter.get_rect();
+//         if (z_rect.intersects(p_rect))
+//         {
+//             delete zombies[i];
+//             zombies.erase(zombies.begin() + i);
+//             i--; // adjust the index after erasing
+//         }
+//     }
+// }
 
 void System::update()
 {
@@ -131,7 +132,7 @@ void System::render()
         // sunflower.drawPlanted(window, {495, 380});
         // wallnut.drawPlanted(window, {495, 480});
 
-        peashooter.drawPlanted(window, {495, 280});
+        plants[0]->drawPlanted(window, {495, 280});
         if (zombies.size() != 0)
         {
             for (int i = 0; i < zombies.size(); i++)
@@ -201,5 +202,14 @@ void System::add_zombie()
     {
         Zombie *new_zombie = new Zombie(playground[2][8]);
         zombies.push_back(new_zombie);
+    }
+}
+void System::add_plants()
+{
+    // Ensure playground has at least one row and one column
+    if (!playground.empty() && playground[0].size() > 0)
+    {
+        Peashooter *new_plant = new Peashooter();
+        plants.push_back(new_plant);
     }
 }

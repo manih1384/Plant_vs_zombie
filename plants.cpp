@@ -14,10 +14,15 @@ void Peashooter::drawPlanted(sf::RenderWindow &window, sf::Vector2f position)
     spritePlanted.setPosition(position);
     window.draw(spritePlanted);
 }
+void Peashooter::get_damaged(int damage)
+{
+    health-=damage;
+}
 sf::FloatRect Peashooter::get_rect()
 {
     return spritePlanted.getGlobalBounds();
 }
+sf ::Vector2f Peashooter::getPos(){return spritePlanted.getPosition();}
 Sunflower::Sunflower() : Plant(50, 25)
 {
     texturePlanted.loadFromFile("files/Images/Sunflower.png");
@@ -30,7 +35,15 @@ void Sunflower::drawPlanted(sf::RenderWindow &window, sf::Vector2f position)
     spritePlanted.setPosition(position);
     window.draw(spritePlanted);
 }
-
+void Sunflower::get_damaged(int damage)
+{
+    health-=damage;
+}
+sf::FloatRect Sunflower::get_rect()
+{
+    return spritePlanted.getGlobalBounds();
+}
+sf ::Vector2f Sunflower::getPos(){return spritePlanted.getPosition();}
 Wallnut::Wallnut() : Plant(200, 75)
 {
     texturePlanted.loadFromFile("files/Images/Wallnut_body.png");
@@ -43,3 +56,12 @@ void Wallnut::drawPlanted(sf::RenderWindow &window, sf::Vector2f position)
     spritePlanted.setPosition(position);
     window.draw(spritePlanted);
 }
+void Wallnut::get_damaged(int damage)
+{
+    health-=damage;
+}
+sf::FloatRect Wallnut::get_rect()
+{
+    return spritePlanted.getGlobalBounds();
+}
+sf ::Vector2f Wallnut::getPos(){return spritePlanted.getPosition();}

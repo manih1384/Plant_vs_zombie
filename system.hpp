@@ -43,14 +43,14 @@ private:
     void handle_mouse_release(Event ev);
     void makeplayground(vector<vector<Vector2f>> &playground);
     void add_zombie();
-    //Sunflower sunflower;
-    Peashooter peashooter;
-    //Wallnut wallnut;
+    void add_plants();
+    vector<Zombie*> zombies;
+    vector<Plant*> plants;
 public:
     System(int width, int height);
     ~System();
     void collision_detector();
-    vector<Zombie*> zombies;
+    
     vector<vector<Vector2f>> playground;
     RenderWindow window;
     int rng;
