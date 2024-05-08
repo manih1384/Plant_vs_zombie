@@ -12,7 +12,7 @@ public:
 
     void move();
     void takeDamage(int damage);
-    void attack();
+    int attack();
     bool isAlive();
     bool checkcollision(vector<vector<Vector2f>> playground);
     void render(RenderWindow& window);
@@ -21,6 +21,7 @@ public:
 
 private:
     int health=100;
+    int damage=10;
     float speed=1;
     Vector2f position; 
     Sprite Zombie_sprite; 

@@ -42,6 +42,7 @@ bool Zombie::isAlive()
 
 void Zombie::attack()
 {
+    return damage;
 }
 
 void Zombie::render(RenderWindow &window)

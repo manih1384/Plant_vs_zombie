@@ -37,7 +37,8 @@ private:
     Sprite sprite;
     Texture bbackground;
     Sprite bsprite;
-    Clock clock;
+    Clock add_zombie_clock;
+    Clock attack_zombie_clock;
     void handle_events();
     void handle_mouse_press(Event ev);
     void handle_mouse_release(Event ev);
