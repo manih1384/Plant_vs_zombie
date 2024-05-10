@@ -19,22 +19,19 @@ bool Peashooter::can_shoot()
     return true;
 }
 
-
-void Peashooter::update_shots(){
-    for (Projectile *&projectile: projectiles)
+void Peashooter::update_shots()
+{
+    for (Projectile *&projectile : projectiles)
     {
 
         projectile->update();
-        if (projectile->get_pos().x>1000)
+        if (projectile->get_pos().x > 1000)
         {
             delete projectile;
-            projectiles.erase(find(projectiles.begin(),projectiles.end(),projectile));
+            projectiles.erase(find(projectiles.begin(), projectiles.end(), projectile));
         }
-        
     }
-    
 }
-
 
 void Peashooter::set_position(const sf::Vector2f &new_position)
 {
@@ -53,14 +50,13 @@ void Peashooter::drawPlanted(sf::RenderWindow &window)
 
 void Peashooter::shoot()
 {
-    Time  time_passed = clock.getElapsedTime();
-    if (time_passed.asMilliseconds()>1000)
+    Time time_passed = clock.getElapsedTime();
+    if (time_passed.asMilliseconds() > 1000)
     {
-    
-    
-    NormalPea *newProjectile = new NormalPea({getPos().x+15,getPos().y-10});
-    projectiles.push_back(newProjectile);
-    clock.restart();
+
+        NormalPea *newProjectile = new NormalPea({getPos().x + 15, getPos().y - 10});
+        projectiles.push_back(newProjectile);
+        clock.restart();
     }
 }
 
@@ -94,7 +90,8 @@ bool Sunflower::can_shoot()
 {
     return false;
 }
-
+void Sunflower::shoot() {}
+void Sunflower::update_shots() {}
 int Sunflower::get_health() { return health; }
 void Sunflower::drawPlanted(sf::RenderWindow &window)
 {
@@ -143,3 +140,5 @@ bool Wallnut::can_shoot()
 {
     return false;
 }
+void Wallnut::shoot() {}
+void Wallnut::update_shots() {}

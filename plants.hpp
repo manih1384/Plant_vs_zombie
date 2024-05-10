@@ -18,8 +18,8 @@ public:
     virtual int get_health() = 0;
     virtual bool can_shoot() = 0;
     virtual void set_position(const sf::Vector2f &new_position) = 0;
-    virtual void shoot()=0;
-    virtual void update_shots()=0;
+    virtual void shoot() = 0;
+    virtual void update_shots() = 0;
     std::vector<Projectile *> projectiles;
 };
 
@@ -36,7 +36,6 @@ public:
     bool can_shoot() override;
     void shoot() override;
     void update_shots() override;
-    
 
 private:
     sf::Texture texturePlanted;
@@ -54,6 +53,8 @@ public:
     sf::Vector2f getPos() override;
     sf::FloatRect get_rect() override;
     bool can_shoot() override;
+    void shoot() override;
+    void update_shots() override;
 
 private:
     sf::Texture texturePlanted;
@@ -71,6 +72,8 @@ public:
     void set_position(const sf::Vector2f &new_position) override;
     sf::FloatRect get_rect() override;
     bool can_shoot() override;
+    void shoot() override;
+    void update_shots() override;
 
 private:
     sf::Texture texturePlanted;

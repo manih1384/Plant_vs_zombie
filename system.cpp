@@ -26,10 +26,10 @@ System::System(int width, int height)
     sprite.setTexture(background);
     srand(time(NULL));
     rng = rand();
-    add_plants();
-    add_plants();
-    plants[0]->set_position({440, 300});
-    plants[1]->set_position({400, 200});
+    // add_plants();
+    // add_plants();
+    // plants[0]->set_position({440, 300});
+    // plants[1]->set_position({400, 200});
 }
 
 System::~System()
@@ -197,7 +197,18 @@ void System::handle_events()
 
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 sf::Vector2f floatMousePos = static_cast<sf::Vector2f>(mousePos);
-
+                if (icons.get_peashooter_rect().contains(floatMousePos))
+                {
+                    add_plants("peashooter");
+                }
+                if (icons.get_sunflower_rect().contains(floatMousePos))
+                {
+                    add_plants("sunflower");
+                }
+                if (icons.get_wallnut_rect().contains(floatMousePos))
+                {
+                    add_plants("wallnut");
+                }
                 for (int i = 0; i < plants.size(); i++)
                 {
                     if (plants[i]->get_rect().contains(floatMousePos))
@@ -294,12 +305,25 @@ void System::add_zombie()
         add_zombie_clock.restart();
     }
 }
-void System::add_plants()
+void System::add_plants(string type)
 {
-    // Ensure playground has at least one row and one column
-    if (!playground.empty() && playground[0].size() > 0)
+    // if (!playground.empty() && playground[0].size() > 0)
+    if (type == "peashooter")
     {
         Peashooter *new_plant = new Peashooter();
+        new_plant->set_position({60, 50});
+        plants.push_back(new_plant);
+    }
+    if (type == "sunflower")
+    {
+        Sunflower *new_plant = new Sunflower();
+        new_plant->set_position({60, 140});
+        plants.push_back(new_plant);
+    }
+    if (type == "wallnut")
+    {
+        Wallnut *new_plant = new Wallnut();
+        new_plant->set_position({60, 230});
         plants.push_back(new_plant);
     }
 }

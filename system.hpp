@@ -46,7 +46,7 @@ private:
     void handle_mouse_release(Event ev);
     void makeplayground(vector<vector<Vector2f>> &playground);
     void add_zombie();
-    void add_plants();
+    void add_plants(string type);
     vector<Zombie*> zombies;
     vector<Plant*> plants;
     Icons icons;
