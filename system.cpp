@@ -45,7 +45,8 @@ void System::run()
         handle_events();
     }
 }
-void System::collision_detector()
+
+void System::zombie_plant_collision()
 {
 
     for (int i = 0; i < zombies.size(); i++)
@@ -91,17 +92,18 @@ void System::collision_detector()
     }
 }
 
+void System::zombie_projectile_collision()
+{
+    
+}
+
 void System::update()
 {
     if (state == IN_GAME)
     {
-        Time time_passed = add_zombie_clock.getElapsedTime();
-        if (time_passed.asMilliseconds() > 2000)
-        {
-            add_zombie();
-            add_zombie_clock.restart();
-        }
-        collision_detector();
+        add_zombie();
+        zombie_plant_collision();
+        zombie_projectile_collision();
         for (int i = 0; i < zombies.size(); i++)
         {
             if (!zombies[i]->checkcollision(playground))
@@ -123,7 +125,7 @@ void System::fix_position(Plant *plant)
     {
         for (int j = 0; j < 9; j++)
         {
-            if (plant->getPos().x > playground[i][j].x && plant->getPos().y > playground[i][j].y && plant->getPos().x < playground[i + 1][j + 1].x && plant->getPos().y < playground[i + 1][j + 1].y)
+            if (plant->getPos().x > playground[i][j].x && plant->getPos().y > playground[i][j].y && plant->getPos().x < playground[i][j].x+DX && plant->getPos().y < playground[i][j].y+DY)
             {
                 plant->set_position({playground[i][j].x + DX / 2, playground[i][j].y + DY / 2});
                 return;
@@ -220,38 +222,7 @@ void System::render()
     }
     window.display();
 }
-/*void System::handle_mouse_release(Event ev)
-{
-    if (ev.mouseButton.button == Mouse::Right)
-        return;
-    Vector2f pos = {ev.mouseButton.x, ev.mouseButton.y};
 
-    switch (state)
-    {
-    case IN_GAME:
-
-        break;
-
-    default:
-        break;
-    }
-}
-void System::handle_mouse_press(Event ev)
-{
-    if (ev.mouseButton.button == Mouse::Right)
-        return;
-    Vector2i initialClickPos = Mouse::getPosition(window);
-    switch (state)
-    {
-    case IN_GAME:
-
-        break;
-
-    default:
-        break;
-    }
-}
-*/
 void System::makeplayground(vector<vector<Vector2f>> &playground)
 {
     playground.resize(5, vector<Vector2f>(9));
@@ -267,10 +238,15 @@ void System::makeplayground(vector<vector<Vector2f>> &playground)
 
 void System::add_zombie()
 {
-    if (!playground.empty() && playground[0].size() > 0)
+    Time time_passed = add_zombie_clock.getElapsedTime();
+    if (time_passed.asMilliseconds() > 2000)
     {
-        Zombie *new_zombie = new Zombie(playground[rng % 5][8]);
-        zombies.push_back(new_zombie);
+        if (!playground.empty() && playground[0].size() > 0)
+        {
+            Zombie *new_zombie = new Zombie(playground[2][8]);
+            zombies.push_back(new_zombie);
+        }
+        add_zombie_clock.restart();
     }
 }
 void System::add_plants()

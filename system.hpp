@@ -50,7 +50,8 @@ private:
 public:
     System(int width, int height);
     ~System();
-    void collision_detector();
+    void zombie_projectile_collision();
+    void zombie_plant_collision();
     void fix_position(Plant *plant);
     vector<vector<Vector2f>> playground;
     RenderWindow window;
