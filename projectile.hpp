@@ -1,0 +1,34 @@
+#pragma once
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+using namespace sf;
+class Projectile {
+public:
+    Projectile(const Vector2f& startPos);
+
+    virtual void update();
+    virtual void render(RenderWindow& window); 
+
+    virtual FloatRect get_rect() const;
+    virtual int get_damage() const = 0;  
+
+protected:
+    Vector2f position; 
+    float speed; 
+    Sprite sprite; 
+    Texture texture; 
+    int damage;
+};
+
+
+class NormalPea : public Projectile {
+public:
+    NormalPea(const sf::Vector2f& startPos);  
+    int get_damage() const override;  
+};
+
+class SnowPea : public Projectile {
+public:
+    SnowPea(const sf::Vector2f& startPos); 
+    int get_damage() const override; 
+};

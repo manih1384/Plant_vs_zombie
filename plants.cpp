@@ -1,5 +1,5 @@
 #include "plants.hpp"
-
+using namespace sf;
 Plant::Plant(int health, int price) : health(health), price(price) {}
 
 Peashooter::Peashooter() : Plant(100, 50)
@@ -13,6 +13,11 @@ Peashooter::Peashooter() : Plant(100, 50)
 
 int Peashooter::get_health() { return health; }
 
+bool Peashooter::can_shoot()
+{
+    return true;
+}
+
 void Peashooter::set_position(const sf::Vector2f &new_position)
 {
     spritePlanted.setPosition(new_position);
@@ -21,6 +26,18 @@ void Peashooter::set_position(const sf::Vector2f &new_position)
 void Peashooter::drawPlanted(sf::RenderWindow &window)
 {
     window.draw(spritePlanted);
+
+    for (const auto &projectile : projectiles)
+    {
+        projectile->render(window);
+    }
+}
+
+void Peashooter::shoot()
+{
+    
+    NormalPea *newProjectile = new NormalPea(getPos());
+    projectiles.push_back(newProjectile);
 }
 
 void Peashooter::get_damaged(int damage)
@@ -48,6 +65,12 @@ Sunflower::Sunflower() : Plant(50, 25)
     sf::FloatRect bounds = spritePlanted.getLocalBounds();
     spritePlanted.setOrigin(bounds.width / 2, bounds.height / 2);
 }
+
+bool Sunflower::can_shoot()
+{
+    return false;
+}
+
 int Sunflower::get_health() { return health; }
 void Sunflower::drawPlanted(sf::RenderWindow &window)
 {
@@ -90,4 +113,9 @@ sf ::Vector2f Wallnut::getPos() { return spritePlanted.getPosition(); }
 void Wallnut::set_position(const sf::Vector2f &new_position)
 {
     spritePlanted.setPosition(new_position);
+}
+
+bool Wallnut::can_shoot()
+{
+    return false;
 }

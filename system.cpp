@@ -2,6 +2,7 @@
 #include "global.hpp"
 #include "zombie.hpp"
 #include <cstdlib>
+#include "projectile.hpp"
 using namespace std;
 System::System(int width, int height)
 {
@@ -104,6 +105,13 @@ void System::update()
         add_zombie();
         zombie_plant_collision();
         zombie_projectile_collision();
+        for (Plant *&plant : plants)
+        {
+            if(plant->can_shoot()){
+                plant->shoot();
+            }
+        }
+        
         for (int i = 0; i < zombies.size(); i++)
         {
             if (!zombies[i]->checkcollision(playground))
