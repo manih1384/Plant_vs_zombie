@@ -54,7 +54,7 @@ void Peashooter::drawPlanted(sf::RenderWindow &window)
 void Peashooter::shoot()
 {
     
-    NormalPea *newProjectile = new NormalPea(getPos());
+    NormalPea *newProjectile = new NormalPea({getPos().x+15,getPos().y-10});
     projectiles.push_back(newProjectile);
 }
 
