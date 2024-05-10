@@ -26,6 +26,7 @@ System::System(int width, int height)
     srand(time(NULL));
     rng = rand();
     add_plants();
+    plants[0]->set_position({440,300});
 }
 
 System::~System()
@@ -56,7 +57,7 @@ void System::collision_detector()
             {
                 zombies[i]->stop_zombie();
                 Time time_passed = attack_zombie_clock.getElapsedTime();
-                
+
                 if (time_passed.asMilliseconds() > 500)
                 {
                     plants[j]->get_damaged(zombies[i]->attack());
@@ -65,18 +66,15 @@ void System::collision_detector()
                 if (plants[j]->get_health() < 0)
                 {
                     delete plants[j];
-                    plants.erase(plants.begin()+j);
+                    plants.erase(plants.begin() + j);
                     zombies[i]->start_zombie();
                     for (int x = 0; x < zombies.size(); x++)
                     {
-                        if (zombies[i]->get_pos().y==zombies[x]->get_pos().y)
+                        if (zombies[i]->get_pos().y == zombies[x]->get_pos().y)
                         {
                             zombies[x]->start_zombie();
                         }
-                        
                     }
-                    
-                    
                 }
                 else
                 {
@@ -91,45 +89,6 @@ void System::collision_detector()
     }
 }
 
-// void System::collision_detector()
-// {
-//     for (int i = 0; i < zombies.size(); i++)
-//     {
-//         for (auto pit = plants.begin(); pit != plants.end();)
-//         {
-//             FloatRect z_rect = zombies[i]->get_rect();
-//             FloatRect p_rect = (*pit)->get_rect();
-//             if (z_rect.intersects(p_rect))
-//             {
-//                 zombies[i]->stop_zombie();
-//                 Time time_passed = attack_zombie_clock.getElapsedTime();
-                
-//                 if (time_passed.asMilliseconds() > 500)
-//                 {
-//                     (*pit)->get_damaged(zombies[i]->attack());
-//                     attack_zombie_clock.restart();
-//                 }
-//                 if ((*pit)->get_health()<0)
-//                 {
-//                     auto save = pit;
-//                     pit = plants.erase(save);
-//                     delete *save;
-                    
-//                     zombies[i]->start_zombie();
-//                 }
-//                 else
-//                     pit++;
-                
-                
-//                 // delete zombies[i];
-//                 // zombies.erase(zombies.begin() + i);
-//                 // i--; // adjust the index after erasing
-//             }
-//             else
-//                 pit++;
-//         }
-//     }
-// }
 
 void System::update()
 {
@@ -151,49 +110,67 @@ void System::update()
             else
             {
                 state = GAMEOVER;
-                break; // exit the loop once the game is over
+                break;
             }
         }
     }
 }
-void System::handle_events()
-{
-    Event event;
-    bool isDragging = false;
-    Vector2i intInitialClickPos;
-    while (window.pollEvent(event))
-    {
-        switch (event.type)
-        {
-        case Event::Closed:
+
+
+
+
+void System::handle_events() {
+    sf::Event event;
+    static bool isDragging = false;
+    static int draggingPlantIndex = -1;
+
+    while (window.pollEvent(event)) {
+        switch (event.type) {
+        case sf::Event::Closed:
             window.close();
             state = EXIT;
             break;
 
-        case Event::MouseButtonReleased:
-            // handle_mouse_release(event);
-            isDragging = false;
-            break;
-        case Event::MouseButtonPressed:
-            if (event.mouseButton.button == sf::Mouse::Left)
-            {
-                Vector2i intInitialClickPos = sf::Mouse::getPosition(window);
-                bool isDragging = true;
+        case sf::Event::MouseButtonPressed:
+            if (event.mouseButton.button == sf::Mouse::Left) {
+
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                sf::Vector2f floatMousePos = static_cast<sf::Vector2f>(mousePos);
+
+                for (int i = 0; i < plants.size(); i++) {
+                    if (plants[i]->get_rect().contains(floatMousePos)) {
+                        isDragging = true;
+                        draggingPlantIndex = i;
+                        break;
+                    }
+                }
             }
-            // handle_mouse_press(event);
             break;
-        case Event::MouseMoved:
-            if (isDragging)
-            {
-                sf::Vector2i intCurrentMousePos = sf::Mouse::getPosition(window);
-                Vector2f currentMousePos = static_cast<sf::Vector2f>(intCurrentMousePos);
-                Vector2f initialClickPos = static_cast<sf::Vector2f>(intInitialClickPos);
-                sf::Vector2f delta = currentMousePos - initialClickPos;
-                // peashooter.drawPlanted(window, {495, 280});
+
+        case sf::Event::MouseButtonReleased:
+            if (isDragging) {
+                isDragging = false;
+                draggingPlantIndex = -1;
             }
+            break;
+
+        case sf::Event::MouseMoved:
+            if (isDragging && draggingPlantIndex != -1) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                sf::Vector2f newPlantPos = static_cast<sf::Vector2f>(mousePos);
+
+                plants[draggingPlantIndex]->set_position(newPlantPos);
+            }
+            break;
         }
     }
 }
+
+
+
+
+
+
 void System::render()
 {
     window.clear();
@@ -202,11 +179,15 @@ void System::render()
     {
     case IN_GAME:
         window.draw(sprite);
-        // sunflower.drawPlanted(window, {495, 380});
-        // wallnut.drawPlanted(window, {495, 480});
         if (!plants.empty())
-        plants[0]->drawPlanted(window, {495, 280});
-        if (zombies.size() != 0)
+        {
+            for (const auto &plant : plants)
+            {
+                plant->drawPlanted(window);
+            }
+        }
+        
+        if (!zombies.empty())
         {
             for (int i = 0; i < zombies.size(); i++)
             {
