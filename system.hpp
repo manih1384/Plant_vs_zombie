@@ -14,6 +14,7 @@
 #include <SFML/System.hpp>
 #include "zombie.hpp"
 #include "plants.hpp"
+#include "icons.hpp"
 using namespace std;
 using namespace sf;
 
@@ -48,6 +49,7 @@ private:
     void add_plants();
     vector<Zombie*> zombies;
     vector<Plant*> plants;
+    Icons icons;
 public:
     System(int width, int height);
     ~System();

@@ -253,6 +253,7 @@ void System::render()
                 zombies[i]->render(window);
             }
         }
+        window.draw(icons.get_peashooter_sprite());
         break;
     case GAMEOVER:
         window.draw(bsprite);
