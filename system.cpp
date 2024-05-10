@@ -93,9 +93,34 @@ void System::zombie_plant_collision()
     }
 }
 
-void System::zombie_projectile_collision()
-{
+void System::zombie_projectile_collision() {
+    for (auto& plant : plants) {
+        if (plant->can_shoot()) {
+            auto& projectiles = plant->projectiles; 
+            
+            
+            for (auto *projectile: projectiles) {
+                for (auto& zombie : zombies) {
+                    if (projectile->get_rect().intersects(zombie->get_rect())) {
+                        zombie->takeDamage(projectile->get_damage());
+
+                       
+                        delete projectile;
+                        projectiles.erase(find(projectiles.begin(),projectiles.end(),projectile));
+                        if (!zombie->isAlive())
+                        {
+                           delete zombie;
+                        zombies.erase(find(zombies.begin(),zombies.end(),zombie)); 
+                        }
+                        
+                        break;  
+                    }
+                }
+            }
+        }
+    }
 }
+
 
 void System::handle_shooting()
 {

@@ -18,7 +18,7 @@ protected:
     float speed=5;
     Sprite sprite;
     Texture texture;
-    int damage;
+    int damage=30;
 };
 
 class NormalPea : public Projectile

@@ -20,8 +20,6 @@ public:
     virtual void set_position(const sf::Vector2f &new_position) = 0;
     virtual void shoot()=0;
     virtual void update_shots()=0;
-
-public:
     std::vector<Projectile *> projectiles;
 };
 
