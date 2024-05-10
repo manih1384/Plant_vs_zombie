@@ -282,7 +282,7 @@ void System::add_zombie()
     {
         if (!playground.empty() && playground[0].size() > 0)
         {
-            Zombie *new_zombie = new Zombie(playground[2][8]);
+            Zombie *new_zombie = new Zombie(playground[rng%5][8]);
             zombies.push_back(new_zombie);
         }
         add_zombie_clock.restart();
