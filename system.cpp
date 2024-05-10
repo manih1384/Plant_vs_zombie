@@ -26,7 +26,9 @@ System::System(int width, int height)
     srand(time(NULL));
     rng = rand();
     add_plants();
-    plants[0]->set_position({440,300});
+    add_plants();
+    plants[0]->set_position({440, 300});
+    plants[1]->set_position({400, 200});
 }
 
 System::~System()
@@ -89,13 +91,12 @@ void System::collision_detector()
     }
 }
 
-
 void System::update()
 {
     if (state == IN_GAME)
     {
         Time time_passed = add_zombie_clock.getElapsedTime();
-        if (time_passed.asMilliseconds() > 1000)
+        if (time_passed.asMilliseconds() > 2000)
         {
             add_zombie();
             add_zombie_clock.restart();
@@ -116,29 +117,47 @@ void System::update()
     }
 }
 
+void System::fix_position(Plant *plant)
+{
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            if (plant->getPos().x > playground[i][j].x && plant->getPos().y > playground[i][j].y && plant->getPos().x < playground[i + 1][j + 1].x && plant->getPos().y < playground[i + 1][j + 1].y)
+            {
+                plant->set_position({playground[i][j].x + DX / 2, playground[i][j].y + DY / 2});
+                return;
+            }
+        }
+    }
+}
 
-
-
-void System::handle_events() {
+void System::handle_events()
+{
     sf::Event event;
     static bool isDragging = false;
     static int draggingPlantIndex = -1;
 
-    while (window.pollEvent(event)) {
-        switch (event.type) {
+    while (window.pollEvent(event))
+    {
+        switch (event.type)
+        {
         case sf::Event::Closed:
             window.close();
             state = EXIT;
             break;
 
         case sf::Event::MouseButtonPressed:
-            if (event.mouseButton.button == sf::Mouse::Left) {
+            if (event.mouseButton.button == sf::Mouse::Left)
+            {
 
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 sf::Vector2f floatMousePos = static_cast<sf::Vector2f>(mousePos);
 
-                for (int i = 0; i < plants.size(); i++) {
-                    if (plants[i]->get_rect().contains(floatMousePos)) {
+                for (int i = 0; i < plants.size(); i++)
+                {
+                    if (plants[i]->get_rect().contains(floatMousePos))
+                    {
                         isDragging = true;
                         draggingPlantIndex = i;
                         break;
@@ -148,14 +167,18 @@ void System::handle_events() {
             break;
 
         case sf::Event::MouseButtonReleased:
-            if (isDragging) {
+            if (isDragging)
+            {
+                fix_position(plants[draggingPlantIndex]);
+
                 isDragging = false;
                 draggingPlantIndex = -1;
             }
             break;
 
         case sf::Event::MouseMoved:
-            if (isDragging && draggingPlantIndex != -1) {
+            if (isDragging && draggingPlantIndex != -1)
+            {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 sf::Vector2f newPlantPos = static_cast<sf::Vector2f>(mousePos);
 
@@ -165,11 +188,6 @@ void System::handle_events() {
         }
     }
 }
-
-
-
-
-
 
 void System::render()
 {
@@ -186,7 +204,7 @@ void System::render()
                 plant->drawPlanted(window);
             }
         }
-        
+
         if (!zombies.empty())
         {
             for (int i = 0; i < zombies.size(); i++)
@@ -194,8 +212,6 @@ void System::render()
                 zombies[i]->render(window);
             }
         }
-
-        // cout << zombies[0].get_pos().x << "aa"<<zombies[0].get_pos().y<<endl;
         break;
     case GAMEOVER:
         window.draw(bsprite);
@@ -251,10 +267,9 @@ void System::makeplayground(vector<vector<Vector2f>> &playground)
 
 void System::add_zombie()
 {
-    // Ensure playground has at least one row and one column
     if (!playground.empty() && playground[0].size() > 0)
     {
-        Zombie *new_zombie = new Zombie(playground[2][8]);
+        Zombie *new_zombie = new Zombie(playground[rng % 5][8]);
         zombies.push_back(new_zombie);
     }
 }

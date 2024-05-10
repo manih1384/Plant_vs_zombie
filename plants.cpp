@@ -7,6 +7,8 @@ Peashooter::Peashooter() : Plant(100, 50)
     texturePlanted.loadFromFile("files/Images/Peashooter.png");
     spritePlanted.setTexture(texturePlanted);
     spritePlanted.setScale(0.05f, 0.05f);
+    sf::FloatRect bounds = spritePlanted.getLocalBounds();
+    spritePlanted.setOrigin(bounds.width / 2, bounds.height / 2);
 }
 
 int Peashooter::get_health() { return health; }
@@ -33,24 +35,18 @@ sf::FloatRect Peashooter::get_rect()
 
 sf ::Vector2f Peashooter::getPos() { return spritePlanted.getPosition(); }
 
-
-
-
-
-
 void Sunflower::set_position(const sf::Vector2f &new_position)
 {
     spritePlanted.setPosition(new_position);
 }
-
-
-
 
 Sunflower::Sunflower() : Plant(50, 25)
 {
     texturePlanted.loadFromFile("files/Images/Sunflower.png");
     spritePlanted.setTexture(texturePlanted);
     spritePlanted.setScale(0.05f, 0.05f);
+    sf::FloatRect bounds = spritePlanted.getLocalBounds();
+    spritePlanted.setOrigin(bounds.width / 2, bounds.height / 2);
 }
 int Sunflower::get_health() { return health; }
 void Sunflower::drawPlanted(sf::RenderWindow &window)
@@ -72,12 +68,14 @@ Wallnut::Wallnut() : Plant(200, 75)
     texturePlanted.loadFromFile("files/Images/Wallnut_body.png");
     spritePlanted.setTexture(texturePlanted);
     spritePlanted.setScale(0.7f, 0.7f);
+    sf::FloatRect bounds = spritePlanted.getLocalBounds();
+    spritePlanted.setOrigin(bounds.width / 2, bounds.height / 2);
 }
 
 int Wallnut::get_health() { return health; }
 void Wallnut::drawPlanted(sf::RenderWindow &window)
 {
-   
+
     window.draw(spritePlanted);
 }
 void Wallnut::get_damaged(int damage)

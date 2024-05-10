@@ -51,7 +51,7 @@ public:
     System(int width, int height);
     ~System();
     void collision_detector();
-    
+    void fix_position(Plant *plant);
     vector<vector<Vector2f>> playground;
     RenderWindow window;
     int rng;

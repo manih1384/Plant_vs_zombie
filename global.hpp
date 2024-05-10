@@ -23,7 +23,7 @@ const int WIDTH = 1400;
 const int HEIGHT = 600;
 const int DX= 80;
 const int DY = 98;
-const int X0 = 294;
+const int X0 = 255;
 const int Y0 = 80;
 
 
