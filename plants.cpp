@@ -53,9 +53,15 @@ void Peashooter::drawPlanted(sf::RenderWindow &window)
 
 void Peashooter::shoot()
 {
+    Time  time_passed = clock.getElapsedTime();
+    if (time_passed.asMilliseconds()>1000)
+    {
+    
     
     NormalPea *newProjectile = new NormalPea({getPos().x+15,getPos().y-10});
     projectiles.push_back(newProjectile);
+    clock.restart();
+    }
 }
 
 void Peashooter::get_damaged(int damage)

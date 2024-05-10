@@ -39,6 +39,7 @@ private:
     Sprite bsprite;
     Clock add_zombie_clock;
     Clock attack_zombie_clock;
+    Clock attack_plant_clock;
     void handle_events();
     void handle_mouse_press(Event ev);
     void handle_mouse_release(Event ev);
@@ -52,6 +53,7 @@ public:
     ~System();
     void zombie_projectile_collision();
     void zombie_plant_collision();
+    void handle_shooting();
     void fix_position(Plant *plant);
     vector<vector<Vector2f>> playground;
     RenderWindow window;

@@ -9,6 +9,7 @@ class Plant
 public:
     int health;
     int price;
+    Clock clock;
     virtual sf::FloatRect get_rect() = 0;
     Plant(int health, int price);
     virtual void drawPlanted(sf::RenderWindow &window) = 0;

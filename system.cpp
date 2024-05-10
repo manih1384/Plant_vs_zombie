@@ -38,7 +38,7 @@ System::~System()
 void System::run()
 {
     while (window.isOpen() && state != EXIT)
-    { 
+    {
         srand(time(NULL));
         rng = rand();
         render();
@@ -97,6 +97,18 @@ void System::zombie_projectile_collision()
 {
 }
 
+void System::handle_shooting()
+{
+    for (Plant *&plant : plants)
+    {
+        if (plant->can_shoot())
+        {
+            plant->shoot();
+            plant->update_shots();
+        }
+    }
+}
+
 void System::update()
 {
     if (state == IN_GAME)
@@ -104,14 +116,7 @@ void System::update()
         add_zombie();
         zombie_plant_collision();
         zombie_projectile_collision();
-        for (Plant *&plant : plants)
-        {
-            if (plant->can_shoot())
-            {
-                plant->shoot();
-                plant->update_shots();
-            }
-        }
+        handle_shooting();
 
         for (int i = 0; i < zombies.size(); i++)
         {
