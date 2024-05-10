@@ -93,34 +93,37 @@ void System::zombie_plant_collision()
     }
 }
 
-void System::zombie_projectile_collision() {
-    for (auto& plant : plants) {
-        if (plant->can_shoot()) {
-            auto& projectiles = plant->projectiles; 
-            
-            
-            for (auto *projectile: projectiles) {
-                for (auto& zombie : zombies) {
-                    if (projectile->get_rect().intersects(zombie->get_rect())) {
+void System::zombie_projectile_collision()
+{
+    for (auto &plant : plants)
+    {
+        if (plant->can_shoot())
+        {
+            auto &projectiles = plant->projectiles;
+
+            for (auto *projectile : projectiles)
+            {
+                for (auto &zombie : zombies)
+                {
+                    if (projectile->get_rect().intersects(zombie->get_rect()))
+                    {
                         zombie->takeDamage(projectile->get_damage());
 
-                       
                         delete projectile;
-                        projectiles.erase(find(projectiles.begin(),projectiles.end(),projectile));
+                        projectiles.erase(find(projectiles.begin(), projectiles.end(), projectile));
                         if (!zombie->isAlive())
                         {
-                           delete zombie;
-                        zombies.erase(find(zombies.begin(),zombies.end(),zombie)); 
+                            delete zombie;
+                            zombies.erase(find(zombies.begin(), zombies.end(), zombie));
                         }
-                        
-                        break;  
+
+                        break;
                     }
                 }
             }
         }
     }
 }
-
 
 void System::handle_shooting()
 {
@@ -254,6 +257,8 @@ void System::render()
             }
         }
         window.draw(icons.get_peashooter_sprite());
+        window.draw(icons.get_sunflower_sprite());
+        window.draw(icons.get_wallnut_sprite());
         break;
     case GAMEOVER:
         window.draw(bsprite);
@@ -283,7 +288,7 @@ void System::add_zombie()
     {
         if (!playground.empty() && playground[0].size() > 0)
         {
-            Zombie *new_zombie = new Zombie(playground[rng%5][8]);
+            Zombie *new_zombie = new Zombie(playground[rng % 5][8]);
             zombies.push_back(new_zombie);
         }
         add_zombie_clock.restart();
