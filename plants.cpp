@@ -1,4 +1,5 @@
 #include "plants.hpp"
+#include <iostream>
 using namespace sf;
 Plant::Plant(int health, int price) : health(health), price(price) {}
 
@@ -17,6 +18,23 @@ bool Peashooter::can_shoot()
 {
     return true;
 }
+
+
+void Peashooter::update_shots(){
+    for (Projectile *&projectile: projectiles)
+    {
+
+        projectile->update();
+        if (projectile->get_pos().x>1000)
+        {
+            delete projectile;
+            projectiles.erase(find(projectiles.begin(),projectiles.end(),projectile));
+        }
+        
+    }
+    
+}
+
 
 void Peashooter::set_position(const sf::Vector2f &new_position)
 {

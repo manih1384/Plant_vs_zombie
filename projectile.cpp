@@ -1,44 +1,63 @@
 #include "projectile.hpp"
 #include <iostream>
 
-Projectile::Projectile(const sf::Vector2f& startPos)
-    : position(startPos){
-    // Base initialization
+Projectile::Projectile(const sf::Vector2f &startPos)
+    : position(startPos)
+{
 }
 
-void Projectile::update() {
+void Projectile::update()
+{
     position.x += speed;
     sprite.setPosition(position);
 }
 
-void Projectile::render(sf::RenderWindow& window) {
-    sprite.setPosition(position);
-    //sprite.scale(0.3f,0.3f);
-    window.draw(sprite); 
+void Projectile::render(sf::RenderWindow &window)
+{
+    //sprite.setPosition(position);
+    window.draw(sprite);
 }
 
-sf::FloatRect Projectile::get_rect() const {
+sf::FloatRect Projectile::get_rect() const
+{
     return sprite.getGlobalBounds();
 }
 
-NormalPea::NormalPea(const sf::Vector2f& startPos)
-    : Projectile(startPos) {
+NormalPea::NormalPea(const sf::Vector2f &startPos)
+    : Projectile(startPos)
+{
     texture.loadFromFile("files/Images/pea.png");
+    sprite.scale(0.15f, 0.15f);
     sprite.setTexture(texture);
+    FloatRect bounds = sprite.getLocalBounds();
+    sprite.setOrigin(bounds.width / 2, bounds.height / 2);
 }
 
-int NormalPea::get_damage() const {
+int NormalPea::get_damage() const
+{
     return damage;
 }
 
-SnowPea::SnowPea(const sf::Vector2f& startPos)
-    : Projectile(startPos) {
-    if (!texture.loadFromFile("files/Images/SnowPea.png")) {
+
+Vector2f NormalPea::get_pos(){return position;}
+
+
+
+
+
+SnowPea::SnowPea(const sf::Vector2f &startPos)
+    : Projectile(startPos)
+{
+    if (!texture.loadFromFile("files/Images/SnowPea.png"))
+    {
         std::cerr << "Error loading SnowPea texture" << std::endl;
     }
     sprite.setTexture(texture);
 }
 
-int SnowPea::get_damage() const {
+int SnowPea::get_damage() const
+{
     return damage;
 }
+
+Vector2f SnowPea::get_pos(){return position;}

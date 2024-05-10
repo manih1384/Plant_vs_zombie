@@ -18,8 +18,9 @@ public:
     virtual bool can_shoot() = 0;
     virtual void set_position(const sf::Vector2f &new_position) = 0;
     virtual void shoot()=0;
+    virtual void update_shots()=0;
 
-protected:
+public:
     std::vector<Projectile *> projectiles;
 };
 
@@ -35,6 +36,7 @@ public:
     sf::FloatRect get_rect() override;
     bool can_shoot() override;
     void shoot() override;
+    void update_shots() override;
     
 
 private:

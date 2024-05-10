@@ -38,7 +38,7 @@ System::~System()
 void System::run()
 {
     while (window.isOpen() && state != EXIT)
-    {
+    { 
         srand(time(NULL));
         rng = rand();
         render();
@@ -95,7 +95,6 @@ void System::zombie_plant_collision()
 
 void System::zombie_projectile_collision()
 {
-    
 }
 
 void System::update()
@@ -107,11 +106,13 @@ void System::update()
         zombie_projectile_collision();
         for (Plant *&plant : plants)
         {
-            if(plant->can_shoot()){
+            if (plant->can_shoot())
+            {
                 plant->shoot();
+                plant->update_shots();
             }
         }
-        
+
         for (int i = 0; i < zombies.size(); i++)
         {
             if (!zombies[i]->checkcollision(playground))
@@ -133,7 +134,7 @@ void System::fix_position(Plant *plant)
     {
         for (int j = 0; j < 9; j++)
         {
-            if (plant->getPos().x > playground[i][j].x && plant->getPos().y > playground[i][j].y && plant->getPos().x < playground[i][j].x+DX && plant->getPos().y < playground[i][j].y+DY)
+            if (plant->getPos().x > playground[i][j].x && plant->getPos().y > playground[i][j].y && plant->getPos().x < playground[i][j].x + DX && plant->getPos().y < playground[i][j].y + DY)
             {
                 plant->set_position({playground[i][j].x + DX / 2, playground[i][j].y + DY / 2});
                 return;
