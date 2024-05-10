@@ -6,7 +6,9 @@ class Icons
 {
 public:
     Icons();
-    sf::FloatRect get_rect();
+    sf::FloatRect get_peashooter_rect();
+    sf::FloatRect get_sunflower_rect();
+    sf::FloatRect get_wallnut_rect();
 
 private:
     sf::Texture peashooterIcon;
