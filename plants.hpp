@@ -41,6 +41,24 @@ private:
     sf::Texture texturePlanted;
     sf::Sprite spritePlanted;
 };
+class Snowshooter : public Plant
+{
+public:
+    Snowshooter();
+    void drawPlanted(sf::RenderWindow &window) override;
+    void get_damaged(int damage) override;
+    int get_health() override;
+    void set_position(const sf::Vector2f &new_position) override;
+    sf::Vector2f getPos() override;
+    sf::FloatRect get_rect() override;
+    bool can_shoot() override;
+    void shoot() override;
+    void update_shots() override;
+
+private:
+    sf::Texture texturePlanted;
+    sf::Sprite spritePlanted;
+};
 
 class Sunflower : public Plant
 {

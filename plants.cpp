@@ -72,6 +72,86 @@ sf::FloatRect Peashooter::get_rect()
 
 sf ::Vector2f Peashooter::getPos() { return spritePlanted.getPosition(); }
 
+
+
+
+
+
+Snowshooter::Snowshooter() : Plant(150, 70)
+{
+    texturePlanted.loadFromFile("files/Images/snowshooter.png");
+    spritePlanted.setTexture(texturePlanted);
+    spritePlanted.setScale(0.09f, 0.09f);
+    sf::FloatRect bounds = spritePlanted.getLocalBounds();
+    spritePlanted.setOrigin(bounds.width / 2, bounds.height / 2);
+}
+
+int Snowshooter::get_health() { return health; }
+
+bool Snowshooter::can_shoot()
+{
+    return true;
+}
+
+void Snowshooter::update_shots()
+{
+    for (Projectile *&projectile : projectiles)
+    {
+
+        projectile->update();
+        if (projectile->get_pos().x > 1000)
+        {
+            delete projectile;
+            projectiles.erase(find(projectiles.begin(), projectiles.end(), projectile));
+        }
+    }
+}
+
+void Snowshooter::set_position(const sf::Vector2f &new_position)
+{
+    spritePlanted.setPosition(new_position);
+}
+
+void Snowshooter::drawPlanted(sf::RenderWindow &window)
+{
+    window.draw(spritePlanted);
+
+    for (const auto &projectile : projectiles)
+    {
+        projectile->render(window);
+    }
+}
+
+void Snowshooter::shoot()
+{
+    Time time_passed = clock.getElapsedTime();
+    if (time_passed.asMilliseconds() > 1000)
+    {
+
+        NormalPea *newProjectile = new NormalPea({getPos().x + 15, getPos().y - 10});
+        projectiles.push_back(newProjectile);
+        clock.restart();
+    }
+}
+
+void Snowshooter::get_damaged(int damage)
+{
+    health -= damage;
+}
+
+sf::FloatRect Snowshooter::get_rect()
+{
+    return spritePlanted.getGlobalBounds();
+}
+
+sf ::Vector2f Snowshooter::getPos() { return spritePlanted.getPosition(); }
+
+
+
+
+
+
+
 void Sunflower::set_position(const sf::Vector2f &new_position)
 {
     spritePlanted.setPosition(new_position);

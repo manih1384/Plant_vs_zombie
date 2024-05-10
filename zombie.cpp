@@ -37,7 +37,7 @@ void Zombie::takeDamage(int damage)
 
 void Zombie::start_zombie()
 {
-    speed = 2;
+    speed = 1;
 }
 void Zombie::stop_zombie()
 {

@@ -209,6 +209,10 @@ void System::handle_events()
                 {
                     add_plants("wallnut");
                 }
+                if (icons.get_snowshooter_rect().contains(floatMousePos))
+                {
+                    add_plants("snowshooter");
+                }
                 for (int i = 0; i < plants.size(); i++)
                 {
                     if (plants[i]->get_rect().contains(floatMousePos))
@@ -270,6 +274,7 @@ void System::render()
         window.draw(icons.get_peashooter_sprite());
         window.draw(icons.get_sunflower_sprite());
         window.draw(icons.get_wallnut_sprite());
+        window.draw(icons.get_snowshooter_sprite());
         break;
     case GAMEOVER:
         window.draw(bsprite);
@@ -324,6 +329,12 @@ void System::add_plants(string type)
     {
         Wallnut *new_plant = new Wallnut();
         new_plant->set_position({60, 230});
+        plants.push_back(new_plant);
+    }
+    if (type == "snowshooter")
+    {
+        Snowshooter *new_plant = new Snowshooter();
+        new_plant->set_position({60, 320});
         plants.push_back(new_plant);
     }
 }
