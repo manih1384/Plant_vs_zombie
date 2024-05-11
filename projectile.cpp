@@ -48,10 +48,11 @@ Vector2f NormalPea::get_pos(){return position;}
 SnowPea::SnowPea(const sf::Vector2f &startPos)
     : Projectile(startPos)
 {
-    if (!texture.loadFromFile("files/Images/SnowPea.png"))
+    if (!texture.loadFromFile("files/Images/ball_blue.png"))
     {
         std::cerr << "Error loading SnowPea texture" << std::endl;
     }
+    sprite.scale(2.0f,2.0f);
     sprite.setTexture(texture);
 }
 

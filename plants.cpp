@@ -128,7 +128,7 @@ void Snowshooter::shoot()
     if (time_passed.asMilliseconds() > 1000)
     {
 
-        NormalPea *newProjectile = new NormalPea({getPos().x + 15, getPos().y - 10});
+        SnowPea *newProjectile = new SnowPea({getPos().x + 15, getPos().y - 25});
         projectiles.push_back(newProjectile);
         clock.restart();
     }
