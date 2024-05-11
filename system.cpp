@@ -192,6 +192,19 @@ void System::fix_position(Plant *plant)
         }
     }
 }
+bool System::is_out_of_bound(Plant *plant)
+{
+    sf::Vector2f pos = plant->getPos();
+    if (pos.x > playground[0][0].x && pos.x < playground[8][8].x && pos.y >playground[0][0].y && pos.y <playground[8][8].y)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
 
 void System::handle_events()
 {

@@ -32,7 +32,7 @@ Icons::Icons()
     SpriteSnowshooterIcon.setTexture(snowshooterIcon);
     SpriteSnowshooterIcon.setScale(1.6f, 1.6f);
     SpriteSnowshooterIcon.setPosition({10, 280});
-    snowshooterDimIcon.loadFromFile("files/Images/snowshooterdimicon.png");
+    snowshooterDimIcon.loadFromFile("files/Images/snowshootericon.png");
     SpriteSnowshooterDimIcon.setTexture(snowshooterDimIcon);
     SpriteSnowshooterDimIcon.setScale(1.6f, 1.6f);
     SpriteSnowshooterDimIcon.setPosition({10, 280});

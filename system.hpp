@@ -59,6 +59,7 @@ public:
     void handle_shooting();
     bool is_center(Plant *plant);
     void fix_position(Plant *plant);
+    bool  is_out_of_bound(Plant *plant);
     vector<vector<Vector2f>> playground;
     
     RenderWindow window;
