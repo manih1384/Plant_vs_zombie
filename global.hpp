@@ -25,6 +25,10 @@ const int DX= 80;
 const int DY = 98;
 const int X0 = 255;
 const int Y0 = 80;
+const int peashooterCooldown = 5;
+const int snowshooterCooldown = 7;
+const int sunflowerCooldown = 3;
+const int wallnutCooldown = 3;
 
 
 

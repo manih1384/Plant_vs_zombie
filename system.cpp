@@ -159,6 +159,22 @@ void System::update()
                 break;
             }
         }
+        if (icons.PeashooterState == COOLDOWN && icons.peashooterclock.getElapsedTime().asSeconds() > peashooterCooldown)
+        {
+            icons.PeashooterState = AVAILABLE;
+        }
+        if (icons.sunflowerState == COOLDOWN && icons.sunflowerclock.getElapsedTime().asSeconds() > sunflowerCooldown)
+        {
+            icons.sunflowerState = AVAILABLE;
+        }
+        if (icons.wallnutState == COOLDOWN && icons.wallnutclock.getElapsedTime().asSeconds() > wallnutCooldown)
+        {
+            icons.wallnutState = AVAILABLE;
+        }
+        if (icons.snowShooterState == COOLDOWN && icons.snowshooterclock.getElapsedTime().asSeconds() > snowshooterCooldown)
+        {
+            icons.snowShooterState = AVAILABLE;
+        }
     }
 }
 
@@ -200,19 +216,39 @@ void System::handle_events()
                 sf::Vector2f floatMousePos = static_cast<sf::Vector2f>(mousePos);
                 if (icons.get_peashooter_rect().contains(floatMousePos))
                 {
-                    add_plants("peashooter");
+                    if (icons.PeashooterState == AVAILABLE)
+                    {
+                        icons.PeashooterState = COOLDOWN;
+                        icons.peashooterclock.restart();
+                        add_plants("peashooter");
+                    }
                 }
                 if (icons.get_sunflower_rect().contains(floatMousePos))
                 {
-                    add_plants("sunflower");
+                    if (icons.sunflowerState == AVAILABLE)
+                    {
+                        icons.sunflowerState = COOLDOWN;
+                        icons.sunflowerclock.restart();
+                        add_plants("sunflower");
+                    }
                 }
                 if (icons.get_wallnut_rect().contains(floatMousePos))
                 {
-                    add_plants("wallnut");
+                    if (icons.wallnutState == AVAILABLE)
+                    {
+                        icons.wallnutState = COOLDOWN;
+                        icons.wallnutclock.restart();
+                        add_plants("wallnut");
+                    }
                 }
                 if (icons.get_snowshooter_rect().contains(floatMousePos))
                 {
-                    add_plants("snowshooter");
+                    if (icons.snowShooterState == AVAILABLE)
+                    {
+                        icons.snowShooterState = COOLDOWN;
+                        icons.snowshooterclock.restart();
+                        add_plants("snowshooter");
+                    }
                 }
                 for (int i = 0; i < plants.size(); i++)
                 {
@@ -223,9 +259,9 @@ void System::handle_events()
                         break;
                     }
                 }
-            }
-            break;
 
+                break;
+            }
         case sf::Event::MouseButtonReleased:
             if (isDragging)
             {
@@ -272,10 +308,11 @@ void System::render()
                 zombies[i]->render(window);
             }
         }
-        window.draw(icons.get_peashooter_sprite());
-        window.draw(icons.get_sunflower_sprite());
-        window.draw(icons.get_wallnut_sprite());
-        window.draw(icons.get_snowshooter_sprite());
+        icons.render(window);
+        // window.draw(icons.get_peashooter_sprite());
+        // window.draw(icons.get_sunflower_sprite());
+        // window.draw(icons.get_wallnut_sprite());
+        // window.draw(icons.get_snowshooter_sprite());
         break;
     case GAMEOVER:
         window.draw(bsprite);
