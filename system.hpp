@@ -50,14 +50,17 @@ private:
     vector<Zombie*> zombies;
     vector<Plant*> plants;
     Icons icons;
+    vector<Vector2f>centers;
 public:
     System(int width, int height);
     ~System();
     void zombie_projectile_collision();
     void zombie_plant_collision();
     void handle_shooting();
+    bool is_center(Plant *plant);
     void fix_position(Plant *plant);
     vector<vector<Vector2f>> playground;
+    
     RenderWindow window;
     int rng;
     void run();
