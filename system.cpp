@@ -39,6 +39,7 @@ void System::run()
 {
     while (window.isOpen() && state != EXIT)
     {
+
         srand(time(NULL));
         rng = rand();
         render();
@@ -97,29 +98,29 @@ void System::zombie_projectile_collision()
 {
     for (auto &plant : plants)
     {
-        if (plant->can_shoot() && is_center(plant))
+        if (!(plant->can_shoot() && is_center(plant)))
+            continue;
+
+        auto &projectiles = plant->projectiles;
+
+        for (auto *projectile : projectiles)
         {
-            auto &projectiles = plant->projectiles;
-
-            for (auto *projectile : projectiles)
+            for (auto &zombie : zombies)
             {
-                for (auto &zombie : zombies)
+                if (!(projectile->get_rect().intersects(zombie->get_rect())))
+                    continue;
+
+                zombie->takeDamage(projectile->get_damage());
+
+                delete projectile;
+                projectiles.erase(find(projectiles.begin(), projectiles.end(), projectile));
+                if (!zombie->isAlive())
                 {
-                    if (projectile->get_rect().intersects(zombie->get_rect()))
-                    {
-                        zombie->takeDamage(projectile->get_damage());
-
-                        delete projectile;
-                        projectiles.erase(find(projectiles.begin(), projectiles.end(), projectile));
-                        if (!zombie->isAlive())
-                        {
-                            delete zombie;
-                            zombies.erase(find(zombies.begin(), zombies.end(), zombie));
-                        }
-
-                        break;
-                    }
+                    delete zombie;
+                    zombies.erase(find(zombies.begin(), zombies.end(), zombie));
                 }
+
+                break;
             }
         }
     }
@@ -129,7 +130,7 @@ void System::handle_shooting()
 {
     for (Plant *&plant : plants)
     {
-        if (plant->can_shoot() && is_center(plant));
+        if (plant->can_shoot() && is_center(plant))
         {
             plant->shoot();
             plant->update_shots();
@@ -294,25 +295,22 @@ void System::makeplayground(vector<vector<Vector2f>> &playground)
             playground[i][j].x = X0 + j * DX;
             playground[i][j].y = Y0 + i * DY;
             Vector2f center = playground[i][j];
-            center.x += DX/2;
-            center.y += DY/2;
+            center.x += DX / 2;
+            center.y += DY / 2;
             centers.push_back(center);
         }
     }
-
-    
 }
 
-
-bool System::is_center(Plant *plant){
+bool System::is_center(Plant *plant)
+{
     bool flag = false;
     for (Vector2f center : centers)
     {
-        if (center ==plant->getPos())
+        if (center == plant->getPos())
         {
             flag = true;
         }
-        
     }
     return flag;
 }
