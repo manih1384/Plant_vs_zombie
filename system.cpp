@@ -97,7 +97,7 @@ void System::zombie_projectile_collision()
 {
     for (auto &plant : plants)
     {
-        if (plant->can_shoot())
+        if (plant->can_shoot() && is_center(plant))
         {
             auto &projectiles = plant->projectiles;
 
@@ -129,7 +129,7 @@ void System::handle_shooting()
 {
     for (Plant *&plant : plants)
     {
-        if (plant->can_shoot())
+        if (plant->can_shoot() && is_center(plant));
         {
             plant->shoot();
             plant->update_shots();
@@ -330,8 +330,28 @@ void System::makeplayground(vector<vector<Vector2f>> &playground)
         {
             playground[i][j].x = X0 + j * DX;
             playground[i][j].y = Y0 + i * DY;
+            Vector2f center = playground[i][j];
+            center.x += DX/2;
+            center.y += DY/2;
+            centers.push_back(center);
         }
     }
+
+    
+}
+
+
+bool System::is_center(Plant *plant){
+    bool flag = false;
+    for (Vector2f center : centers)
+    {
+        if (center ==plant->getPos())
+        {
+            flag = true;
+        }
+        
+    }
+    return flag;
 }
 
 void System::add_zombie()
