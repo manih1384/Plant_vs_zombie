@@ -195,7 +195,7 @@ void System::fix_position(Plant *plant)
 bool System::is_out_of_bound(Plant *plant)
 {
     sf::Vector2f pos = plant->getPos();
-    if (pos.x > playground[0][0].x && pos.x < playground[8][8].x && pos.y >playground[0][0].y && pos.y <playground[8][8].y)
+    if ((pos.x > playground[0][0].x && pos.x < playground[0][8].x) && (pos.y > playground[0][0].y && pos.y < playground[4][0].y))
     {
         return false;
     }
@@ -204,7 +204,6 @@ bool System::is_out_of_bound(Plant *plant)
         return true;
     }
 }
-
 
 void System::handle_events()
 {
@@ -265,7 +264,7 @@ void System::handle_events()
                 }
                 for (int i = 0; i < plants.size(); i++)
                 {
-                    if (plants[i]->get_rect().contains(floatMousePos))
+                    if (plants[i]->get_rect().contains(floatMousePos) && is_out_of_bound(plants[i]))
                     {
                         isDragging = true;
                         draggingPlantIndex = i;
@@ -276,13 +275,18 @@ void System::handle_events()
                 break;
             }
         case sf::Event::MouseButtonReleased:
-            if (isDragging)
+            if (isDragging /*&& !is_out_of_bound(plants[draggingPlantIndex])*/)
             {
                 fix_position(plants[draggingPlantIndex]);
-
                 isDragging = false;
                 draggingPlantIndex = -1;
             }
+            // else
+            // {
+            //     delete plants[draggingPlantIndex];
+            //     plants.erase(plants.begin() + draggingPlantIndex);
+            // }
+
             break;
 
         case sf::Event::MouseMoved:
