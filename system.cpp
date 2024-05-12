@@ -245,6 +245,7 @@ void System::sun_clicked(sf::Vector2f floatMousePos)
             delete suns[i];
             suns.erase(find(suns.begin(), suns.end(), suns[i]));
             break;
+            
         }
     }
 }
