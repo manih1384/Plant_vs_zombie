@@ -30,11 +30,11 @@ Icons::Icons()
 
     snowshooterIcon.loadFromFile("files/Images/snowshootericon.png");
     SpriteSnowshooterIcon.setTexture(snowshooterIcon);
-    SpriteSnowshooterIcon.setScale(1.6f, 1.6f);
+    SpriteSnowshooterIcon.setScale(1.1f, 1.1f);
     SpriteSnowshooterIcon.setPosition({10, 280});
-    snowshooterDimIcon.loadFromFile("files/Images/snowshootericon.png");
+    snowshooterDimIcon.loadFromFile("files/Images/snowshooterdimicon.png");
     SpriteSnowshooterDimIcon.setTexture(snowshooterDimIcon);
-    SpriteSnowshooterDimIcon.setScale(1.6f, 1.6f);
+    SpriteSnowshooterDimIcon.setScale(1.1f, 1.1f);
     SpriteSnowshooterDimIcon.setPosition({10, 280});
 }
 

@@ -142,7 +142,7 @@ void System::update()
 {
     if (state == IN_GAME)
     {
-        // add_zombie();
+        add_zombie();
         add_sun();
         zombie_plant_collision();
         zombie_projectile_collision();
@@ -211,7 +211,7 @@ void System::fix_position(Plant *plant)
 bool System::is_out_of_bound(Plant *plant)
 {
     sf::Vector2f pos = plant->getPos();
-    if ((pos.x > playground[0][0].x && pos.x < playground[0][8].x) && (pos.y > playground[0][0].y && pos.y < playground[4][0].y))
+    if ((pos.x > playground[0][0].x && pos.x < playground[0][8].x+DX) && (pos.y > playground[0][0].y && pos.y < playground[4][0].y+DY))
     {
         return false;
     }
