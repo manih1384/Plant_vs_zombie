@@ -51,13 +51,16 @@ private:
     void add_zombie();
     void add_sun();
     void sun_clicked(sf::Vector2f floatMousePos);
+    void cartHandler(sf::Vector2f floatMousePos);
+    void sunCartHandler();
     void add_plants(string type);
-    vector<Zombie*> zombies;
-    vector<Plant*> plants;
-    vector<Sun*> suns;
+    vector<Zombie *> zombies;
+    vector<Plant *> plants;
+    vector<Sun *> suns;
     TotalSun totalsuns;
     Icons icons;
-    vector<Vector2f>centers;
+    vector<Vector2f> centers;
+
 public:
     System(int width, int height);
     ~System();
@@ -67,21 +70,12 @@ public:
     void handle_shooting();
     bool is_center(Plant *plant);
     void fix_position(Plant *plant);
-    bool  is_out_of_bound(Plant *plant);
+    bool is_out_of_bound(Plant *plant);
     vector<vector<Vector2f>> playground;
-    
+
     RenderWindow window;
     int rng;
     void run();
 };
-
-
-
-
-
-
-
-
-
 
 #endif

@@ -1,9 +1,10 @@
 #include "plants.hpp"
+// #include "plantsglobal.hpp"
 #include <iostream>
 using namespace sf;
 Plant::Plant(int health, int price) : health(health), price(price) {}
 
-Peashooter::Peashooter() : Plant(100, 50)
+Peashooter::Peashooter() : Plant(100, 100)
 {
     texturePlanted.loadFromFile("files/Images/Peashooter.png");
     spritePlanted.setTexture(texturePlanted);
@@ -77,7 +78,7 @@ sf ::Vector2f Peashooter::getPos() { return spritePlanted.getPosition(); }
 
 
 
-Snowshooter::Snowshooter() : Plant(150, 70)
+Snowshooter::Snowshooter() : Plant(150, 150)
 {
     texturePlanted.loadFromFile("files/Images/snowshooter.png");
     spritePlanted.setTexture(texturePlanted);
@@ -152,12 +153,8 @@ sf ::Vector2f Snowshooter::getPos() { return spritePlanted.getPosition(); }
 
 
 
-void Sunflower::set_position(const sf::Vector2f &new_position)
-{
-    spritePlanted.setPosition(new_position);
-}
 
-Sunflower::Sunflower() : Plant(50, 25)
+Sunflower::Sunflower() : Plant(70,50)
 {
     texturePlanted.loadFromFile("files/Images/Sunflower.png");
     spritePlanted.setTexture(texturePlanted);
@@ -166,6 +163,10 @@ Sunflower::Sunflower() : Plant(50, 25)
     spritePlanted.setOrigin(bounds.width / 2, bounds.height / 2);
 }
 
+void Sunflower::set_position(const sf::Vector2f &new_position)
+{
+    spritePlanted.setPosition(new_position);
+}
 bool Sunflower::can_shoot()
 {
     return false;
@@ -187,7 +188,7 @@ sf::FloatRect Sunflower::get_rect()
 }
 sf ::Vector2f Sunflower::getPos() { return spritePlanted.getPosition(); }
 
-Wallnut::Wallnut() : Plant(200, 75)
+Wallnut::Wallnut() : Plant(200,50)
 {
     texturePlanted.loadFromFile("files/Images/Wallnut_body.png");
     spritePlanted.setTexture(texturePlanted);

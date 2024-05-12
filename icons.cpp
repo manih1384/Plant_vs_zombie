@@ -76,18 +76,18 @@ void Icons::render(sf::RenderWindow &window)
 {
     if (PeashooterState == AVAILABLE)
         window.draw(SpritePeashootericon);
-    if (PeashooterState == COOLDOWN)
+    if (PeashooterState == COOLDOWN||PeashooterState ==UNAVAILABLE)
         window.draw(SpritePeashooterDimicon);
     if (snowShooterState == AVAILABLE)
         window.draw(SpriteSnowshooterIcon);
-    if (snowShooterState == COOLDOWN)
+    if (snowShooterState == COOLDOWN||snowShooterState == UNAVAILABLE)
         window.draw(SpriteSnowshooterDimIcon);
     if (wallnutState == AVAILABLE)
         window.draw(SpritewallnutIcon);
-    if (wallnutState == COOLDOWN)
+    if (wallnutState == COOLDOWN||wallnutState == UNAVAILABLE)
         window.draw(SpritewallnutDimIcon);
     if (sunflowerState == AVAILABLE)
         window.draw(SpriteSunflowerIcon);
-    if (sunflowerState == COOLDOWN)
+    if (sunflowerState == COOLDOWN||sunflowerState == UNAVAILABLE)
         window.draw(SpriteSunflowerDimIcon);
 }

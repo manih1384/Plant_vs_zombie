@@ -5,8 +5,8 @@
 enum iconState
 {
     AVAILABLE,
-    COOLDOWN
-
+    COOLDOWN,
+    UNAVAILABLE
 };
 class Icons
 {

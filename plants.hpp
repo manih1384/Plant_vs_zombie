@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PLANTS_HPP
+#define PLANTS_HPP
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <vector>
@@ -99,3 +100,4 @@ private:
     sf::Texture textureCracked2;
     sf::Sprite spritePlanted;
 };
+#endif // PLANTS_HPP

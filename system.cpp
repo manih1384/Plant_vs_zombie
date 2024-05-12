@@ -1,4 +1,5 @@
 #include "system.hpp"
+#include "plantsglobal.hpp"
 #include "global.hpp"
 #include "zombie.hpp"
 #include <cstdlib>
@@ -10,14 +11,10 @@ System::System(int width, int height)
     window.setFramerateLimit(60);
     state = IN_GAME;
 
-    // Initialize playground before creating the zombie
-    makeplayground(playground); // Ensure the playground is created
-
-    // Load the background and set the sprite
+    makeplayground(playground);
     if (!background.loadFromFile("files/Images/Frontyard.png"))
     {
         std::cerr << "Error loading background texture" << std::endl;
-        // Handle error appropriately
     }
 
     bbackground.loadFromFile("files/Images/Losing_Message.png");
@@ -26,10 +23,6 @@ System::System(int width, int height)
     sprite.setTexture(background);
     srand(time(NULL));
     rng = rand();
-    // add_plants();
-    // add_plants();
-    // plants[0]->set_position({440, 300});
-    // plants[1]->set_position({400, 200});
 }
 
 System::~System()
@@ -140,8 +133,6 @@ void System::zombie_projectile_collision()
     }
 }
 
-
-
 vector<string> System::cut_string(string str, string delim)
 {
 
@@ -189,8 +180,6 @@ vector<string> System::cut_string(string str, string delim)
     }
     return string_list;
 }
-
-
 
 void System::handle_shooting()
 {
@@ -296,12 +285,92 @@ void System::sun_clicked(sf::Vector2f floatMousePos)
 
             delete suns[i];
             suns.erase(find(suns.begin(), suns.end(), suns[i]));
+            totalsuns.setSun(100);
             break;
-            
         }
     }
 }
+void System::cartHandler(sf::Vector2f floatMousePos)
+{
+    if (icons.get_peashooter_rect().contains(floatMousePos))
+    {
+        if (icons.PeashooterState == AVAILABLE)
+        {
+            icons.PeashooterState = COOLDOWN;
+            totalsuns.setSun(-peashooterPrice);
+            icons.peashooterclock.restart();
+            add_plants("peashooter");
+        }
+    }
+    if (icons.get_sunflower_rect().contains(floatMousePos))
+    {
+        if (icons.sunflowerState == AVAILABLE)
+        {
+            icons.sunflowerState = COOLDOWN;
+            totalsuns.setSun(-sunflowerPrice);
+            icons.sunflowerclock.restart();
+            add_plants("sunflower");
+        }
+    }
+    if (icons.get_wallnut_rect().contains(floatMousePos))
+    {
+        if (icons.wallnutState == AVAILABLE)
+        {
+            icons.wallnutState = COOLDOWN;
+            totalsuns.setSun(-wallnutPrice);
+            icons.wallnutclock.restart();
+            add_plants("wallnut");
+        }
+    }
+    if (icons.get_snowshooter_rect().contains(floatMousePos))
+    {
+        if (icons.snowShooterState == AVAILABLE)
+        {
+            icons.snowShooterState = COOLDOWN;
+            totalsuns.setSun(-snowshooterPrice);
+            icons.snowshooterclock.restart();
+            add_plants("snowshooter");
+        }
+    }
+}
+void System::sunCartHandler()
+{
+    if (totalsuns.getSun() < wallnutPrice)
+    {
+        icons.wallnutState = UNAVAILABLE;
+    }
+    else if (icons.wallnutState != COOLDOWN)
+    {
+        icons.wallnutState = AVAILABLE;
+    }
 
+    if (totalsuns.getSun() < peashooterPrice)
+    {
+        icons.PeashooterState = UNAVAILABLE;
+    }
+    else if (icons.PeashooterState != COOLDOWN)
+    {
+        icons.PeashooterState = AVAILABLE;
+    }
+
+    if (totalsuns.getSun() < sunflowerPrice)
+    {
+        icons.sunflowerState = UNAVAILABLE;
+    }
+    else if (icons.sunflowerState != COOLDOWN)
+    {
+        icons.sunflowerState = AVAILABLE;
+    }
+
+    if (totalsuns.getSun() < snowshooterPrice)
+    {
+        icons.snowShooterState = UNAVAILABLE;
+    }
+    else if (icons.sunflowerState != COOLDOWN)
+    {
+        icons.snowShooterState = AVAILABLE;
+    }
+}
 void System::handle_events()
 {
     sf::Event event;
@@ -325,43 +394,7 @@ void System::handle_events()
                 sf::Vector2f floatMousePos = static_cast<sf::Vector2f>(mousePos);
 
                 sun_clicked(floatMousePos);
-
-                if (icons.get_peashooter_rect().contains(floatMousePos))
-                {
-                    if (icons.PeashooterState == AVAILABLE)
-                    {
-                        icons.PeashooterState = COOLDOWN;
-                        icons.peashooterclock.restart();
-                        add_plants("peashooter");
-                    }
-                }
-                if (icons.get_sunflower_rect().contains(floatMousePos))
-                {
-                    if (icons.sunflowerState == AVAILABLE)
-                    {
-                        icons.sunflowerState = COOLDOWN;
-                        icons.sunflowerclock.restart();
-                        add_plants("sunflower");
-                    }
-                }
-                if (icons.get_wallnut_rect().contains(floatMousePos))
-                {
-                    if (icons.wallnutState == AVAILABLE)
-                    {
-                        icons.wallnutState = COOLDOWN;
-                        icons.wallnutclock.restart();
-                        add_plants("wallnut");
-                    }
-                }
-                if (icons.get_snowshooter_rect().contains(floatMousePos))
-                {
-                    if (icons.snowShooterState == AVAILABLE)
-                    {
-                        icons.snowShooterState = COOLDOWN;
-                        icons.snowshooterclock.restart();
-                        add_plants("snowshooter");
-                    }
-                }
+                cartHandler(floatMousePos);
                 for (int i = 0; i < plants.size(); i++)
                 {
                     if (plants[i]->get_rect().contains(floatMousePos) && is_out_of_bound(plants[i]))
@@ -438,12 +471,8 @@ void System::render()
                 suns[i]->render(window);
             }
         }
-
-        // icons.render(window);
-        //  window.draw(icons.get_peashooter_sprite());
-        //  window.draw(icons.get_sunflower_sprite());
-        //  window.draw(icons.get_wallnut_sprite());
-        //  window.draw(icons.get_snowshooter_sprite());
+        sunCartHandler();
+        icons.render(window);
         break;
     case GAMEOVER:
         window.draw(bsprite);
