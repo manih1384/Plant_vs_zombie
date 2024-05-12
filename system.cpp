@@ -140,6 +140,58 @@ void System::zombie_projectile_collision()
     }
 }
 
+
+
+vector<string> System::cut_string(string str, string delim)
+{
+
+    int char_count = 0;
+    int head = 0;
+    vector<string> string_list;
+    string new_string;
+    int num_of_delim = count(str.begin(), str.end(), delim[0]);
+
+    for (int i = 0; i < str.size(); i++)
+    {
+        string separator = str.substr(i, 1);
+        char_count += 1;
+        string a;
+        if (separator == delim)
+        {
+            if (head == 0)
+            {
+                a = str.substr(head, char_count - 1);
+                string_list.push_back(a);
+                head = i;
+                char_count = 0;
+            }
+            else
+            {
+                a = str.substr(head + 1, char_count - 1);
+                string_list.push_back(a);
+                head = i;
+                char_count = 0;
+            }
+        }
+        else if (num_of_delim == 0)
+        {
+            string_list.push_back(str);
+            break;
+        }
+
+        else if (i == str.size() - 1)
+        {
+            a = str.substr(head + 1, char_count);
+            string_list.push_back(a);
+            head = i;
+            char_count = 0;
+        }
+    }
+    return string_list;
+}
+
+
+
 void System::handle_shooting()
 {
     for (Plant *&plant : plants)

@@ -61,6 +61,7 @@ private:
 public:
     System(int width, int height);
     ~System();
+    vector<string> cut_string(string str, string delim);
     void zombie_projectile_collision();
     void zombie_plant_collision();
     void handle_shooting();
