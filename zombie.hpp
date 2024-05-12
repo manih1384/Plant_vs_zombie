@@ -19,12 +19,19 @@ public:
     void stop_zombie();
     void start_zombie();
     Vector2f get_pos();
+    void apply_effect();
     FloatRect get_rect();
+    void remove_effect();
+    Clock freeze_clock;
+    bool is_froze = false;
 
 private:
     int health=100;
     int damage=10;
     float speed=1;
+    float frozen_speed=0.5;
+    float normal_speed=1;
+    
     Vector2f position; 
     Sprite Zombie_sprite; 
     Texture Zombie_Texture;

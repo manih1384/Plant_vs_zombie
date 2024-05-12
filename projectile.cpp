@@ -41,6 +41,7 @@ int NormalPea::get_damage() const
 
 Vector2f NormalPea::get_pos(){return position;}
 
+bool NormalPea::is_snow(){return false;}
 
 
 
@@ -62,3 +63,6 @@ int SnowPea::get_damage() const
 }
 
 Vector2f SnowPea::get_pos(){return position;}
+
+
+bool SnowPea::is_snow(){return true;}
