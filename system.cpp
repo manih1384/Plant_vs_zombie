@@ -73,6 +73,7 @@ void System::zombie_plant_collision()
                     delete plants[j];
                     plants.erase(plants.begin() + j);
                     zombies[i]->start_zombie();
+                    zombies[i]->apply_effect();
                     for (int x = 0; x < zombies.size(); x++)
                     {
                         if (zombies[i]->get_pos().y == zombies[x]->get_pos().y)
@@ -110,6 +111,12 @@ void System::zombie_projectile_collision()
                 if (!(projectile->get_rect().intersects(zombie->get_rect())))
                     continue;
 
+                if (projectile->is_snow())
+                {
+                    zombie->apply_effect();
+                    zombie->freeze_clock.restart();
+                }
+
                 zombie->takeDamage(projectile->get_damage());
 
                 delete projectile;
@@ -122,6 +129,13 @@ void System::zombie_projectile_collision()
 
                 break;
             }
+        }
+    }
+    for (auto &zombie : zombies)
+    {
+        if (zombie->is_froze && zombie->freeze_clock.getElapsedTime().asSeconds() > 5)
+        {
+            zombie->remove_effect();
         }
     }
 }
@@ -142,7 +156,7 @@ void System::update()
 {
     if (state == IN_GAME)
     {
-        // add_zombie();
+        add_zombie();
         add_sun();
         zombie_plant_collision();
         zombie_projectile_collision();

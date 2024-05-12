@@ -37,12 +37,28 @@ void Zombie::takeDamage(int damage)
 
 void Zombie::start_zombie()
 {
-    speed = 1;
+    speed = 2;
 }
 void Zombie::stop_zombie()
 {
     speed = 0;
 }
+
+
+void Zombie::apply_effect(){
+    speed = frozen_speed;
+    is_froze = true;
+    
+}
+
+
+void Zombie::remove_effect(){
+    speed =normal_speed;
+    is_froze =false;
+
+}
+
+
 
 bool Zombie::isAlive()
 {
