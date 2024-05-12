@@ -15,6 +15,7 @@
 #include "zombie.hpp"
 #include "plants.hpp"
 #include "icons.hpp"
+#include "sun.hpp"
 using namespace std;
 using namespace sf;
 
@@ -39,6 +40,7 @@ private:
     Texture bbackground;
     Sprite bsprite;
     Clock add_zombie_clock;
+    Clock add_sun_clock;
     Clock attack_zombie_clock;
     Clock attack_plant_clock;
     void handle_events();
@@ -46,9 +48,12 @@ private:
     void handle_mouse_release(Event ev);
     void makeplayground(vector<vector<Vector2f>> &playground);
     void add_zombie();
+    void add_sun();
+    void sun_clicked(sf::Vector2f floatMousePos);
     void add_plants(string type);
     vector<Zombie*> zombies;
     vector<Plant*> plants;
+    vector<Sun*> suns;
     Icons icons;
     vector<Vector2f>centers;
 public:

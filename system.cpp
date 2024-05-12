@@ -142,7 +142,8 @@ void System::update()
 {
     if (state == IN_GAME)
     {
-        add_zombie();
+        // add_zombie();
+        add_sun();
         zombie_plant_collision();
         zombie_projectile_collision();
         handle_shooting();
@@ -159,6 +160,21 @@ void System::update()
                 break;
             }
         }
+
+        for (int i = 0; i < suns.size(); i++)
+        {
+            if (!suns[i]->checkcollision(playground))
+            {
+                suns[i]->move();
+            }
+            else
+            {
+                delete suns[i];
+                suns.erase(find(suns.begin(), suns.end(), suns[i]));
+                break;
+            }
+        }
+
         if (icons.PeashooterState == COOLDOWN && icons.peashooterclock.getElapsedTime().asSeconds() > peashooterCooldown)
         {
             icons.PeashooterState = AVAILABLE;
@@ -205,6 +221,20 @@ bool System::is_out_of_bound(Plant *plant)
     }
 }
 
+void System::sun_clicked(sf::Vector2f floatMousePos)
+{
+    for (int i = 0; i < suns.size(); i++)
+    {
+        if (suns[i]->get_rect().contains(floatMousePos))
+        {
+
+            delete suns[i];
+            suns.erase(find(suns.begin(), suns.end(), suns[i]));
+            break;
+        }
+    }
+}
+
 void System::handle_events()
 {
     sf::Event event;
@@ -226,6 +256,9 @@ void System::handle_events()
 
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 sf::Vector2f floatMousePos = static_cast<sf::Vector2f>(mousePos);
+
+                sun_clicked(floatMousePos);
+
                 if (icons.get_peashooter_rect().contains(floatMousePos))
                 {
                     if (icons.PeashooterState == AVAILABLE)
@@ -275,17 +308,21 @@ void System::handle_events()
                 break;
             }
         case sf::Event::MouseButtonReleased:
-            if (isDragging /*&& !is_out_of_bound(plants[draggingPlantIndex])*/)
+            if (isDragging && !is_out_of_bound(plants[draggingPlantIndex]))
             {
                 fix_position(plants[draggingPlantIndex]);
                 isDragging = false;
                 draggingPlantIndex = -1;
             }
-            // else
-            // {
-            //     delete plants[draggingPlantIndex];
-            //     plants.erase(plants.begin() + draggingPlantIndex);
-            // }
+            else
+            {
+                isDragging = false;
+                // plants.erase(find(plants.begin(),plants.end(),plants[draggingPlantIndex]));
+
+                // delete plants[draggingPlantIndex];
+                // plants.erase(plants.begin() + draggingPlantIndex);
+                // draggingPlantIndex= -1;
+            }
 
             break;
 
@@ -325,6 +362,15 @@ void System::render()
                 zombies[i]->render(window);
             }
         }
+
+        if (!suns.empty())
+        {
+            for (int i = 0; i < suns.size(); i++)
+            {
+                suns[i]->render(window);
+            }
+        }
+
         icons.render(window);
         // window.draw(icons.get_peashooter_sprite());
         // window.draw(icons.get_sunflower_sprite());
@@ -382,6 +428,21 @@ void System::add_zombie()
         add_zombie_clock.restart();
     }
 }
+
+void System::add_sun()
+{
+    Time time_passed = add_sun_clock.getElapsedTime();
+    if (time_passed.asMilliseconds() > 2000)
+    {
+        if (!playground.empty() && playground[0].size() > 0)
+        {
+            Sun *new_sun = new Sun(playground[0][rng % 9]);
+            suns.push_back(new_sun);
+        }
+        add_sun_clock.restart();
+    }
+}
+
 void System::add_plants(string type)
 {
     // if (!playground.empty() && playground[0].size() > 0)
