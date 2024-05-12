@@ -211,7 +211,7 @@ void System::fix_position(Plant *plant)
 bool System::is_out_of_bound(Plant *plant)
 {
     sf::Vector2f pos = plant->getPos();
-    if ((pos.x > playground[0][0].x && pos.x < playground[0][8].x+DX) && (pos.y > playground[0][0].y && pos.y < playground[4][0].y+DY))
+    if ((pos.x > playground[0][0].x && pos.x < playground[0][8].x + DX) && (pos.y > playground[0][0].y && pos.y < playground[4][0].y + DY))
     {
         return false;
     }
@@ -316,7 +316,7 @@ void System::handle_events()
             }
             else
             {
-                
+
                 // delete plants[draggingPlantIndex];
                 // //plants.erase(find(plants.begin(),plants.end(),plants[draggingPlantIndex]));
                 // plants.erase(plants.begin() + draggingPlantIndex);
@@ -347,6 +347,7 @@ void System::render()
     {
     case IN_GAME:
         window.draw(sprite);
+        totalsuns.render(window);
         if (!plants.empty())
         {
             for (const auto &plant : plants)
@@ -371,11 +372,11 @@ void System::render()
             }
         }
 
-        icons.render(window);
-        // window.draw(icons.get_peashooter_sprite());
-        // window.draw(icons.get_sunflower_sprite());
-        // window.draw(icons.get_wallnut_sprite());
-        // window.draw(icons.get_snowshooter_sprite());
+        // icons.render(window);
+        //  window.draw(icons.get_peashooter_sprite());
+        //  window.draw(icons.get_sunflower_sprite());
+        //  window.draw(icons.get_wallnut_sprite());
+        //  window.draw(icons.get_snowshooter_sprite());
         break;
     case GAMEOVER:
         window.draw(bsprite);

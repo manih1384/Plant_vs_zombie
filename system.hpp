@@ -16,6 +16,7 @@
 #include "plants.hpp"
 #include "icons.hpp"
 #include "sun.hpp"
+#include "totalsun.hpp"
 using namespace std;
 using namespace sf;
 
@@ -54,6 +55,7 @@ private:
     vector<Zombie*> zombies;
     vector<Plant*> plants;
     vector<Sun*> suns;
+    TotalSun totalsuns;
     Icons icons;
     vector<Vector2f>centers;
 public:
