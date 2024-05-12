@@ -316,12 +316,12 @@ void System::handle_events()
             }
             else
             {
-                isDragging = false;
-                // plants.erase(find(plants.begin(),plants.end(),plants[draggingPlantIndex]));
-
+                
                 // delete plants[draggingPlantIndex];
+                // //plants.erase(find(plants.begin(),plants.end(),plants[draggingPlantIndex]));
                 // plants.erase(plants.begin() + draggingPlantIndex);
                 // draggingPlantIndex= -1;
+                // isDragging = false;
             }
 
             break;
