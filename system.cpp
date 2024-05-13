@@ -193,6 +193,27 @@ void System::handle_shooting()
     }
 }
 
+
+
+
+vector<string> System::read_csv(const char path[256])
+{
+    vector<string> lines;
+    ifstream file_name;
+    string new_line;
+    file_name.open(path);
+    while (getline(file_name, new_line))
+    {
+        lines.push_back(new_line);
+    }
+    file_name.close();
+    return lines;
+}
+
+
+
+
+
 void System::update()
 {
     if (state == IN_GAME)
