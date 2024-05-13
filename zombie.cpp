@@ -26,7 +26,7 @@ BigZombie::BigZombie(const Vector2f &startPos,int health,int damage,int speed,in
         return;
     }
     sprite.setTexture(texture);
-    sprite.setScale(0.15f, 0.15f);
+    sprite.setScale(0.16f, 0.16f);
     sprite.setPosition(position);
 }
 
