@@ -4,6 +4,7 @@
 #include "zombie.hpp"
 #include <cstdlib>
 #include "projectile.hpp"
+#include "zombiesglobal.hpp"
 using namespace std;
 System::System(int width, int height)
 {
@@ -23,6 +24,7 @@ System::System(int width, int height)
     sprite.setTexture(background);
     srand(time(NULL));
     rng = rand();
+    zombie_setting();
 }
 
 System::~System()
@@ -54,19 +56,32 @@ void System::zombie_plant_collision()
             if (z_rect.intersects(p_rect))
             {
                 zombies[i]->stopZombie();
-                Time time_passed = attack_zombie_clock.getElapsedTime();
+                Time time_passed = zombies[i]->attackClock.getElapsedTime();
 
-                if (time_passed.asMilliseconds() > 500)
+                if (time_passed.asSeconds() > smallZombieHitrate && !zombies[i]->is_big())
                 {
                     plants[j]->get_damaged(zombies[i]->attack());
-                    attack_zombie_clock.restart();
+                    zombies[i]->attackClock.restart();
                 }
+                else if (time_passed.asSeconds() > bigZombieHitrate && zombies[i]->is_big())
+                {
+                    plants[j]->get_damaged(zombies[i]->attack());
+                    zombies[i]->attackClock.restart();
+                }
+
                 if (plants[j]->get_health() < 0)
                 {
                     delete plants[j];
                     plants.erase(plants.begin() + j);
-                    zombies[i]->startZombie();
-                    zombies[i]->applyEffect();
+                    if (zombies[i]->isFrozen)
+                    {
+                        zombies[i]->applyEffect();
+                    }
+                    else
+                    {
+                        zombies[i]->startZombie();
+                    }
+
                     for (int x = 0; x < zombies.size(); x++)
                     {
                         if (zombies[i]->getPos().y == zombies[x]->getPos().y)
@@ -81,10 +96,50 @@ void System::zombie_plant_collision()
                 }
             }
             else
+
             {
+                if (zombies[i]->isFrozen)
+                {
+                    zombies[i]->applyEffect();
+                }
+                else
+                {
+                    zombies[i]->startZombie();
+                }
+
                 j++;
             }
         }
+    }
+}
+
+void System::zombie_setting()
+{
+    vector<string> lines = read_csv("files/setting/zombie_setting.csv");
+
+    for (int i = 0; i < lines.size(); i++)
+    {
+        vector<string> data = cut_string(lines[i], ",");
+        if(data[0]=="regular"){
+            zombie_type = SMALL_ONLY;
+            smallZombieDamage = stoi(data[1]);
+            smallZombieHealth = stoi(data[2]);
+            smallZombieHitrate = stoi(data[3]);
+            smallZombieSpeed = stof(data[4]);
+            smallZombieFreezeTime = stoi(data[5]);
+        }
+        if(data[0]=="gargantuar"){
+            zombie_type = BIG_ONLY;
+            bigZombieDamage = stoi(data[1]);
+            bigZombieHealth = stoi(data[2]);
+            bigZombieHitrate = stoi(data[3]);
+            bigZombieSpeed = stof(data[4]);
+            bigZombieFreezeTime = stoi(data[5]);
+        }
+    }
+    if (lines.size() == 3)
+    {
+        zombie_type = BOTH;
     }
 }
 
@@ -126,7 +181,11 @@ void System::zombie_projectile_collision()
     }
     for (auto &zombie : zombies)
     {
-        if (zombie->isFrozen && zombie->freezeClock.getElapsedTime().asSeconds() > 5)
+        if (zombie->isFrozen && zombie->freezeClock.getElapsedTime().asSeconds() > smallZombieFreezeTime && !zombie->is_big())
+        {
+            zombie->removeEffect();
+        }
+        if (zombie->isFrozen && zombie->freezeClock.getElapsedTime().asSeconds() > bigZombieFreezeTime && zombie->is_big())
         {
             zombie->removeEffect();
         }
@@ -550,18 +609,21 @@ bool System::is_center(Plant *plant)
 void System::add_zombie()
 {
     Time time_passed = add_zombie_clock.getElapsedTime();
-    if (time_passed.asMilliseconds() > 2000)
+    if (time_passed.asMilliseconds() > 1000)
     {
         if (!playground.empty() && playground[0].size() > 0)
         {
+            int location_rng=rng;
+            if(zombie_type==SMALL_ONLY){rng=0;}
+            if(zombie_type==BIG_ONLY){rng=1;}
             if (rng % 2)
             {
-                BigZombie *new_zombie = new BigZombie(playground[rng % 5][8], 100, 20, 1, 1, 1);
+                BigZombie *new_zombie = new BigZombie(playground[location_rng % 5][8], bigZombieHealth, bigZombieDamage, bigZombieSpeed, bigZombieSpeed, bigZombieSpeed / 2);
                 zombies.push_back(new_zombie);
             }
             else
             {
-                SmallZombie *new_zombie = new SmallZombie(playground[rng % 5][8], 100, 20, 1, 1, 1);
+                SmallZombie *new_zombie = new SmallZombie(playground[location_rng % 5][8], smallZombieHealth, smallZombieDamage, smallZombieSpeed, smallZombieSpeed, smallZombieSpeed / 2);
                 zombies.push_back(new_zombie);
             }
         }

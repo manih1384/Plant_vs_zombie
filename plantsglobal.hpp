@@ -16,7 +16,7 @@ using namespace sf;
 using namespace std;
 int peashooterHealth=100;
 int peashooterPrice=100;
-int snowshooterHealth=150;
+int snowshooterHealth=1;
 int snowshooterPrice=150;
 int wallnutHealth=200;
 int wallnutPrice=50;

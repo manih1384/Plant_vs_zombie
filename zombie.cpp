@@ -2,11 +2,11 @@
 #include "global.hpp"
 #include <iostream>
 
-Zombie::Zombie(const Vector2f &startPos,int health,int damage,int speed,int Normalspeed,int FrozenSpeed)
+Zombie::Zombie(const Vector2f &startPos,int health,int damage,float speed,float Normalspeed,float FrozenSpeed)
          : position(startPos),frozenSpeed(FrozenSpeed),health(health),speed(speed),normalSpeed(Normalspeed),damage(damage){
 }
 
-SmallZombie::SmallZombie(const Vector2f &startPos,int health,int damage,int speed,int Normalspeed,int FrozenSpeed) : Zombie(startPos,health,damage,speed,Normalspeed,FrozenSpeed)
+SmallZombie::SmallZombie(const Vector2f &startPos,int health,int damage,float speed,float Normalspeed,float FrozenSpeed) : Zombie(startPos,health,damage,speed,Normalspeed,FrozenSpeed)
 {
     if (!texture.loadFromFile("files/Images/Zombie_healthy.png"))
     {
@@ -18,7 +18,7 @@ SmallZombie::SmallZombie(const Vector2f &startPos,int health,int damage,int spee
     sprite.setPosition(position);
 }
 
-BigZombie::BigZombie(const Vector2f &startPos,int health,int damage,int speed,int Normalspeed,int FrozenSpeed) : Zombie(startPos,health,damage,speed,Normalspeed,FrozenSpeed)
+BigZombie::BigZombie(const Vector2f &startPos,int health,int damage,float speed,float Normalspeed,float FrozenSpeed) : Zombie(startPos,health,damage,speed,Normalspeed,FrozenSpeed)
 {
     if (!texture.loadFromFile("files/Images/bigzombie.png"))
     {
@@ -29,6 +29,16 @@ BigZombie::BigZombie(const Vector2f &startPos,int health,int damage,int speed,in
     sprite.setScale(0.16f, 0.16f);
     sprite.setPosition(position);
 }
+
+
+bool BigZombie::is_big(){
+    return true;
+}
+
+bool SmallZombie::is_big(){
+    return false;
+}
+
 
 void Zombie::move()
 {
