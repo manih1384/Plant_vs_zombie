@@ -1,4 +1,5 @@
-
+#ifndef PLANTS_GLOBAL_H
+#define PLANTS_GLOBAL_H
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -21,3 +22,4 @@ int wallnutHealth=200;
 int wallnutPrice=50;
 int sunflowerHealth=70;
 int sunflowerPrice=50;
+#endif 
