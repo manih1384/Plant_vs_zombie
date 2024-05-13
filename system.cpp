@@ -193,9 +193,6 @@ void System::handle_shooting()
     }
 }
 
-
-
-
 vector<string> System::read_csv(const char path[256])
 {
     vector<string> lines;
@@ -209,10 +206,6 @@ vector<string> System::read_csv(const char path[256])
     file_name.close();
     return lines;
 }
-
-
-
-
 
 void System::update()
 {
@@ -459,7 +452,20 @@ void System::handle_events()
         }
     }
 }
-
+bool System::isWallnut(Plant *plant)
+{
+    return dynamic_cast<Wallnut *>(plant) != nullptr;
+}
+void System::renderWallnut()
+{
+    for(int i = 0;i<plants.size();i++)
+    {
+        if(isWallnut(plants[i]))
+        {
+            plants[i]->render(window);
+        }
+    }
+}
 void System::render()
 {
     window.clear();
@@ -493,6 +499,7 @@ void System::render()
             }
         }
         sunCartHandler();
+        renderWallnut();
         icons.render(window);
         break;
     case GAMEOVER:
@@ -540,15 +547,16 @@ void System::add_zombie()
     {
         if (!playground.empty() && playground[0].size() > 0)
         {
-            if(rng%2){
-                BigZombie *new_zombie = new BigZombie(playground[rng % 5][8],100,1,1,1,1);
+            if (rng % 2)
+            {
+                BigZombie *new_zombie = new BigZombie(playground[rng % 5][8], 100, 20, 1, 1, 1);
                 zombies.push_back(new_zombie);
             }
-            else{
-                SmallZombie *new_zombie = new SmallZombie(playground[rng % 5][8],1,1,1,1,1);
+            else
+            {
+                SmallZombie *new_zombie = new SmallZombie(playground[rng % 5][8], 100, 20, 1, 1, 1);
                 zombies.push_back(new_zombie);
             }
-            
         }
         add_zombie_clock.restart();
     }

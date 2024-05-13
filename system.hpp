@@ -54,6 +54,7 @@ private:
     void cartHandler(sf::Vector2f floatMousePos);
     void sunCartHandler();
     void add_plants(string type);
+    void renderWallnut();
     vector<Zombie *> zombies;
     vector<Plant *> plants;
     vector<Sun *> suns;
@@ -71,6 +72,7 @@ public:
     bool is_center(Plant *plant);
     void fix_position(Plant *plant);
     bool is_out_of_bound(Plant *plant);
+    bool isWallnut(Plant *plant);
     vector<string> read_csv(const char path[256]);
     vector<vector<Vector2f>> playground;
 

@@ -21,6 +21,7 @@ public:
     virtual void set_position(const sf::Vector2f &new_position) = 0;
     virtual void shoot() = 0;
     virtual void update_shots() = 0;
+    virtual void render(RenderWindow &window) = 0;
     std::vector<Projectile *> projectiles;
 };
 
@@ -37,6 +38,7 @@ public:
     bool can_shoot() override;
     void shoot() override;
     void update_shots() override;
+    void render(RenderWindow &window) override;
 
 private:
     sf::Texture texturePlanted;
@@ -55,6 +57,7 @@ public:
     bool can_shoot() override;
     void shoot() override;
     void update_shots() override;
+    void render(RenderWindow &window) override;
 
 private:
     sf::Texture texturePlanted;
@@ -74,6 +77,7 @@ public:
     bool can_shoot() override;
     void shoot() override;
     void update_shots() override;
+    void render(RenderWindow &window) override;
 
 private:
     sf::Texture texturePlanted;
@@ -93,11 +97,14 @@ public:
     bool can_shoot() override;
     void shoot() override;
     void update_shots() override;
+    void render(RenderWindow &window) override;
 
 private:
     sf::Texture texturePlanted;
     sf::Texture textureCracked1;
     sf::Texture textureCracked2;
     sf::Sprite spritePlanted;
+    sf::Sprite spriteCracked1;
+    sf::Sprite spriteCracked2;
 };
 #endif // PLANTS_HPP
