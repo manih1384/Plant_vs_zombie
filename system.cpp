@@ -1,13 +1,67 @@
 #include "system.hpp"
-#include "plantsglobal.hpp"
 #include "global.hpp"
 #include "zombie.hpp"
 #include <cstdlib>
 #include "projectile.hpp"
 using namespace std;
-
-System::System(int width, int height)
+void System::plants_setting(char *argv[])
 {
+    ifstream file_name;
+    string new_line;
+    file_name.open(argv[1]);
+    getline(file_name, new_line);
+    while (getline(file_name, new_line))
+    {
+        stringstream ssnew_line(new_line);
+        string name, damage, health, cooldown, hit_rate, speed, price;
+        getline(ssnew_line, name, ',');
+        getline(ssnew_line, damage, ',');
+        getline(ssnew_line, health, ',');
+        getline(ssnew_line, cooldown, ',');
+        getline(ssnew_line, hit_rate, ',');
+        getline(ssnew_line, speed, ',');
+        getline(ssnew_line, price, ',');
+        cout << name;
+        if (name == "peashooter")
+        {
+            icons.PeashooterExistance = EXISTS;
+            peashooterHealth = stoi(health);
+            peashooterCooldown = stoi(cooldown);
+            peashooterPrice = stoi(price);
+            peashooter_hit_rate = stoi(hit_rate);
+            NormalPeadamage = stoi(damage);
+            NormalPeaSpeed = stof(speed);
+        }
+        else if (name == "snowshooter")
+        {
+            icons.snowShooterExistance = EXISTS;
+            snowshooterHealth = stoi(health);
+            snowshooterCooldown = stoi(cooldown);
+            snowshooterPrice = stoi(price);
+            snowshooter_hit_rate = stoi(hit_rate);
+            snowPeadamage = stoi(damage);
+            snowPeaspeed = stof(speed);
+        }
+        else if (name == "sunflower")
+        {
+            icons.sunflowerExistance = EXISTS;
+            sunflowerHealth = stoi(health);
+            sunflowerCooldown = stoi(cooldown);
+            sunflowerPrice = stoi(price);
+        }
+        else if (name == "wallnut")
+        {
+            icons.wallnutExistance = EXISTS;
+            wallnutHealth = stoi(health);
+            wallnutCooldown = stoi(cooldown);
+            wallnutPrice = stoi(price);
+        }
+    }
+    file_name.close();
+}
+System::System(int width, int height, char *argv[])
+{
+    plants_setting(argv);
     window.create(sf::VideoMode(width, height), "PLANTS_VS_ZOMBIES", sf::Style::Close);
     window.setFramerateLimit(60);
     state = IN_GAME;
@@ -307,45 +361,36 @@ void System::sun_clicked(sf::Vector2f floatMousePos)
 }
 void System::cartHandler(sf::Vector2f floatMousePos)
 {
-    if (icons.get_peashooter_rect().contains(floatMousePos))
+    if (icons.get_peashooter_rect().contains(floatMousePos) && icons.PeashooterState == AVAILABLE && icons.PeashooterExistance == EXISTS)
     {
-        if (icons.PeashooterState == AVAILABLE)
-        {
-            icons.PeashooterState = COOLDOWN;
-            totalsuns.setSun(-peashooterPrice);
-            icons.peashooterclock.restart();
-            add_plants("peashooter");
-        }
+
+        icons.PeashooterState = COOLDOWN;
+        totalsuns.setSun(-peashooterPrice);
+        icons.peashooterclock.restart();
+        add_plants("peashooter");
     }
-    if (icons.get_sunflower_rect().contains(floatMousePos))
+    if (icons.get_sunflower_rect().contains(floatMousePos) && icons.sunflowerState == AVAILABLE && icons.sunflowerExistance == EXISTS)
     {
-        if (icons.sunflowerState == AVAILABLE)
-        {
-            icons.sunflowerState = COOLDOWN;
-            totalsuns.setSun(-sunflowerPrice);
-            icons.sunflowerclock.restart();
-            add_plants("sunflower");
-        }
+
+        icons.sunflowerState = COOLDOWN;
+        totalsuns.setSun(-sunflowerPrice);
+        icons.sunflowerclock.restart();
+        add_plants("sunflower");
     }
-    if (icons.get_wallnut_rect().contains(floatMousePos))
+    if (icons.get_wallnut_rect().contains(floatMousePos) && icons.wallnutState == AVAILABLE && icons.wallnutExistance == EXISTS)
     {
-        if (icons.wallnutState == AVAILABLE)
-        {
-            icons.wallnutState = COOLDOWN;
-            totalsuns.setSun(-wallnutPrice);
-            icons.wallnutclock.restart();
-            add_plants("wallnut");
-        }
+
+        icons.wallnutState = COOLDOWN;
+        totalsuns.setSun(-wallnutPrice);
+        icons.wallnutclock.restart();
+        add_plants("wallnut");
     }
-    if (icons.get_snowshooter_rect().contains(floatMousePos))
+    if (icons.get_snowshooter_rect().contains(floatMousePos) && icons.snowShooterState == AVAILABLE && icons.snowShooterExistance == EXISTS)
     {
-        if (icons.snowShooterState == AVAILABLE)
-        {
-            icons.snowShooterState = COOLDOWN;
-            totalsuns.setSun(-snowshooterPrice);
-            icons.snowshooterclock.restart();
-            add_plants("snowshooter");
-        }
+        icons.snowShooterState = COOLDOWN;
+        totalsuns.setSun(-snowshooterPrice);
+        icons.snowshooterclock.restart();
+        add_plants("snowshooter");
     }
 }
 void System::sunCartHandler()
@@ -589,25 +634,25 @@ void System::add_plants(string type)
     // if (!playground.empty() && playground[0].size() > 0)
     if (type == "peashooter")
     {
-        Peashooter *new_plant = new Peashooter(peashooterHealth,peashooterPrice);
+        Peashooter *new_plant = new Peashooter(peashooterHealth, peashooterPrice);
         new_plant->set_position({60, 50});
         plants.push_back(new_plant);
     }
     if (type == "sunflower")
     {
-        Sunflower *new_plant = new Sunflower(sunflowerHealth,sunflowerPrice);
+        Sunflower *new_plant = new Sunflower(sunflowerHealth, sunflowerPrice);
         new_plant->set_position({60, 140});
         plants.push_back(new_plant);
     }
     if (type == "wallnut")
     {
-        Wallnut *new_plant = new Wallnut(wallnutHealth,wallnutPrice);
+        Wallnut *new_plant = new Wallnut(wallnutHealth, wallnutPrice);
         new_plant->set_position({60, 230});
         plants.push_back(new_plant);
     }
     if (type == "snowshooter")
     {
-        Snowshooter *new_plant = new Snowshooter(snowshooterHealth,snowshooterPrice);
+        Snowshooter *new_plant = new Snowshooter(snowshooterHealth, snowshooterPrice);
         new_plant->set_position({60, 320});
         plants.push_back(new_plant);
     }

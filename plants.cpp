@@ -1,6 +1,7 @@
 #include "plants.hpp"
-// #include "plantsglobal.hpp"
+#include "global.hpp"
 #include <iostream>
+#include "system.hpp"
 using namespace sf;
 Plant::Plant(int health, int price) : health(health), price(price) {}
 
@@ -52,10 +53,10 @@ void Peashooter::drawPlanted(sf::RenderWindow &window)
 void Peashooter::shoot()
 {
     Time time_passed = clock.getElapsedTime();
-    if (time_passed.asMilliseconds() > 1000)
+    if (time_passed.asMilliseconds() > peashooter_hit_rate)
     {
 
-        NormalPea *newProjectile = new NormalPea({getPos().x + 15, getPos().y - 10});
+        NormalPea *newProjectile = new NormalPea({getPos().x + 15, getPos().y - 10},NormalPeaSpeed,NormalPeadamage);
         projectiles.push_back(newProjectile);
         clock.restart();
     }
@@ -121,10 +122,10 @@ void Snowshooter::drawPlanted(sf::RenderWindow &window)
 void Snowshooter::shoot()
 {
     Time time_passed = clock.getElapsedTime();
-    if (time_passed.asMilliseconds() > 1000)
+    if (time_passed.asMilliseconds() > snowshooter_hit_rate)
     {
 
-        SnowPea *newProjectile = new SnowPea({getPos().x + 15, getPos().y - 25});
+        SnowPea *newProjectile = new SnowPea({getPos().x + 15, getPos().y - 25},snowPeaspeed,snowPeadamage);
         projectiles.push_back(newProjectile);
         clock.restart();
     }

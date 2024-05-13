@@ -5,7 +5,7 @@ using namespace sf;
 class Projectile
 {
 public:
-    Projectile(const Vector2f &startPos);
+    Projectile(const Vector2f &startPos,float speed,int damage);
 
     virtual void update();
     virtual void render(RenderWindow &window);
@@ -25,7 +25,7 @@ protected:
 class NormalPea : public Projectile
 {
 public:
-    NormalPea(const sf::Vector2f &startPos);
+    NormalPea(const sf::Vector2f &startPos,float speed,int damage);
     virtual Vector2f get_pos();
     int get_damage() const override;
     bool is_snow() override;
@@ -35,7 +35,7 @@ class SnowPea : public Projectile
 {
 public:
     virtual Vector2f get_pos();
-    SnowPea(const sf::Vector2f &startPos);
+    SnowPea(const sf::Vector2f &startPos,float speed,int damage);
     int get_damage() const override;
     bool is_snow() override;
 };

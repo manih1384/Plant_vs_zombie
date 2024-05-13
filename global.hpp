@@ -15,36 +15,31 @@
 using namespace sf;
 using namespace std;
 
-
-
-
 const string IMAGEFILE = "files/Images";
 const int WIDTH = 1400;
 const int HEIGHT = 600;
-const int DX= 80;
+const int DX = 80;
 const int DY = 98;
 const int X0 = 255;
 const int Y0 = 80;
-const int peashooterCooldown = 5;
-const int snowshooterCooldown = 7;
-const int sunflowerCooldown = 3;
-const int wallnutCooldown = 3;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+extern int peashooterCooldown;
+extern int snowshooterCooldown;
+extern int sunflowerCooldown;
+extern int wallnutCooldown;
+extern int peashooterHealth;
+extern int peashooterPrice;
+extern int snowshooterHealth;
+extern int snowshooterPrice;
+extern int wallnutHealth;
+extern int wallnutPrice;
+extern int sunflowerHealth;
+extern int sunflowerPrice;
+extern float snowPeaspeed;
+extern int snowPeadamage;
+extern float NormalPeaSpeed;
+extern int NormalPeadamage;
+extern int peashooter_hit_rate;
+extern int snowshooter_hit_rate;
 
 #endif

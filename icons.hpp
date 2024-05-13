@@ -8,6 +8,11 @@ enum iconState
     COOLDOWN,
     UNAVAILABLE
 };
+enum Existance
+{
+    EXISTS,
+    DOESNT_EXIST
+};
 class Icons
 {
 public:
@@ -16,6 +21,10 @@ public:
     iconState snowShooterState = AVAILABLE;
     iconState sunflowerState = AVAILABLE;
     iconState wallnutState = AVAILABLE;
+    Existance PeashooterExistance = DOESNT_EXIST;
+    Existance snowShooterExistance = DOESNT_EXIST;
+    Existance sunflowerExistance= DOESNT_EXIST;
+    Existance wallnutExistance = DOESNT_EXIST;
     void render(sf::RenderWindow &window);
     sf::FloatRect get_peashooter_rect();
     sf::FloatRect get_sunflower_rect();

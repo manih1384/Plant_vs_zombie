@@ -16,14 +16,9 @@
 using namespace std;
 using namespace sf;
 
-
-
-int main()
+int main(int argc, char *argv[])
 {
-    // Create a system object with the desired window size
-    System game(1400,600);
-    // Run the game
+    System game(1400, 600,argv);
     game.run();
     return 0;
 }
-

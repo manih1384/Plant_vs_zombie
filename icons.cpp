@@ -74,20 +74,43 @@ sf::Sprite Icons::get_snowshooter_sprite()
 }
 void Icons::render(sf::RenderWindow &window)
 {
-    if (PeashooterState == AVAILABLE)
-        window.draw(SpritePeashootericon);
-    if (PeashooterState == COOLDOWN||PeashooterState ==UNAVAILABLE)
-        window.draw(SpritePeashooterDimicon);
-    if (snowShooterState == AVAILABLE)
-        window.draw(SpriteSnowshooterIcon);
-    if (snowShooterState == COOLDOWN||snowShooterState == UNAVAILABLE)
-        window.draw(SpriteSnowshooterDimIcon);
-    if (wallnutState == AVAILABLE)
-        window.draw(SpritewallnutIcon);
-    if (wallnutState == COOLDOWN||wallnutState == UNAVAILABLE)
-        window.draw(SpritewallnutDimIcon);
-    if (sunflowerState == AVAILABLE)
-        window.draw(SpriteSunflowerIcon);
-    if (sunflowerState == COOLDOWN||sunflowerState == UNAVAILABLE)
-        window.draw(SpriteSunflowerDimIcon);
+    // if (PeashooterExistance == EXISTS)
+    // {
+    //     if (PeashooterState == AVAILABLE)
+    //         window.draw(SpritePeashootericon);
+    //     if (PeashooterState == COOLDOWN || PeashooterState == UNAVAILABLE)
+    //         window.draw(SpritePeashooterDimicon);
+    // }
+    // if (snowShooterExistance == EXISTS)
+    // {
+    //     if (snowShooterState == AVAILABLE)
+    //         window.draw(SpriteSnowshooterIcon);
+    //     if (snowShooterState == COOLDOWN || snowShooterState == UNAVAILABLE)
+    //         window.draw(SpriteSnowshooterDimIcon);
+    // }
+    // if (wallnutExistance == EXISTS)
+    // {
+    //     if (wallnutState == AVAILABLE)
+    //         window.draw(SpritewallnutIcon);
+    //     if (wallnutState == COOLDOWN || wallnutState == UNAVAILABLE)
+    //         window.draw(SpritewallnutDimIcon);
+    // }
+    // if (sunflowerExistance == EXISTS)
+    // {
+    //     if (sunflowerState == AVAILABLE)
+    //         window.draw(SpriteSunflowerIcon);
+    //     if (sunflowerState == COOLDOWN || sunflowerState == UNAVAILABLE)
+    //         window.draw(SpriteSunflowerDimIcon);
+    // }
+    if (PeashooterExistance == EXISTS && (PeashooterState == AVAILABLE || PeashooterState == COOLDOWN || PeashooterState == UNAVAILABLE))
+        window.draw(PeashooterState == AVAILABLE ? SpritePeashootericon : SpritePeashooterDimicon);
+
+    if (snowShooterExistance == EXISTS && (snowShooterState == AVAILABLE || snowShooterState == COOLDOWN || snowShooterState == UNAVAILABLE))
+        window.draw(snowShooterState == AVAILABLE ? SpriteSnowshooterIcon : SpriteSnowshooterDimIcon);
+
+    if (wallnutExistance == EXISTS && (wallnutState == AVAILABLE || wallnutState == COOLDOWN || wallnutState == UNAVAILABLE))
+        window.draw(wallnutState == AVAILABLE ? SpritewallnutIcon : SpritewallnutDimIcon);
+
+    if (sunflowerExistance == EXISTS && (sunflowerState == AVAILABLE || sunflowerState == COOLDOWN || sunflowerState == UNAVAILABLE))
+        window.draw(sunflowerState == AVAILABLE ? SpriteSunflowerIcon : SpriteSunflowerDimIcon);
 }

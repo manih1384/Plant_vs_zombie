@@ -1,7 +1,7 @@
 #include "projectile.hpp"
 #include <iostream>
 
-Projectile::Projectile(const sf::Vector2f &startPos)
+Projectile::Projectile(const sf::Vector2f &startPos,float speed,int damage)
     : position(startPos)
 {
 }
@@ -23,8 +23,8 @@ sf::FloatRect Projectile::get_rect() const
     return sprite.getGlobalBounds();
 }
 
-NormalPea::NormalPea(const sf::Vector2f &startPos)
-    : Projectile(startPos)
+NormalPea::NormalPea(const sf::Vector2f &startPos,float speed,int damage)
+    : Projectile(startPos, speed, damage)
 {
     texture.loadFromFile("files/Images/pea.png");
     sprite.scale(0.15f, 0.15f);
@@ -46,8 +46,8 @@ bool NormalPea::is_snow(){return false;}
 
 
 
-SnowPea::SnowPea(const sf::Vector2f &startPos)
-    : Projectile(startPos)
+SnowPea::SnowPea(const sf::Vector2f &startPos,float speed,int damage)
+    : Projectile(startPos, speed, damage)
 {
     if (!texture.loadFromFile("files/Images/ball_blue.png"))
     {

@@ -71,7 +71,7 @@ private:
     vector<Vector2f> centers;
 
 public:
-    System(int width, int height);
+    System(int width, int height, char *argv[]);
     ~System();
     vector<string> cut_string(string str, string delim);
     void zombie_projectile_collision();
@@ -82,6 +82,7 @@ public:
     bool is_out_of_bound(Plant *plant);
     vector<string> read_csv(const char path[256]);
     void zombie_setting();
+    void plants_setting( char *argv[]);
     vector<vector<Vector2f>> playground;
 
     RenderWindow window;
