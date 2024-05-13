@@ -72,12 +72,7 @@ sf::FloatRect Peashooter::get_rect()
 }
 
 sf ::Vector2f Peashooter::getPos() { return spritePlanted.getPosition(); }
-
-
-
-
-
-
+void Peashooter::render(sf::RenderWindow &window) {}
 Snowshooter::Snowshooter() : Plant(150, 150)
 {
     texturePlanted.loadFromFile("files/Images/snowshooter.png");
@@ -146,15 +141,8 @@ sf::FloatRect Snowshooter::get_rect()
 }
 
 sf ::Vector2f Snowshooter::getPos() { return spritePlanted.getPosition(); }
-
-
-
-
-
-
-
-
-Sunflower::Sunflower() : Plant(70,50)
+void Snowshooter::render(sf::RenderWindow &window) {}
+Sunflower::Sunflower() : Plant(70, 50)
 {
     texturePlanted.loadFromFile("files/Images/Sunflower.png");
     spritePlanted.setTexture(texturePlanted);
@@ -187,11 +175,15 @@ sf::FloatRect Sunflower::get_rect()
     return spritePlanted.getGlobalBounds();
 }
 sf ::Vector2f Sunflower::getPos() { return spritePlanted.getPosition(); }
-
-Wallnut::Wallnut() : Plant(200,50)
+void Sunflower::render(sf::RenderWindow &window) {}
+Wallnut::Wallnut() : Plant(200, 50)
 {
     texturePlanted.loadFromFile("files/Images/Wallnut_body.png");
+    textureCracked1.loadFromFile("files/Images/Wallnut_cracked1.png");
+    textureCracked2.loadFromFile("files/Images/Wallnut_cracked2.png");
     spritePlanted.setTexture(texturePlanted);
+    spriteCracked1.setTexture(textureCracked1);
+    spriteCracked2.setTexture(textureCracked2);
     spritePlanted.setScale(0.7f, 0.7f);
     sf::FloatRect bounds = spritePlanted.getLocalBounds();
     spritePlanted.setOrigin(bounds.width / 2, bounds.height / 2);
@@ -200,8 +192,20 @@ Wallnut::Wallnut() : Plant(200,50)
 int Wallnut::get_health() { return health; }
 void Wallnut::drawPlanted(sf::RenderWindow &window)
 {
-
-    window.draw(spritePlanted);
+    if (health > 75)
+    {
+        window.draw(spritePlanted);
+    }
+    else if (health > 25 && health < 75)
+    {
+        spritePlanted.setTexture(textureCracked1);
+        window.draw(spritePlanted);
+    }
+    else
+    {
+        spritePlanted.setTexture(textureCracked2);
+        window.draw(spritePlanted);
+    }
 }
 void Wallnut::get_damaged(int damage)
 {
@@ -223,3 +227,6 @@ bool Wallnut::can_shoot()
 }
 void Wallnut::shoot() {}
 void Wallnut::update_shots() {}
+void Wallnut::render(RenderWindow &window)
+{
+}

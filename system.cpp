@@ -193,9 +193,6 @@ void System::handle_shooting()
     }
 }
 
-
-
-
 vector<string> System::read_csv(const char path[256])
 {
     vector<string> lines;
@@ -209,10 +206,6 @@ vector<string> System::read_csv(const char path[256])
     file_name.close();
     return lines;
 }
-
-
-
-
 
 void System::update()
 {
@@ -392,6 +385,55 @@ void System::sunCartHandler()
         icons.snowShooterState = AVAILABLE;
     }
 }
+void System::handle_mouse_press(Event event, bool &isDragging, int &draggingPlantIndex)
+{
+    if (event.mouseButton.button == sf::Mouse::Left)
+    {
+
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        sf::Vector2f floatMousePos = static_cast<sf::Vector2f>(mousePos);
+
+        sun_clicked(floatMousePos);
+        cartHandler(floatMousePos);
+        for (int i = 0; i < plants.size(); i++)
+        {
+            if (plants[i]->get_rect().contains(floatMousePos) && is_out_of_bound(plants[i]))
+            {
+                isDragging = true;
+                draggingPlantIndex = i;
+                break;
+            }
+        }
+    }
+}
+void System::handle_mouse_release(Event event, bool &isDragging, int &draggingPlantIndex)
+{
+    if (isDragging && !is_out_of_bound(plants[draggingPlantIndex]))
+    {
+        fix_position(plants[draggingPlantIndex]);
+        isDragging = false;
+        draggingPlantIndex = -1;
+    }
+    else
+    {
+
+        // delete plants[draggingPlantIndex];
+        // //plants.erase(find(plants.begin(),plants.end(),plants[draggingPlantIndex]));
+        // plants.erase(plants.begin() + draggingPlantIndex);
+        // draggingPlantIndex= -1;
+        // isDragging = false;
+    }
+}
+void System::handle_mouse_moved(Event event, bool &isDragging, int &draggingPlantIndex)
+{
+    if (isDragging && draggingPlantIndex != -1)
+    {
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        sf::Vector2f newPlantPos = static_cast<sf::Vector2f>(mousePos);
+
+        plants[draggingPlantIndex]->set_position(newPlantPos);
+    }
+}
 void System::handle_events()
 {
     sf::Event event;
@@ -408,58 +450,50 @@ void System::handle_events()
             break;
 
         case sf::Event::MouseButtonPressed:
-            if (event.mouseButton.button == sf::Mouse::Left)
-            {
+            handle_mouse_press(event, isDragging, draggingPlantIndex);
+            break;
 
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                sf::Vector2f floatMousePos = static_cast<sf::Vector2f>(mousePos);
-
-                sun_clicked(floatMousePos);
-                cartHandler(floatMousePos);
-                for (int i = 0; i < plants.size(); i++)
-                {
-                    if (plants[i]->get_rect().contains(floatMousePos) && is_out_of_bound(plants[i]))
-                    {
-                        isDragging = true;
-                        draggingPlantIndex = i;
-                        break;
-                    }
-                }
-
-                break;
-            }
         case sf::Event::MouseButtonReleased:
-            if (isDragging && !is_out_of_bound(plants[draggingPlantIndex]))
-            {
-                fix_position(plants[draggingPlantIndex]);
-                isDragging = false;
-                draggingPlantIndex = -1;
-            }
-            else
-            {
-
-                // delete plants[draggingPlantIndex];
-                // //plants.erase(find(plants.begin(),plants.end(),plants[draggingPlantIndex]));
-                // plants.erase(plants.begin() + draggingPlantIndex);
-                // draggingPlantIndex= -1;
-                // isDragging = false;
-            }
+            handle_mouse_release(event, isDragging, draggingPlantIndex);
 
             break;
 
         case sf::Event::MouseMoved:
-            if (isDragging && draggingPlantIndex != -1)
-            {
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                sf::Vector2f newPlantPos = static_cast<sf::Vector2f>(mousePos);
-
-                plants[draggingPlantIndex]->set_position(newPlantPos);
-            }
+            handle_mouse_moved(event, isDragging, draggingPlantIndex);
             break;
         }
     }
 }
-
+void System::renderZombies()
+{
+    if (!zombies.empty())
+    {
+        for (int i = 0; i < zombies.size(); i++)
+        {
+            zombies[i]->render(window);
+        }
+    }
+}
+void System::renderSuns()
+{
+    if (!suns.empty())
+    {
+        for (int i = 0; i < suns.size(); i++)
+        {
+            suns[i]->render(window);
+        }
+    }
+}
+void System::drawPlants()
+{
+    if (!plants.empty())
+    {
+        for (const auto &plant : plants)
+        {
+            plant->drawPlanted(window);
+        }
+    }
+}
 void System::render()
 {
     window.clear();
@@ -469,29 +503,9 @@ void System::render()
     case IN_GAME:
         window.draw(sprite);
         totalsuns.render(window);
-        if (!plants.empty())
-        {
-            for (const auto &plant : plants)
-            {
-                plant->drawPlanted(window);
-            }
-        }
-
-        if (!zombies.empty())
-        {
-            for (int i = 0; i < zombies.size(); i++)
-            {
-                zombies[i]->render(window);
-            }
-        }
-
-        if (!suns.empty())
-        {
-            for (int i = 0; i < suns.size(); i++)
-            {
-                suns[i]->render(window);
-            }
-        }
+        drawPlants();
+        renderZombies();
+        renderSuns();
         sunCartHandler();
         icons.render(window);
         break;
@@ -540,15 +554,16 @@ void System::add_zombie()
     {
         if (!playground.empty() && playground[0].size() > 0)
         {
-            if(rng%2){
-                BigZombie *new_zombie = new BigZombie(playground[rng % 5][8],100,1,1,1,1);
+            if (rng % 2)
+            {
+                BigZombie *new_zombie = new BigZombie(playground[rng % 5][8], 100, 20, 1, 1, 1);
                 zombies.push_back(new_zombie);
             }
-            else{
-                SmallZombie *new_zombie = new SmallZombie(playground[rng % 5][8],1,1,1,1,1);
+            else
+            {
+                SmallZombie *new_zombie = new SmallZombie(playground[rng % 5][8], 100, 20, 1, 1, 1);
                 zombies.push_back(new_zombie);
             }
-            
         }
         add_zombie_clock.restart();
     }
