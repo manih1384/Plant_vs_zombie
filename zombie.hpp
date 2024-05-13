@@ -32,7 +32,7 @@ protected:
     float speed = 1;
     float frozenSpeed = 0.5;
     float normalSpeed = 1;
-
+    int freeze_time;
     Vector2f position;
     Sprite sprite;
     Texture texture;
