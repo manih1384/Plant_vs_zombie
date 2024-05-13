@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include "projectile.hpp"
 using namespace std;
+
 System::System(int width, int height)
 {
     window.create(sf::VideoMode(width, height), "PLANTS_VS_ZOMBIES", sf::Style::Close);
@@ -588,25 +589,25 @@ void System::add_plants(string type)
     // if (!playground.empty() && playground[0].size() > 0)
     if (type == "peashooter")
     {
-        Peashooter *new_plant = new Peashooter();
+        Peashooter *new_plant = new Peashooter(peashooterHealth,peashooterPrice);
         new_plant->set_position({60, 50});
         plants.push_back(new_plant);
     }
     if (type == "sunflower")
     {
-        Sunflower *new_plant = new Sunflower();
+        Sunflower *new_plant = new Sunflower(sunflowerHealth,sunflowerPrice);
         new_plant->set_position({60, 140});
         plants.push_back(new_plant);
     }
     if (type == "wallnut")
     {
-        Wallnut *new_plant = new Wallnut();
+        Wallnut *new_plant = new Wallnut(wallnutHealth,wallnutPrice);
         new_plant->set_position({60, 230});
         plants.push_back(new_plant);
     }
     if (type == "snowshooter")
     {
-        Snowshooter *new_plant = new Snowshooter();
+        Snowshooter *new_plant = new Snowshooter(snowshooterHealth,snowshooterPrice);
         new_plant->set_position({60, 320});
         plants.push_back(new_plant);
     }

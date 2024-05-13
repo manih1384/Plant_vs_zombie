@@ -28,7 +28,7 @@ public:
 class Peashooter : public Plant
 {
 public:
-    Peashooter();
+    Peashooter(int  health,int price);
     void drawPlanted(sf::RenderWindow &window) override;
     void get_damaged(int damage) override;
     int get_health() override;
@@ -47,7 +47,7 @@ private:
 class Snowshooter : public Plant
 {
 public:
-    Snowshooter();
+    Snowshooter(int  health,int price);
     void drawPlanted(sf::RenderWindow &window) override;
     void get_damaged(int damage) override;
     int get_health() override;
@@ -67,7 +67,7 @@ private:
 class Sunflower : public Plant
 {
 public:
-    Sunflower();
+    Sunflower(int  health,int price);
     void drawPlanted(sf::RenderWindow &window) override;
     void get_damaged(int damage) override;
     void set_position(const sf::Vector2f &new_position) override;
@@ -87,7 +87,7 @@ private:
 class Wallnut : public Plant
 {
 public:
-    Wallnut();
+    Wallnut(int  health,int price);
     void drawPlanted(sf::RenderWindow &window) override;
     void get_damaged(int damage) override;
     int get_health() override;

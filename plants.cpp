@@ -4,7 +4,7 @@
 using namespace sf;
 Plant::Plant(int health, int price) : health(health), price(price) {}
 
-Peashooter::Peashooter() : Plant(100, 100)
+Peashooter::Peashooter(int health,int price) : Plant(health, price)
 {
     texturePlanted.loadFromFile("files/Images/Peashooter.png");
     spritePlanted.setTexture(texturePlanted);
@@ -73,7 +73,7 @@ sf::FloatRect Peashooter::get_rect()
 
 sf ::Vector2f Peashooter::getPos() { return spritePlanted.getPosition(); }
 void Peashooter::render(sf::RenderWindow &window) {}
-Snowshooter::Snowshooter() : Plant(150, 150)
+Snowshooter::Snowshooter(int  health,int price) : Plant(health, price)
 {
     texturePlanted.loadFromFile("files/Images/snowshooter.png");
     spritePlanted.setTexture(texturePlanted);
@@ -142,7 +142,7 @@ sf::FloatRect Snowshooter::get_rect()
 
 sf ::Vector2f Snowshooter::getPos() { return spritePlanted.getPosition(); }
 void Snowshooter::render(sf::RenderWindow &window) {}
-Sunflower::Sunflower() : Plant(70, 50)
+Sunflower::Sunflower(int  health,int price) : Plant(health, price)
 {
     texturePlanted.loadFromFile("files/Images/Sunflower.png");
     spritePlanted.setTexture(texturePlanted);
@@ -176,7 +176,7 @@ sf::FloatRect Sunflower::get_rect()
 }
 sf ::Vector2f Sunflower::getPos() { return spritePlanted.getPosition(); }
 void Sunflower::render(sf::RenderWindow &window) {}
-Wallnut::Wallnut() : Plant(200, 50)
+Wallnut::Wallnut(int  health,int price) : Plant(health, price)
 {
     texturePlanted.loadFromFile("files/Images/Wallnut_body.png");
     textureCracked1.loadFromFile("files/Images/Wallnut_cracked1.png");
