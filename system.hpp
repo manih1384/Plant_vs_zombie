@@ -45,8 +45,9 @@ private:
     Clock attack_zombie_clock;
     Clock attack_plant_clock;
     void handle_events();
-    void handle_mouse_press(Event ev);
-    void handle_mouse_release(Event ev);
+    void handle_mouse_press(Event event, bool &isDragging, int &draggingPlantIndex);
+    void handle_mouse_release(Event event, bool &isDragging, int &draggingPlantIndex);
+    void handle_mouse_moved(Event event, bool &isDragging, int &draggingPlantIndex);
     void makeplayground(vector<vector<Vector2f>> &playground);
     void add_zombie();
     void add_sun();
@@ -54,7 +55,9 @@ private:
     void cartHandler(sf::Vector2f floatMousePos);
     void sunCartHandler();
     void add_plants(string type);
-    void renderWallnut();
+    void renderZombies();
+    void renderSuns();
+    void drawPlants();
     vector<Zombie *> zombies;
     vector<Plant *> plants;
     vector<Sun *> suns;
@@ -72,7 +75,6 @@ public:
     bool is_center(Plant *plant);
     void fix_position(Plant *plant);
     bool is_out_of_bound(Plant *plant);
-    bool isWallnut(Plant *plant);
     vector<string> read_csv(const char path[256]);
     vector<vector<Vector2f>> playground;
 
