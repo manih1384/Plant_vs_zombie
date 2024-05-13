@@ -20,13 +20,13 @@ SmallZombie::SmallZombie(const Vector2f &startPos,int health,int damage,int spee
 
 BigZombie::BigZombie(const Vector2f &startPos,int health,int damage,int speed,int Normalspeed,int FrozenSpeed) : Zombie(startPos,health,damage,speed,Normalspeed,FrozenSpeed)
 {
-    if (!texture.loadFromFile("files/Images/Zombie_Injured.png"))
+    if (!texture.loadFromFile("files/Images/bigzombie.png"))
     {
         std::cerr << "Failed to load zombie texture" << std::endl;
         return;
     }
     sprite.setTexture(texture);
-    sprite.setScale(0.2f, 0.2f);
+    sprite.setScale(0.15f, 0.15f);
     sprite.setPosition(position);
 }
 
