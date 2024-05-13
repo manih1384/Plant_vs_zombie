@@ -16,9 +16,9 @@
 using namespace std;
 using namespace sf;
 
-int main(int argc, char *argv[])
+int main()
 {
-    System game(1400, 600,argv);
+    System game(1400, 600);
     game.run();
     return 0;
 }

@@ -5,11 +5,11 @@
 #include "projectile.hpp"
 #include "zombiesglobal.hpp"
 using namespace std;
-void System::plants_setting(char *argv[])
+void System::plants_setting()
 {
     ifstream file_name;
     string new_line;
-    file_name.open(argv[1]);
+    file_name.open("files/setting/plants_setting.csv");
     getline(file_name, new_line);
     while (getline(file_name, new_line))
     {
@@ -60,9 +60,9 @@ void System::plants_setting(char *argv[])
     }
     file_name.close();
 }
-System::System(int width, int height, char *argv[])
+System::System(int width, int height)
 {
-    plants_setting(argv);
+    plants_setting();
     window.create(sf::VideoMode(width, height), "PLANTS_VS_ZOMBIES", sf::Style::Close);
     window.setFramerateLimit(60);
     state = IN_GAME;
