@@ -71,6 +71,7 @@ public:
     bool is_center(Plant *plant);
     void fix_position(Plant *plant);
     bool is_out_of_bound(Plant *plant);
+    vector<string> read_csv(const char path[256]);
     vector<vector<Vector2f>> playground;
 
     RenderWindow window;
