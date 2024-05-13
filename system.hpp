@@ -44,6 +44,11 @@ private:
     Clock add_sun_clock;
     Clock attack_zombie_clock;
     Clock attack_plant_clock;
+    int zombie_health;
+    int zombie_hitrate;
+    int zombie_damage;
+    int zombie_speed;
+    int zombie_freeze_time;
     void handle_events();
     void handle_mouse_press(Event ev);
     void handle_mouse_release(Event ev);
@@ -72,6 +77,7 @@ public:
     void fix_position(Plant *plant);
     bool is_out_of_bound(Plant *plant);
     vector<string> read_csv(const char path[256]);
+    void zombie_setting();
     vector<vector<Vector2f>> playground;
 
     RenderWindow window;
