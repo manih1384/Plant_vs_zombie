@@ -9,7 +9,7 @@ using namespace std;
 
 class Zombie {
 public:
-    Zombie(const Vector2f &startPos,int health,int damage,int speed,int Normalspeed,int FrozenSpeed);
+    Zombie(const Vector2f &startPos,int health,int damage,float speed,float Normalspeed,float FrozenSpeed);
     virtual ~Zombie() {}
     virtual void move();
     virtual void takeDamage(int damage);
@@ -21,9 +21,11 @@ public:
     virtual void startZombie();
     virtual Vector2f getPos();
     virtual void applyEffect();
+    virtual bool is_big()=0;
     virtual void removeEffect();
     virtual FloatRect getRect();
     Clock freezeClock;
+    Clock attackClock;
     bool isFrozen = false;
 
 protected:
@@ -40,12 +42,14 @@ protected:
 
 class BigZombie : public Zombie {
 public:
-    BigZombie(const Vector2f &startPos,int health,int damage,int speed,int Normalspeed,int FrozenSpeed);
+    BigZombie(const Vector2f &startPos,int health,int damage,float speed,float Normalspeed,float FrozenSpeed);
+    bool is_big();
 };
 
 class SmallZombie : public Zombie {
 public:
-    SmallZombie(const Vector2f &startPos,int health,int damage,int speed,int Normalspeed,int FrozenSpeed);
+    SmallZombie(const Vector2f &startPos,int health,int damage,float speed,float Normalspeed,float FrozenSpeed);
+    bool is_big();
 };
 
 #endif // ZOMBIE_HPP

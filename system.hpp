@@ -30,10 +30,20 @@ enum State
     EXIT
 
 };
+
+enum Zombie_type
+{
+    BOTH,
+    SMALL_ONLY,
+    BIG_ONLY
+
+};
+
 class System
 {
 private:
     State state;
+    Zombie_type zombie_type;
     void render();
     void update();
     Texture background;
@@ -44,11 +54,6 @@ private:
     Clock add_sun_clock;
     Clock attack_zombie_clock;
     Clock attack_plant_clock;
-    int zombie_health;
-    int zombie_hitrate;
-    int zombie_damage;
-    int zombie_speed;
-    int zombie_freeze_time;
     void handle_events();
     void handle_mouse_press(Event event, bool &isDragging, int &draggingPlantIndex);
     void handle_mouse_release(Event event, bool &isDragging, int &draggingPlantIndex);

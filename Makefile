@@ -2,8 +2,13 @@
 CXX = g++  # The C++ compiler
 CXXFLAGS = -std=c++20  # Compiler flags (you can set your C++ standard here)
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system  # Libraries to link with SFML
+<<<<<<< HEAD
 SOURCES = main.cpp system.cpp plants.cpp zombie.cpp projectile.cpp icons.cpp sun.cpp totalsun.cpp global.cpp# The source files (add more if you have other files)
 HEADERS = system.hpp plants.hpp zombie.hpp projectile.hpp icons.hpp sun.hpp totalsun.hpp plantsglobal.hpp global.hpp
+=======
+SOURCES = main.cpp system.cpp plants.cpp zombie.cpp projectile.cpp icons.cpp sun.cpp totalsun.cpp# The source files (add more if you have other files)
+HEADERS = system.hpp plants.hpp zombie.hpp projectile.hpp icons.hpp sun.hpp totalsun.hpp plantsglobal.hpp zombiesglobal.hpp
+>>>>>>> 4ed494bab71223d9c97aab66a3010211835c6145
 OBJECTS = $(SOURCES:.cpp=.o)  # Object files derived from source files
 TARGET = pvz.out  # The output executable name
 
