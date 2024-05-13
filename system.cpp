@@ -49,11 +49,11 @@ void System::zombie_plant_collision()
         int j = 0;
         while (j < plants.size())
         {
-            FloatRect z_rect = zombies[i]->get_rect();
+            FloatRect z_rect = zombies[i]->getRect();
             FloatRect p_rect = plants[j]->get_rect();
             if (z_rect.intersects(p_rect))
             {
-                zombies[i]->stop_zombie();
+                zombies[i]->stopZombie();
                 Time time_passed = attack_zombie_clock.getElapsedTime();
 
                 if (time_passed.asMilliseconds() > 500)
@@ -65,13 +65,13 @@ void System::zombie_plant_collision()
                 {
                     delete plants[j];
                     plants.erase(plants.begin() + j);
-                    zombies[i]->start_zombie();
-                    zombies[i]->apply_effect();
+                    zombies[i]->startZombie();
+                    zombies[i]->applyEffect();
                     for (int x = 0; x < zombies.size(); x++)
                     {
-                        if (zombies[i]->get_pos().y == zombies[x]->get_pos().y)
+                        if (zombies[i]->getPos().y == zombies[x]->getPos().y)
                         {
-                            zombies[x]->start_zombie();
+                            zombies[x]->startZombie();
                         }
                     }
                 }
@@ -101,13 +101,13 @@ void System::zombie_projectile_collision()
         {
             for (auto &zombie : zombies)
             {
-                if (!(projectile->get_rect().intersects(zombie->get_rect())))
+                if (!(projectile->get_rect().intersects(zombie->getRect())))
                     continue;
 
                 if (projectile->is_snow())
                 {
-                    zombie->apply_effect();
-                    zombie->freeze_clock.restart();
+                    zombie->applyEffect();
+                    zombie->freezeClock.restart();
                 }
 
                 zombie->takeDamage(projectile->get_damage());
@@ -126,9 +126,9 @@ void System::zombie_projectile_collision()
     }
     for (auto &zombie : zombies)
     {
-        if (zombie->is_froze && zombie->freeze_clock.getElapsedTime().asSeconds() > 5)
+        if (zombie->isFrozen && zombie->freezeClock.getElapsedTime().asSeconds() > 5)
         {
-            zombie->remove_effect();
+            zombie->removeEffect();
         }
     }
 }
@@ -205,7 +205,7 @@ void System::update()
 
         for (int i = 0; i < zombies.size(); i++)
         {
-            if (!zombies[i]->checkcollision(playground))
+            if (!zombies[i]->checkCollision(playground))
             {
                 zombies[i]->move();
             }
@@ -519,8 +519,15 @@ void System::add_zombie()
     {
         if (!playground.empty() && playground[0].size() > 0)
         {
-            Zombie *new_zombie = new Zombie(playground[rng % 5][8]);
-            zombies.push_back(new_zombie);
+            if(rng%2){
+                BigZombie *new_zombie = new BigZombie(playground[rng % 5][8],100,1,1,1,1);
+                zombies.push_back(new_zombie);
+            }
+            else{
+                SmallZombie *new_zombie = new SmallZombie(playground[rng % 5][8],1,1,1,1,1);
+                zombies.push_back(new_zombie);
+            }
+            
         }
         add_zombie_clock.restart();
     }

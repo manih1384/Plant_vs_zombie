@@ -1,33 +1,40 @@
 #include "zombie.hpp"
 #include "global.hpp"
-#include "system.hpp"
-#include <vector>
-using namespace sf;
-using namespace std;
-Zombie::Zombie(const Vector2f &startPos)
-    : position(startPos)
+#include <iostream>
+
+Zombie::Zombie(const Vector2f &startPos,int health,int damage,int speed,int Normalspeed,int FrozenSpeed)
+         : position(startPos),frozenSpeed(FrozenSpeed),health(health),speed(speed),normalSpeed(Normalspeed),damage(damage){
+}
+
+SmallZombie::SmallZombie(const Vector2f &startPos,int health,int damage,int speed,int Normalspeed,int FrozenSpeed) : Zombie(startPos,health,damage,speed,Normalspeed,FrozenSpeed)
 {
-    if (!Zombie_Texture.loadFromFile("files/Images/Zombie_healthy.png"))
+    if (!texture.loadFromFile("files/Images/Zombie_healthy.png"))
     {
         std::cerr << "Failed to load zombie texture" << std::endl;
-        return; // If the texture doesn't load, the sprite might not be displayed
+        return;
     }
+    sprite.setTexture(texture);
+    sprite.setScale(0.2f, 0.2f);
+    sprite.setPosition(position);
+}
 
-    Zombie_sprite.setTexture(Zombie_Texture);
-    Zombie_sprite.setScale(0.2f, 0.2f);
-    Zombie_sprite.setPosition(position);
-
-    // IntRect rect;
-    // rect.width = 100;
-    // rect.height = 100;
-    // Zombie_sprite.setTextureRect(rect);
+BigZombie::BigZombie(const Vector2f &startPos,int health,int damage,int speed,int Normalspeed,int FrozenSpeed) : Zombie(startPos,health,damage,speed,Normalspeed,FrozenSpeed)
+{
+    if (!texture.loadFromFile("files/Images/Zombie_Injured.png"))
+    {
+        std::cerr << "Failed to load zombie texture" << std::endl;
+        return;
+    }
+    sprite.setTexture(texture);
+    sprite.setScale(0.2f, 0.2f);
+    sprite.setPosition(position);
 }
 
 void Zombie::move()
 {
     position.x -= speed;
-    Zombie_sprite.setPosition(position);
-    Zombie_sprite.setTexture(Zombie_Texture);
+    sprite.setPosition(position);
+    sprite.setTexture(texture);
 }
 
 void Zombie::takeDamage(int damage)
@@ -35,47 +42,17 @@ void Zombie::takeDamage(int damage)
     health -= damage;
 }
 
-void Zombie::start_zombie()
+int Zombie::attack()
 {
-    speed = 2;
+    return damage;
 }
-void Zombie::stop_zombie()
-{
-    speed = 0;
-}
-
-
-void Zombie::apply_effect(){
-    speed = frozen_speed;
-    is_froze = true;
-    
-}
-
-
-void Zombie::remove_effect(){
-    speed =normal_speed;
-    is_froze =false;
-
-}
-
-
 
 bool Zombie::isAlive()
 {
     return health > 0;
 }
 
-int Zombie::attack()
-{
-    return damage;
-}
-
-void Zombie::render(RenderWindow &window)
-{
-    window.draw(Zombie_sprite);
-}
-
-bool Zombie::checkcollision(vector<vector<Vector2f>> playground)
+bool Zombie::checkCollision(vector<vector<Vector2f>> playground)
 {
     bool detected = false;
     for (int i = 0; i < 4; i++)
@@ -85,10 +62,42 @@ bool Zombie::checkcollision(vector<vector<Vector2f>> playground)
             detected = true;
         }
     }
-
     return detected;
 }
 
-Vector2f Zombie::get_pos() { return position; }
+void Zombie::render(RenderWindow &window)
+{
+    window.draw(sprite);
+}
 
-FloatRect Zombie::get_rect() { return Zombie_sprite.getGlobalBounds(); }
+void Zombie::stopZombie()
+{
+    speed = 0;
+}
+
+void Zombie::startZombie()
+{
+    speed = normalSpeed;
+}
+
+Vector2f Zombie::getPos()
+{
+    return position;
+}
+
+void Zombie::applyEffect()
+{
+    speed = frozenSpeed;
+    isFrozen = true;
+}
+
+void Zombie::removeEffect()
+{
+    speed = normalSpeed;
+    isFrozen = false;
+}
+
+FloatRect Zombie::getRect()
+{
+    return sprite.getGlobalBounds();
+}

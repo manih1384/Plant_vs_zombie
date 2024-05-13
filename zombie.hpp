@@ -6,35 +6,46 @@
 #include <vector>
 using namespace sf;
 using namespace std;
+
 class Zombie {
 public:
-    Zombie(const Vector2f& startPos);
+    Zombie(const Vector2f &startPos,int health,int damage,int speed,int Normalspeed,int FrozenSpeed);
+    virtual ~Zombie() {}
+    virtual void move();
+    virtual void takeDamage(int damage);
+    virtual int attack();
+    virtual bool isAlive();
+    virtual bool checkCollision(vector<vector<Vector2f>> playground);
+    virtual void render(RenderWindow& window);
+    virtual void stopZombie();
+    virtual void startZombie();
+    virtual Vector2f getPos();
+    virtual void applyEffect();
+    virtual void removeEffect();
+    virtual FloatRect getRect();
+    Clock freezeClock;
+    bool isFrozen = false;
 
-    void move();
-    void takeDamage(int damage);
-    int attack();
-    bool isAlive();
-    bool checkcollision(vector<vector<Vector2f>> playground);
-    void render(RenderWindow& window);
-    void stop_zombie();
-    void start_zombie();
-    Vector2f get_pos();
-    void apply_effect();
-    FloatRect get_rect();
-    void remove_effect();
-    Clock freeze_clock;
-    bool is_froze = false;
+protected:
+    int health = 100;
+    int damage = 10;
+    float speed = 1;
+    float frozenSpeed = 0.5;
+    float normalSpeed = 1;
 
-private:
-    int health=100;
-    int damage=10;
-    float speed=1;
-    float frozen_speed=0.5;
-    float normal_speed=1;
-    
-    Vector2f position; 
-    Sprite Zombie_sprite; 
-    Texture Zombie_Texture;
+    Vector2f position;
+    Sprite sprite;
+    Texture texture;
+};
+
+class BigZombie : public Zombie {
+public:
+    BigZombie(const Vector2f &startPos,int health,int damage,int speed,int Normalspeed,int FrozenSpeed);
+};
+
+class SmallZombie : public Zombie {
+public:
+    SmallZombie(const Vector2f &startPos,int health,int damage,int speed,int Normalspeed,int FrozenSpeed);
 };
 
 #endif // ZOMBIE_HPP
