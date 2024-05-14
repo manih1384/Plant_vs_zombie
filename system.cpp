@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include "projectile.hpp"
 #include "zombiesglobal.hpp"
+#include "sunglobal.hpp"
 using namespace std;
 void System::plants_setting()
 {
@@ -81,6 +82,7 @@ System::System(int width, int height)
     rng = rand();
     zombie_setting();
     wave_setting();
+    sun_setting();
 }
 
 System::~System()
@@ -212,6 +214,23 @@ void System::wave_setting()
     wave_attack = stof(data[2]);
     attack_rate = stof(data[3]);
 }
+
+
+
+void System::sun_setting()
+{
+    vector<string> lines = read_csv("files/setting/sun_setting.csv");
+
+    vector<string> data = cut_string(lines[1], ",");
+
+    sunSpeed = stoi(data[0]);
+    sunInterval= stoi(data[1]);
+}
+
+
+
+
+
 
 void System::zombie_projectile_collision()
 {
@@ -723,11 +742,11 @@ void System::add_zombie()
 void System::add_sun()
 {
     Time time_passed = add_sun_clock.getElapsedTime();
-    if (time_passed.asMilliseconds() > 2000)
+    if (time_passed.asSeconds() > sunInterval)
     {
         if (!playground.empty() && playground[0].size() > 0)
         {
-            Sun *new_sun = new Sun(playground[0][rng % 9]);
+            Sun *new_sun = new Sun(playground[0][rng % 9],sunSpeed);
             suns.push_back(new_sun);
         }
         add_sun_clock.restart();

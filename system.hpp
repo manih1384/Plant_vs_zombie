@@ -98,6 +98,7 @@ public:
     void zombie_setting();
     void plants_setting();
     void wave_setting();
+    void sun_setting();
     vector<vector<Vector2f>> playground;
 
     RenderWindow window;

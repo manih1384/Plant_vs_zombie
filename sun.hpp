@@ -8,7 +8,7 @@ using namespace sf;
 using namespace std;
 class Sun {
 public:
-    Sun(const Vector2f& startPos);
+    Sun(const Vector2f& startPos,int speed);
 
     void move();
     bool checkcollision(vector<vector<Vector2f>> playground);
@@ -20,7 +20,7 @@ public:
 
 private:
 
-    float speed=1;
+    int speed=1;
     Vector2f position; 
     Sprite Sun_sprite; 
     Texture Sun_Texture;

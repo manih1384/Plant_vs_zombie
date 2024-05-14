@@ -4,8 +4,8 @@
 #include <vector>
 using namespace sf;
 using namespace std;
-Sun::Sun(const Vector2f &startPos)
-    : position(startPos)
+Sun::Sun(const Vector2f &startPos,int speed)
+    : position(startPos),speed(speed)
 {
     if (!Sun_Texture.loadFromFile("files/Images/sun.png"))
     {
