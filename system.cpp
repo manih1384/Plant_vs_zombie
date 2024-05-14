@@ -80,6 +80,7 @@ System::System(int width, int height)
     srand(time(NULL));
     rng = rand();
     zombie_setting();
+    wave_setting();
 }
 
 System::~System()
@@ -175,7 +176,8 @@ void System::zombie_setting()
     for (int i = 0; i < lines.size(); i++)
     {
         vector<string> data = cut_string(lines[i], ",");
-        if(data[0]=="regular"){
+        if (data[0] == "regular")
+        {
             zombie_type = SMALL_ONLY;
             smallZombieDamage = stoi(data[1]);
             smallZombieHealth = stoi(data[2]);
@@ -183,7 +185,8 @@ void System::zombie_setting()
             smallZombieSpeed = stof(data[4]);
             smallZombieFreezeTime = stoi(data[5]);
         }
-        if(data[0]=="gargantuar"){
+        if (data[0] == "gargantuar")
+        {
             zombie_type = BIG_ONLY;
             bigZombieDamage = stoi(data[1]);
             bigZombieHealth = stoi(data[2]);
@@ -196,6 +199,18 @@ void System::zombie_setting()
     {
         zombie_type = BOTH;
     }
+}
+
+void System::wave_setting()
+{
+    vector<string> lines = read_csv("files/setting/wave_setting.csv");
+
+    vector<string> data = cut_string(lines[1], ",");
+
+    total_time = stof(data[0]);
+    wave_time = stof(data[1]);
+    wave_attack = stof(data[2]);
+    attack_rate = stof(data[3]);
 }
 
 void System::zombie_projectile_collision()
@@ -325,55 +340,77 @@ void System::update()
 {
     if (state == IN_GAME)
     {
-        add_zombie();
-        add_sun();
-        zombie_plant_collision();
-        zombie_projectile_collision();
-        handle_shooting();
-
-        for (int i = 0; i < zombies.size(); i++)
+        if (zombies.size() == 0 && total_clock.getElapsedTime().asSeconds() > total_time)
         {
-            if (!zombies[i]->checkCollision(playground))
+            state = VICTORY;
+            return;
+        }
+        if (total_clock.getElapsedTime().asSeconds() < total_time)
+        {
+            if (wave_clock.getElapsedTime().asSeconds() > wave_time)
             {
-                zombies[i]->move();
+                wave_clock.restart();
+                wave_attack += attack_rate;
             }
             else
-            {
-                state = GAMEOVER;
-                break;
-            }
-        }
 
-        for (int i = 0; i < suns.size(); i++)
-        {
-            if (!suns[i]->checkcollision(playground))
             {
-                suns[i]->move();
-            }
-            else
-            {
-                delete suns[i];
-                suns.erase(find(suns.begin(), suns.end(), suns[i]));
-                break;
+                if (spawn_clock.getElapsedTime().asSeconds() > wave_time / wave_attack)
+                {
+                    add_zombie();
+                    spawn_clock.restart();
+                }
             }
         }
+    }
 
-        if (icons.PeashooterState == COOLDOWN && icons.peashooterclock.getElapsedTime().asSeconds() > peashooterCooldown)
+    add_sun();
+    zombie_plant_collision();
+    zombie_projectile_collision();
+    handle_shooting();
+
+    for (int i = 0; i < zombies.size(); i++)
+    {
+        if (!zombies[i]->checkCollision(playground))
         {
-            icons.PeashooterState = AVAILABLE;
+            zombies[i]->move();
         }
-        if (icons.sunflowerState == COOLDOWN && icons.sunflowerclock.getElapsedTime().asSeconds() > sunflowerCooldown)
+        else
         {
-            icons.sunflowerState = AVAILABLE;
+            state = GAMEOVER;
+            break;
         }
-        if (icons.wallnutState == COOLDOWN && icons.wallnutclock.getElapsedTime().asSeconds() > wallnutCooldown)
+    }
+
+    for (int i = 0; i < suns.size(); i++)
+    {
+        if (!suns[i]->checkcollision(playground))
         {
-            icons.wallnutState = AVAILABLE;
+            suns[i]->move();
         }
-        if (icons.snowShooterState == COOLDOWN && icons.snowshooterclock.getElapsedTime().asSeconds() > snowshooterCooldown)
+        else
         {
-            icons.snowShooterState = AVAILABLE;
+            delete suns[i];
+            suns.erase(find(suns.begin(), suns.end(), suns[i]));
+            break;
         }
+    }
+
+    if (icons.PeashooterState == COOLDOWN && icons.peashooterclock.getElapsedTime().asSeconds() > peashooterCooldown)
+    {
+        icons.PeashooterState = AVAILABLE;
+    }
+    if (icons.sunflowerState == COOLDOWN && icons.sunflowerclock.getElapsedTime().asSeconds() > sunflowerCooldown)
+    {
+        icons.sunflowerState = AVAILABLE;
+    }
+    if (icons.wallnutState == COOLDOWN && icons.wallnutclock.getElapsedTime().asSeconds() > wallnutCooldown)
+    {
+        icons.wallnutState = AVAILABLE;
+    }
+    if (icons.snowShooterState == COOLDOWN && icons.snowshooterclock.getElapsedTime().asSeconds() > snowshooterCooldown)
+    {
+        icons.snowShooterState = AVAILABLE;
     }
 }
 
@@ -616,9 +653,13 @@ void System::render()
         break;
     case GAMEOVER:
         window.draw(bsprite);
+    case VICTORY:
+        window.draw(bsprite);
+        break;
     default:
         break;
     }
+
     window.display();
 }
 
@@ -654,26 +695,28 @@ bool System::is_center(Plant *plant)
 
 void System::add_zombie()
 {
-    Time time_passed = add_zombie_clock.getElapsedTime();
-    if (time_passed.asMilliseconds() > 1000)
+
+    if (!playground.empty() && playground[0].size() > 0)
     {
-        if (!playground.empty() && playground[0].size() > 0)
+        int location_rng = rng;
+        if (zombie_type == SMALL_ONLY)
         {
-            int location_rng=rng;
-            if(zombie_type==SMALL_ONLY){rng=0;}
-            if(zombie_type==BIG_ONLY){rng=1;}
-            if (rng % 2)
-            {
-                BigZombie *new_zombie = new BigZombie(playground[location_rng % 5][8], bigZombieHealth, bigZombieDamage, bigZombieSpeed, bigZombieSpeed, bigZombieSpeed / 2);
-                zombies.push_back(new_zombie);
-            }
-            else
-            {
-                SmallZombie *new_zombie = new SmallZombie(playground[location_rng % 5][8], smallZombieHealth, smallZombieDamage, smallZombieSpeed, smallZombieSpeed, smallZombieSpeed / 2);
-                zombies.push_back(new_zombie);
-            }
+            rng = 0;
         }
-        add_zombie_clock.restart();
+        if (zombie_type == BIG_ONLY)
+        {
+            rng = 1;
+        }
+        if (rng % 2)
+        {
+            BigZombie *new_zombie = new BigZombie(playground[location_rng % 5][8], bigZombieHealth, bigZombieDamage, bigZombieSpeed, bigZombieSpeed, bigZombieSpeed / 2);
+            zombies.push_back(new_zombie);
+        }
+        else
+        {
+            SmallZombie *new_zombie = new SmallZombie(playground[location_rng % 5][8], smallZombieHealth, smallZombieDamage, smallZombieSpeed, smallZombieSpeed, smallZombieSpeed / 2);
+            zombies.push_back(new_zombie);
+        }
     }
 }
 

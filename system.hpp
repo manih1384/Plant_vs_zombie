@@ -50,8 +50,17 @@ private:
     Sprite sprite;
     Texture bbackground;
     Sprite bsprite;
+    Texture victory_background;
+    Sprite victory_sprite;
     Clock add_zombie_clock;
+    Clock wave_clock;
     Clock add_sun_clock;
+    Clock total_clock;
+    Clock spawn_clock;
+    float total_time;
+    float wave_time;
+    float wave_attack;
+    float attack_rate;
     Clock attack_zombie_clock;
     Clock attack_plant_clock;
     void handle_events();
@@ -87,7 +96,8 @@ public:
     bool is_out_of_bound(Plant *plant);
     vector<string> read_csv(const char path[256]);
     void zombie_setting();
-    void plants_setting( );
+    void plants_setting();
+    void wave_setting();
     vector<vector<Vector2f>> playground;
 
     RenderWindow window;
