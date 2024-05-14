@@ -57,6 +57,7 @@ private:
     Clock add_sun_clock;
     Clock total_clock;
     Clock spawn_clock;
+    Clock stationarySunClock;
     float total_time;
     float wave_time;
     float wave_attack;
@@ -70,6 +71,7 @@ private:
     void makeplayground(vector<vector<Vector2f>> &playground);
     void add_zombie();
     void add_sun();
+    void add_stationary_sun();
     void sun_clicked(sf::Vector2f floatMousePos);
     void cartHandler(sf::Vector2f floatMousePos);
     void sunCartHandler();

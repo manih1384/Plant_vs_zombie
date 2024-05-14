@@ -5,7 +5,7 @@
 using namespace sf;
 Plant::Plant(int health, int price) : health(health), price(price) {}
 
-Peashooter::Peashooter(int health,int price) : Plant(health, price)
+Peashooter::Peashooter(int health, int price) : Plant(health, price)
 {
     texturePlanted.loadFromFile("files/Images/Peashooter.png");
     spritePlanted.setTexture(texturePlanted);
@@ -13,7 +13,7 @@ Peashooter::Peashooter(int health,int price) : Plant(health, price)
     sf::FloatRect bounds = spritePlanted.getLocalBounds();
     spritePlanted.setOrigin(bounds.width / 2, bounds.height / 2);
 }
-
+sf::Sprite Peashooter::getSprite() { return spritePlanted; }
 int Peashooter::get_health() { return health; }
 
 bool Peashooter::can_shoot()
@@ -56,7 +56,7 @@ void Peashooter::shoot()
     if (time_passed.asMilliseconds() > peashooter_hit_rate)
     {
 
-        NormalPea *newProjectile = new NormalPea({getPos().x + 15, getPos().y - 10},NormalPeaSpeed,NormalPeadamage);
+        NormalPea *newProjectile = new NormalPea({getPos().x + 15, getPos().y - 10}, NormalPeaSpeed, NormalPeadamage);
         projectiles.push_back(newProjectile);
         clock.restart();
     }
@@ -74,7 +74,7 @@ sf::FloatRect Peashooter::get_rect()
 
 sf ::Vector2f Peashooter::getPos() { return spritePlanted.getPosition(); }
 void Peashooter::render(sf::RenderWindow &window) {}
-Snowshooter::Snowshooter(int  health,int price) : Plant(health, price)
+Snowshooter::Snowshooter(int health, int price) : Plant(health, price)
 {
     texturePlanted.loadFromFile("files/Images/snowshooter.png");
     spritePlanted.setTexture(texturePlanted);
@@ -82,7 +82,7 @@ Snowshooter::Snowshooter(int  health,int price) : Plant(health, price)
     sf::FloatRect bounds = spritePlanted.getLocalBounds();
     spritePlanted.setOrigin(bounds.width / 2, bounds.height / 2);
 }
-
+sf::Sprite Snowshooter::getSprite() { return spritePlanted; }
 int Snowshooter::get_health() { return health; }
 
 bool Snowshooter::can_shoot()
@@ -125,7 +125,7 @@ void Snowshooter::shoot()
     if (time_passed.asMilliseconds() > snowshooter_hit_rate)
     {
 
-        SnowPea *newProjectile = new SnowPea({getPos().x + 15, getPos().y - 25},snowPeaspeed,snowPeadamage);
+        SnowPea *newProjectile = new SnowPea({getPos().x + 15, getPos().y - 25}, snowPeaspeed, snowPeadamage);
         projectiles.push_back(newProjectile);
         clock.restart();
     }
@@ -143,7 +143,7 @@ sf::FloatRect Snowshooter::get_rect()
 
 sf ::Vector2f Snowshooter::getPos() { return spritePlanted.getPosition(); }
 void Snowshooter::render(sf::RenderWindow &window) {}
-Sunflower::Sunflower(int  health,int price) : Plant(health, price)
+Sunflower::Sunflower(int health, int price) : Plant(health, price)
 {
     texturePlanted.loadFromFile("files/Images/Sunflower.png");
     spritePlanted.setTexture(texturePlanted);
@@ -156,6 +156,7 @@ void Sunflower::set_position(const sf::Vector2f &new_position)
 {
     spritePlanted.setPosition(new_position);
 }
+sf::Sprite Sunflower::getSprite() { return spritePlanted; }
 bool Sunflower::can_shoot()
 {
     return false;
@@ -177,7 +178,7 @@ sf::FloatRect Sunflower::get_rect()
 }
 sf ::Vector2f Sunflower::getPos() { return spritePlanted.getPosition(); }
 void Sunflower::render(sf::RenderWindow &window) {}
-Wallnut::Wallnut(int  health,int price) : Plant(health, price)
+Wallnut::Wallnut(int health, int price) : Plant(health, price)
 {
     texturePlanted.loadFromFile("files/Images/Wallnut_body.png");
     textureCracked1.loadFromFile("files/Images/Wallnut_cracked1.png");
@@ -189,7 +190,7 @@ Wallnut::Wallnut(int  health,int price) : Plant(health, price)
     sf::FloatRect bounds = spritePlanted.getLocalBounds();
     spritePlanted.setOrigin(bounds.width / 2, bounds.height / 2);
 }
-
+sf::Sprite Wallnut::getSprite() { return spritePlanted; }
 int Wallnut::get_health() { return health; }
 void Wallnut::drawPlanted(sf::RenderWindow &window)
 {

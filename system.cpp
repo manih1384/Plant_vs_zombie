@@ -215,8 +215,6 @@ void System::wave_setting()
     attack_rate = stof(data[3]);
 }
 
-
-
 void System::sun_setting()
 {
     vector<string> lines = read_csv("files/setting/sun_setting.csv");
@@ -224,13 +222,8 @@ void System::sun_setting()
     vector<string> data = cut_string(lines[1], ",");
 
     sunSpeed = stoi(data[0]);
-    sunInterval= stoi(data[1]);
+    sunInterval = stoi(data[1]);
 }
-
-
-
-
-
 
 void System::zombie_projectile_collision()
 {
@@ -384,6 +377,7 @@ void System::update()
     }
 
     add_sun();
+    add_stationary_sun();
     zombie_plant_collision();
     zombie_projectile_collision();
     handle_shooting();
@@ -746,10 +740,29 @@ void System::add_sun()
     {
         if (!playground.empty() && playground[0].size() > 0)
         {
-            Sun *new_sun = new Sun(playground[0][rng % 9],sunSpeed);
+            Sun *new_sun = new Sun(playground[0][rng % 9], sunSpeed);
             suns.push_back(new_sun);
         }
         add_sun_clock.restart();
+    }
+}
+bool isSunflower(Plant *plant)
+{
+    return dynamic_cast<Sunflower *>(plant) != nullptr;
+}
+
+void System::add_stationary_sun()
+{
+    Time time_passed = stationarySunClock.getElapsedTime();
+    for (int i = 0; i < plants.size(); i++)
+    {
+        if (isSunflower(plants[i]) && time_passed.asSeconds() > sunflower_hit_rate)
+        {
+
+            Sun *new_sun = new Sun(plants[i]->getSprite().getPosition(), 0);
+            suns.push_back(new_sun);
+            stationarySunClock.restart();
+        }
     }
 }
 

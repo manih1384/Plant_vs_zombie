@@ -18,3 +18,4 @@ float NormalPeaSpeed;
 int NormalPeadamage;
 int snowshooter_hit_rate;
 int peashooter_hit_rate;
+int sunflower_hit_rate;

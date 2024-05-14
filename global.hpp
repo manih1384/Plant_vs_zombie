@@ -41,5 +41,6 @@ extern float NormalPeaSpeed;
 extern int NormalPeadamage;
 extern int peashooter_hit_rate;
 extern int snowshooter_hit_rate;
+extern int sunflower_hit_rate;
 
 #endif

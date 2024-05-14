@@ -22,13 +22,14 @@ public:
     virtual void shoot() = 0;
     virtual void update_shots() = 0;
     virtual void render(RenderWindow &window) = 0;
+    virtual sf::Sprite getSprite() = 0;
     std::vector<Projectile *> projectiles;
 };
 
 class Peashooter : public Plant
 {
 public:
-    Peashooter(int  health,int price);
+    Peashooter(int health, int price);
     void drawPlanted(sf::RenderWindow &window) override;
     void get_damaged(int damage) override;
     int get_health() override;
@@ -39,6 +40,7 @@ public:
     void shoot() override;
     void update_shots() override;
     void render(RenderWindow &window) override;
+    sf::Sprite getSprite() override;
 
 private:
     sf::Texture texturePlanted;
@@ -47,7 +49,7 @@ private:
 class Snowshooter : public Plant
 {
 public:
-    Snowshooter(int  health,int price);
+    Snowshooter(int health, int price);
     void drawPlanted(sf::RenderWindow &window) override;
     void get_damaged(int damage) override;
     int get_health() override;
@@ -58,6 +60,7 @@ public:
     void shoot() override;
     void update_shots() override;
     void render(RenderWindow &window) override;
+    sf::Sprite getSprite() override;
 
 private:
     sf::Texture texturePlanted;
@@ -67,7 +70,7 @@ private:
 class Sunflower : public Plant
 {
 public:
-    Sunflower(int  health,int price);
+    Sunflower(int health, int price);
     void drawPlanted(sf::RenderWindow &window) override;
     void get_damaged(int damage) override;
     void set_position(const sf::Vector2f &new_position) override;
@@ -78,6 +81,7 @@ public:
     void shoot() override;
     void update_shots() override;
     void render(RenderWindow &window) override;
+    sf::Sprite getSprite() override;
 
 private:
     sf::Texture texturePlanted;
@@ -87,7 +91,7 @@ private:
 class Wallnut : public Plant
 {
 public:
-    Wallnut(int  health,int price);
+    Wallnut(int health, int price);
     void drawPlanted(sf::RenderWindow &window) override;
     void get_damaged(int damage) override;
     int get_health() override;
@@ -98,6 +102,7 @@ public:
     void shoot() override;
     void update_shots() override;
     void render(RenderWindow &window) override;
+    sf::Sprite getSprite() override;
 
 private:
     sf::Texture texturePlanted;
