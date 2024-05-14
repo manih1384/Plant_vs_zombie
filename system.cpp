@@ -77,6 +77,11 @@ System::System(int width, int height)
     bbackground.loadFromFile("files/Images/Losing_Message.png");
     bsprite.setTexture(bbackground);
     bsprite.scale(3.0f, 2.0f);
+
+    victory_background.loadFromFile("files/Images/victoryscreen.jpeg");
+    victory_sprite.setTexture(victory_background);
+    victory_sprite.scale(1.5f, 1.0f);
+
     sprite.setTexture(background);
     srand(time(NULL));
     rng = rand();
@@ -695,7 +700,7 @@ void System::render()
     case GAMEOVER:
         window.draw(bsprite);
     case VICTORY:
-        window.draw(bsprite);
+        window.draw(victory_sprite);
         break;
     default:
         break;
