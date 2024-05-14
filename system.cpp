@@ -129,7 +129,15 @@ void System::zombie_plant_collision()
 
                 if (plants[j]->get_health() < 0)
                 {
+                    for (int x = 0; x < occupied_positions.size(); x++)
+                    {
+                        if (plants[j]->getPos() == occupied_positions[x])
+                        {
+                            occupied_positions.erase(occupied_positions.begin() + x);
+                        }
+                    }
                     delete plants[j];
+
                     plants.erase(plants.begin() + j);
                     if (zombies[i]->isFrozen)
                     {
@@ -215,8 +223,6 @@ void System::wave_setting()
     attack_rate = stof(data[3]);
 }
 
-
-
 void System::sun_setting()
 {
     vector<string> lines = read_csv("files/setting/sun_setting.csv");
@@ -224,13 +230,8 @@ void System::sun_setting()
     vector<string> data = cut_string(lines[1], ",");
 
     sunSpeed = stoi(data[0]);
-    sunInterval= stoi(data[1]);
+    sunInterval = stoi(data[1]);
 }
-
-
-
-
-
 
 void System::zombie_projectile_collision()
 {
@@ -442,6 +443,7 @@ void System::fix_position(Plant *plant)
             if (plant->getPos().x > playground[i][j].x && plant->getPos().y > playground[i][j].y && plant->getPos().x < playground[i][j].x + DX && plant->getPos().y < playground[i][j].y + DY)
             {
                 plant->set_position({playground[i][j].x + DX / 2, playground[i][j].y + DY / 2});
+                occupied_positions.push_back(plant->getPos());
                 return;
             }
         }
@@ -567,9 +569,29 @@ void System::handle_mouse_press(Event event, bool &isDragging, int &draggingPlan
         }
     }
 }
+
+bool System::is_occupied(Vector2f position)
+{
+    for (int i = 0; i < occupied_positions.size(); i++)
+    {
+        if (position.x > occupied_positions[i].x-DX/2 &&
+            position.x < occupied_positions[i].x+DX/2  &&
+            position.y > occupied_positions[i].y-DY/2 &&
+            position.y < occupied_positions[i].y+DY/2
+
+        )
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 void System::handle_mouse_release(Event event, bool &isDragging, int &draggingPlantIndex)
 {
-    if (isDragging && !is_out_of_bound(plants[draggingPlantIndex]))
+    if (isDragging &&
+        !is_out_of_bound(plants[draggingPlantIndex]) &&
+        !is_occupied(plants[draggingPlantIndex]->getPos()))
     {
         fix_position(plants[draggingPlantIndex]);
         isDragging = false;
@@ -746,7 +768,7 @@ void System::add_sun()
     {
         if (!playground.empty() && playground[0].size() > 0)
         {
-            Sun *new_sun = new Sun(playground[0][rng % 9],sunSpeed);
+            Sun *new_sun = new Sun(playground[0][rng % 9], sunSpeed);
             suns.push_back(new_sun);
         }
         add_sun_clock.restart();
@@ -755,7 +777,6 @@ void System::add_sun()
 
 void System::add_plants(string type)
 {
-    // if (!playground.empty() && playground[0].size() > 0)
     if (type == "peashooter")
     {
         Peashooter *new_plant = new Peashooter(peashooterHealth, peashooterPrice);

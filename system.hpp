@@ -58,6 +58,8 @@ private:
     Clock total_clock;
     Clock spawn_clock;
     float total_time;
+    vector< Vector2f> occupied_positions;
+    bool is_occupied(Vector2f position);
     float wave_time;
     float wave_attack;
     float attack_rate;
