@@ -104,7 +104,7 @@ public:
     void wave_setting();
     void sun_setting();
     vector<vector<Vector2f>> playground;
-
+    bool clockStarted=false;
     RenderWindow window;
     int rng;
     void run();

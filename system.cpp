@@ -6,6 +6,10 @@
 #include "zombiesglobal.hpp"
 #include "sunglobal.hpp"
 using namespace std;
+bool isSunflower(Plant *plant)
+{
+    return dynamic_cast<Sunflower *>(plant) != nullptr;
+}
 void System::plants_setting()
 {
     ifstream file_name;
@@ -23,7 +27,6 @@ void System::plants_setting()
         getline(ssnew_line, hit_rate, ',');
         getline(ssnew_line, speed, ',');
         getline(ssnew_line, price, ',');
-        cout << name;
         if (name == "peashooter")
         {
             icons.PeashooterExistance = EXISTS;
@@ -50,6 +53,7 @@ void System::plants_setting()
             sunflowerHealth = stoi(health);
             sunflowerCooldown = stoi(cooldown);
             sunflowerPrice = stoi(price);
+            sunflower_hit_rate = stoi(hit_rate);
         }
         else if (name == "wallnut")
         {
@@ -474,14 +478,29 @@ void System::sun_clicked(sf::Vector2f floatMousePos)
     {
         if (suns[i]->get_rect().contains(floatMousePos))
         {
-
+            // Handle the sun click logic
             delete suns[i];
             suns.erase(find(suns.begin(), suns.end(), suns[i]));
             totalsuns.setSun(100);
-            break;
+
+            // Now check if there's also a sunflower at this position
+            for (int j = 0; j < plants.size(); j++)
+            {
+                if (plants[j]->get_rect().contains(floatMousePos) && isSunflower(plants[j]))
+                {
+                    // If it's a sunflower, cast it and set hasSun to false
+                    Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[j]);
+                    sunflower->hasSun = false;
+                    stationarySunClock.restart();
+                    clockStarted = true;
+                    break; // Break if we've found and handled a sunflower
+                }
+            }
+            break; // Break if we've handled a sun click
         }
     }
 }
+
 void System::cartHandler(sf::Vector2f floatMousePos)
 {
     if (icons.get_peashooter_rect().contains(floatMousePos) && icons.PeashooterState == AVAILABLE && icons.PeashooterExistance == EXISTS)
@@ -536,6 +555,15 @@ void System::sunCartHandler()
         icons.PeashooterState = AVAILABLE;
     }
 
+    if (totalsuns.getSun() < snowshooterPrice)
+    {
+        icons.snowShooterState = UNAVAILABLE;
+    }
+    else if (icons.snowShooterState != COOLDOWN)
+    {
+        icons.snowShooterState = AVAILABLE;
+    }
+
     if (totalsuns.getSun() < sunflowerPrice)
     {
         icons.sunflowerState = UNAVAILABLE;
@@ -543,15 +571,6 @@ void System::sunCartHandler()
     else if (icons.sunflowerState != COOLDOWN)
     {
         icons.sunflowerState = AVAILABLE;
-    }
-
-    if (totalsuns.getSun() < snowshooterPrice)
-    {
-        icons.snowShooterState = UNAVAILABLE;
-    }
-    else if (icons.sunflowerState != COOLDOWN)
-    {
-        icons.snowShooterState = AVAILABLE;
     }
 }
 void System::handle_mouse_press(Event event, bool &isDragging, int &draggingPlantIndex)
@@ -580,10 +599,10 @@ bool System::is_occupied(Vector2f position)
 {
     for (int i = 0; i < occupied_positions.size(); i++)
     {
-        if (position.x > occupied_positions[i].x-DX/2 &&
-            position.x < occupied_positions[i].x+DX/2  &&
-            position.y > occupied_positions[i].y-DY/2 &&
-            position.y < occupied_positions[i].y+DY/2
+        if (position.x > occupied_positions[i].x - DX / 2 &&
+            position.x < occupied_positions[i].x + DX / 2 &&
+            position.y > occupied_positions[i].y - DY / 2 &&
+            position.y < occupied_positions[i].y + DY / 2
 
         )
         {
@@ -600,17 +619,14 @@ void System::handle_mouse_release(Event event, bool &isDragging, int &draggingPl
         !is_occupied(plants[draggingPlantIndex]->getPos()))
     {
         fix_position(plants[draggingPlantIndex]);
+
+        if (isSunflower(plants[draggingPlantIndex]))
+        {
+            stationarySunClock.restart();
+            clockStarted = true;
+        }
         isDragging = false;
         draggingPlantIndex = -1;
-    }
-    else
-    {
-
-        // delete plants[draggingPlantIndex];
-        // //plants.erase(find(plants.begin(),plants.end(),plants[draggingPlantIndex]));
-        // plants.erase(plants.begin() + draggingPlantIndex);
-        // draggingPlantIndex= -1;
-        // isDragging = false;
     }
 }
 void System::handle_mouse_moved(Event event, bool &isDragging, int &draggingPlantIndex)
@@ -700,6 +716,7 @@ void System::render()
         break;
     case GAMEOVER:
         window.draw(bsprite);
+        break;
     case VICTORY:
         window.draw(victory_sprite);
         break;
@@ -780,22 +797,24 @@ void System::add_sun()
         add_sun_clock.restart();
     }
 }
-bool isSunflower(Plant *plant)
-{
-    return dynamic_cast<Sunflower *>(plant) != nullptr;
-}
 
 void System::add_stationary_sun()
 {
+
     Time time_passed = stationarySunClock.getElapsedTime();
     for (int i = 0; i < plants.size(); i++)
     {
-        if (isSunflower(plants[i]) && time_passed.asSeconds() > sunflower_hit_rate)
+        if (isSunflower(plants[i]))
         {
-
-            Sun *new_sun = new Sun(plants[i]->getSprite().getPosition(), 0);
-            suns.push_back(new_sun);
-            stationarySunClock.restart();
+            Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[i]);
+            if (!sunflower->hasSun && clockStarted && time_passed.asMilliseconds() > sunflower_hit_rate)
+            {
+                Vector2f modpos = {40, 50};
+                Sun *new_sun = new Sun(sunflower->getSprite().getPosition() - modpos, 0);
+                sunflower->hasSun = true;
+                suns.push_back(new_sun);
+                clockStarted = false;
+            }
         }
     }
 }

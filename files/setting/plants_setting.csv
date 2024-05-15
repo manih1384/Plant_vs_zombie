@@ -1,5 +1,5 @@
 name,damage,health,cooldown,hit_rate(milisecond),speed,price
 peashooter,5,40,5,2000,7,100
-snowshooter,8,30,9,2500,5,50
-sunflower,0,30,10,12000,0,50
+snowshooter,8,30,9,2500,5,100
+sunflower,0,30,10,5000,0,50
 wallnut,0,100,10,0,0,50
