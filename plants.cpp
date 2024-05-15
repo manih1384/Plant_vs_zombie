@@ -7,15 +7,27 @@ Plant::Plant(int health, int price) : health(health), price(price) {}
 
 Peashooter::Peashooter(int health, int price) : Plant(health, price)
 {
-    texturePlanted.loadFromFile("files/Images/Peashooter.png");
-    spritePlanted.setTexture(texturePlanted);
-    spritePlanted.setScale(0.05f, 0.05f);
+    for (int i = 0; i < 60; i++)
+    {
+        sf::Texture tex;
+        tex.loadFromFile("files/Images/peashooters/tile0" + to_string(i) + ".png");
+        texturePlanted.push_back(tex);
+    }
+    spritePlanted.setTexture(texturePlanted[0]);
+    spritePlanted.setScale(1.2f, 1.2f);
     sf::FloatRect bounds = spritePlanted.getLocalBounds();
     spritePlanted.setOrigin(bounds.width / 2, bounds.height / 2);
 }
 sf::Sprite Peashooter::getSprite() { return spritePlanted; }
 int Peashooter::get_health() { return health; }
-
+void Plant::update()
+{
+    spritePlanted.setTexture(texturePlanted[framenum]);
+    if (framenum == texturePlanted.size() - 1)
+        framenum = 0;
+    else
+        framenum++;
+}
 bool Peashooter::can_shoot()
 {
     return true;
@@ -73,12 +85,16 @@ sf::FloatRect Peashooter::get_rect()
 }
 
 sf ::Vector2f Peashooter::getPos() { return spritePlanted.getPosition(); }
-void Peashooter::render(sf::RenderWindow &window) {}
 Snowshooter::Snowshooter(int health, int price) : Plant(health, price)
 {
-    texturePlanted.loadFromFile("files/Images/snowshooter.png");
-    spritePlanted.setTexture(texturePlanted);
-    spritePlanted.setScale(0.09f, 0.09f);
+    for (int i = 0; i < 60; i++)
+    {
+        sf::Texture tex;
+        tex.loadFromFile("files/Images/snowshooter/tile0" + to_string(i) + ".png");
+        texturePlanted.push_back(tex);
+    }
+    spritePlanted.setTexture(texturePlanted[0]);
+    spritePlanted.setScale(1.2f, 1.2f);
     sf::FloatRect bounds = spritePlanted.getLocalBounds();
     spritePlanted.setOrigin(bounds.width / 2, bounds.height / 2);
 }
@@ -142,12 +158,16 @@ sf::FloatRect Snowshooter::get_rect()
 }
 
 sf ::Vector2f Snowshooter::getPos() { return spritePlanted.getPosition(); }
-void Snowshooter::render(sf::RenderWindow &window) {}
 Sunflower::Sunflower(int health, int price) : Plant(health, price)
 {
-    texturePlanted.loadFromFile("files/Images/Sunflower.png");
-    spritePlanted.setTexture(texturePlanted);
-    spritePlanted.setScale(0.05f, 0.05f);
+    for (int i = 0; i < 25; i++)
+    {
+        sf::Texture tex;
+        tex.loadFromFile("files/Images/sunflower/tile0" + to_string(i) + ".png");
+        texturePlanted.push_back(tex);
+    }
+    spritePlanted.setTexture(texturePlanted[0]);
+    spritePlanted.setScale(1.2f, 1.2f);
     sf::FloatRect bounds = spritePlanted.getLocalBounds();
     spritePlanted.setOrigin(bounds.width / 2, bounds.height / 2);
 }
@@ -177,7 +197,7 @@ sf::FloatRect Sunflower::get_rect()
     return spritePlanted.getGlobalBounds();
 }
 sf ::Vector2f Sunflower::getPos() { return spritePlanted.getPosition(); }
-void Sunflower::render(sf::RenderWindow &window) {}
+//void Sunflower::render(sf::RenderWindow &window) {}
 Wallnut::Wallnut(int health, int price) : Plant(health, price)
 {
     texturePlanted.loadFromFile("files/Images/Wallnut_body.png");
@@ -229,6 +249,4 @@ bool Wallnut::can_shoot()
 }
 void Wallnut::shoot() {}
 void Wallnut::update_shots() {}
-void Wallnut::render(RenderWindow &window)
-{
-}
+void Wallnut::update(){}

@@ -27,6 +27,8 @@ public:
     Clock freezeClock;
     Clock attackClock;
     bool isFrozen = false;
+    virtual void update();
+    int framenum=0;
 
 protected:
     int health = 100;
@@ -37,7 +39,7 @@ protected:
     int freeze_time;
     Vector2f position;
     Sprite sprite;
-    Texture texture;
+    vector<Texture> textures;
 };
 
 class BigZombie : public Zombie {

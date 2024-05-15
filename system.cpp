@@ -129,7 +129,6 @@ void System::zombie_plant_collision()
 
             {
                 j++;
-
             }
         }
     }
@@ -374,12 +373,12 @@ void System::update()
 {
     if (state == IN_GAME)
     {
-        if (zombies.size() == 0 && total_clock.getElapsedTime().asSeconds() > total_time+0.1)
+        if (zombies.size() == 0 && total_clock.getElapsedTime().asSeconds() > total_time + 0.1)
         {
             state = VICTORY;
             return;
         }
-        if (total_clock.getElapsedTime().asSeconds() < total_time+0.1)
+        if (total_clock.getElapsedTime().asSeconds() < total_time + 0.1)
         {
             if (wave_clock.getElapsedTime().asSeconds() > wave_time)
             {
@@ -408,6 +407,7 @@ void System::update()
             if (!zombies[i]->checkCollision(playground))
             {
                 zombies[i]->move();
+                zombies[i]->update();
             }
             else
             {
@@ -415,7 +415,10 @@ void System::update()
                 break;
             }
         }
-
+        for (int i = 0; i < plants.size(); i++)
+        {
+            plants[i]->update();
+        }
         for (int i = 0; i < suns.size(); i++)
         {
             if (!suns[i]->checkcollision(playground))
@@ -486,7 +489,7 @@ void System::sun_clicked(sf::Vector2f floatMousePos)
 
             delete suns[i];
             suns.erase(find(suns.begin(), suns.end(), suns[i]));
-            totalsuns.setSun(100);
+            totalsuns.setSun(25);
 
             for (int j = 0; j < plants.size(); j++)
             {
@@ -496,7 +499,7 @@ void System::sun_clicked(sf::Vector2f floatMousePos)
                     Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[j]);
                     sunflower->hasSun = false;
                     sunflower->stationarySunClock.restart();
-    
+
                     break;
                 }
             }
@@ -594,7 +597,7 @@ void System::handle_mouse_press(Event event, bool &isDragging, int &draggingPlan
 
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
         sf::Vector2f floatMousePos = static_cast<sf::Vector2f>(mousePos);
-        if (startBottonrect.contains(floatMousePos) && state==MAIN_MENU)
+        if (startBottonrect.contains(floatMousePos) && state == MAIN_MENU)
         {
             state = IN_GAME;
             restartAllClocks();
@@ -824,7 +827,6 @@ void System::add_sun()
 void System::add_stationary_sun()
 {
 
-    
     for (int i = 0; i < plants.size(); i++)
     {
         if (isSunflower(plants[i]))

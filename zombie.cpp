@@ -2,49 +2,53 @@
 #include "global.hpp"
 #include <iostream>
 
-Zombie::Zombie(const Vector2f &startPos,int health,int damage,float speed,float Normalspeed,float FrozenSpeed)
-         : position(startPos),frozenSpeed(FrozenSpeed),health(health),speed(speed),normalSpeed(Normalspeed),damage(damage){
+Zombie::Zombie(const Vector2f &startPos, int health, int damage, float speed, float Normalspeed, float FrozenSpeed)
+    : position(startPos), frozenSpeed(FrozenSpeed), health(health), speed(speed), normalSpeed(Normalspeed), damage(damage)
+{
 }
 
-SmallZombie::SmallZombie(const Vector2f &startPos,int health,int damage,float speed,float Normalspeed,float FrozenSpeed) : Zombie(startPos,health,damage,speed,Normalspeed,FrozenSpeed)
+SmallZombie::SmallZombie(const Vector2f &startPos, int health, int damage, float speed, float Normalspeed, float FrozenSpeed) : Zombie(startPos, health, damage, speed, Normalspeed, FrozenSpeed)
 {
-    if (!texture.loadFromFile("files/Images/Zombie_healthy.png"))
+    for (int i = 0; i < 30; i++)
     {
-        std::cerr << "Failed to load zombie texture" << std::endl;
-        return;
+        Texture tex;
+        tex.loadFromFile("files/Images/zombie/tile0"+to_string(i)+".png");
+        textures.push_back(tex);
     }
-    sprite.setTexture(texture);
-    sprite.setScale(0.2f, 0.2f);
+
+    sprite.setTexture(textures[0]);
+    sprite.setScale(0.7f, 0.7f);
+    sprite.setPosition(position);
+}
+BigZombie::BigZombie(const Vector2f &startPos, int health, int damage, float speed, float Normalspeed, float FrozenSpeed) : Zombie(startPos, health, damage, speed, Normalspeed, FrozenSpeed)
+{
+    for (int i = 0; i < 36; i++)
+    {
+        Texture tex;
+        tex.loadFromFile("files/Images/bigzombie/hairmetal_walking_eating-ezgif.com-crop("+to_string(i)+").png");
+        textures.push_back(tex);
+    }
+
+    sprite.setTexture(textures[0]);
+    //sprite.setScale(0.7f, 0.7f);
     sprite.setPosition(position);
 }
 
-BigZombie::BigZombie(const Vector2f &startPos,int health,int damage,float speed,float Normalspeed,float FrozenSpeed) : Zombie(startPos,health,damage,speed,Normalspeed,FrozenSpeed)
+bool BigZombie::is_big()
 {
-    if (!texture.loadFromFile("files/Images/bigzombie.png"))
-    {
-        std::cerr << "Failed to load zombie texture" << std::endl;
-        return;
-    }
-    sprite.setTexture(texture);
-    sprite.setScale(0.16f, 0.16f);
-    sprite.setPosition(position);
-}
-
-
-bool BigZombie::is_big(){
     return true;
 }
 
-bool SmallZombie::is_big(){
+bool SmallZombie::is_big()
+{
     return false;
 }
-
 
 void Zombie::move()
 {
     position.x -= speed;
     sprite.setPosition(position);
-    sprite.setTexture(texture);
+    // sprite.setTexture(texture);
 }
 
 void Zombie::takeDamage(int damage)
@@ -56,7 +60,14 @@ int Zombie::attack()
 {
     return damage;
 }
-
+void Zombie::update()
+{
+    sprite.setTexture(textures[framenum]);
+    if (framenum == textures.size() - 1)
+        framenum = 0;
+    else
+        framenum++;
+}
 bool Zombie::isAlive()
 {
     return health > 0;

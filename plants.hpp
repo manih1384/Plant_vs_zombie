@@ -21,9 +21,14 @@ public:
     virtual void set_position(const sf::Vector2f &new_position) = 0;
     virtual void shoot() = 0;
     virtual void update_shots() = 0;
-    virtual void render(RenderWindow &window) = 0;
     virtual sf::Sprite getSprite() = 0;
+    virtual void update();
     std::vector<Projectile *> projectiles;
+
+protected:
+    int framenum = 0;
+    vector<sf::Texture> texturePlanted;
+    sf::Sprite spritePlanted;
 };
 
 class Peashooter : public Plant
@@ -39,12 +44,7 @@ public:
     bool can_shoot() override;
     void shoot() override;
     void update_shots() override;
-    void render(RenderWindow &window) override;
     sf::Sprite getSprite() override;
-
-private:
-    sf::Texture texturePlanted;
-    sf::Sprite spritePlanted;
 };
 class Snowshooter : public Plant
 {
@@ -59,12 +59,7 @@ public:
     bool can_shoot() override;
     void shoot() override;
     void update_shots() override;
-    void render(RenderWindow &window) override;
     sf::Sprite getSprite() override;
-
-private:
-    sf::Texture texturePlanted;
-    sf::Sprite spritePlanted;
 };
 
 class Sunflower : public Plant
@@ -80,15 +75,11 @@ public:
     bool can_shoot() override;
     void shoot() override;
     void update_shots() override;
-    void render(RenderWindow &window) override;
     bool hasSun = false;
     bool clockStarted = false;
     sf::Sprite getSprite() override;
     Clock stationarySunClock;
 
-private:
-    sf::Texture texturePlanted;
-    sf::Sprite spritePlanted;
 };
 
 class Wallnut : public Plant
@@ -104,8 +95,8 @@ public:
     bool can_shoot() override;
     void shoot() override;
     void update_shots() override;
-    void render(RenderWindow &window) override;
     sf::Sprite getSprite() override;
+    void update() override;
 
 private:
     sf::Texture texturePlanted;
