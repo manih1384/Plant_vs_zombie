@@ -7,20 +7,8 @@
 #include "zombiesglobal.hpp"
 #include "sunglobal.hpp"
 using namespace std;
-
-System::System(int width, int height)
+void System::SpriteSetup()
 {
-    plants_setting();
-    window.create(sf::VideoMode(width, height), "PLANTS_VS_ZOMBIES", sf::Style::Close);
-    window.setFramerateLimit(60);
-    state = MAIN_MENU;
-
-    makeplayground(playground);
-    if (!background.loadFromFile("files/Images/Frontyard.png"))
-    {
-        std::cerr << "Error loading background texture" << std::endl;
-    }
-
     bbackground.loadFromFile("files/Images/Losing_Message.png");
     bsprite.setTexture(bbackground);
     bsprite.scale(3.0f, 2.0f);
@@ -39,6 +27,20 @@ System::System(int width, int height)
     startBottonrect = startBotton_sprite.getGlobalBounds();
 
     sprite.setTexture(background);
+}
+System::System(int width, int height)
+{
+    plants_setting();
+    window.create(sf::VideoMode(width, height), "PLANTS_VS_ZOMBIES", sf::Style::Close);
+    window.setFramerateLimit(60);
+    state = MAIN_MENU;
+
+    makeplayground(playground);
+    if (!background.loadFromFile("files/Images/Frontyard.png"))
+    {
+        std::cerr << "Error loading background texture" << std::endl;
+    }
+    SpriteSetup();
     music.openFromFile("files/music/rick_astley_-_never_gonna_give_you_up.ogg");
     music.play();
     srand(time(NULL));
@@ -368,7 +370,85 @@ vector<string> System::read_csv(const char path[256])
     file_name.close();
     return lines;
 }
+void System::handleWave()
+{
+    if (total_clock.getElapsedTime().asSeconds() < total_time + 0.1)
+    {
+        if (wave_clock.getElapsedTime().asSeconds() > wave_time)
+        {
+            wave_clock.restart();
+            wave_attack += attack_rate;
+        }
+        else
 
+        {
+            if (spawn_clock.getElapsedTime().asSeconds() > wave_time / wave_attack)
+            {
+                add_zombie();
+                spawn_clock.restart();
+            }
+        }
+    }
+}
+void System::updateZombie()
+{
+    for (int i = 0; i < zombies.size(); i++)
+    {
+        if (!zombies[i]->checkCollision(playground))
+        {
+            zombies[i]->move();
+            zombies[i]->update();
+        }
+        else
+        {
+            state = GAMEOVER;
+            break;
+        }
+    }
+}
+void System::updatePlant()
+{
+    for (int i = 0; i < plants.size(); i++)
+    {
+        plants[i]->update();
+    }
+}
+void System::updateSun()
+{
+    for (int i = 0; i < suns.size(); i++)
+    {
+        if (!suns[i]->checkcollision(playground))
+        {
+            suns[i]->move();
+        }
+        else
+        {
+            delete suns[i];
+            suns.erase(find(suns.begin(), suns.end(), suns[i]));
+            break;
+        }
+    }
+}
+void System::updateIcon()
+{
+
+    if (icons.PeashooterState == COOLDOWN && icons.peashooterclock.getElapsedTime().asSeconds() > peashooterCooldown)
+    {
+        icons.PeashooterState = AVAILABLE;
+    }
+    if (icons.sunflowerState == COOLDOWN && icons.sunflowerclock.getElapsedTime().asSeconds() > sunflowerCooldown)
+    {
+        icons.sunflowerState = AVAILABLE;
+    }
+    if (icons.wallnutState == COOLDOWN && icons.wallnutclock.getElapsedTime().asSeconds() > wallnutCooldown)
+    {
+        icons.wallnutState = AVAILABLE;
+    }
+    if (icons.snowShooterState == COOLDOWN && icons.snowshooterclock.getElapsedTime().asSeconds() > snowshooterCooldown)
+    {
+        icons.snowShooterState = AVAILABLE;
+    }
+}
 void System::update()
 {
     if (state == IN_GAME)
@@ -378,77 +458,16 @@ void System::update()
             state = VICTORY;
             return;
         }
-        if (total_clock.getElapsedTime().asSeconds() < total_time + 0.1)
-        {
-            if (wave_clock.getElapsedTime().asSeconds() > wave_time)
-            {
-                wave_clock.restart();
-                wave_attack += attack_rate;
-            }
-            else
-
-            {
-                if (spawn_clock.getElapsedTime().asSeconds() > wave_time / wave_attack)
-                {
-                    add_zombie();
-                    spawn_clock.restart();
-                }
-            }
-        }
-
+        handleWave();
         add_sun();
         add_stationary_sun();
         zombie_plant_collision();
         zombie_projectile_collision();
         handle_shooting();
-
-        for (int i = 0; i < zombies.size(); i++)
-        {
-            if (!zombies[i]->checkCollision(playground))
-            {
-                zombies[i]->move();
-                zombies[i]->update();
-            }
-            else
-            {
-                state = GAMEOVER;
-                break;
-            }
-        }
-        for (int i = 0; i < plants.size(); i++)
-        {
-            plants[i]->update();
-        }
-        for (int i = 0; i < suns.size(); i++)
-        {
-            if (!suns[i]->checkcollision(playground))
-            {
-                suns[i]->move();
-            }
-            else
-            {
-                delete suns[i];
-                suns.erase(find(suns.begin(), suns.end(), suns[i]));
-                break;
-            }
-        }
-
-        if (icons.PeashooterState == COOLDOWN && icons.peashooterclock.getElapsedTime().asSeconds() > peashooterCooldown)
-        {
-            icons.PeashooterState = AVAILABLE;
-        }
-        if (icons.sunflowerState == COOLDOWN && icons.sunflowerclock.getElapsedTime().asSeconds() > sunflowerCooldown)
-        {
-            icons.sunflowerState = AVAILABLE;
-        }
-        if (icons.wallnutState == COOLDOWN && icons.wallnutclock.getElapsedTime().asSeconds() > wallnutCooldown)
-        {
-            icons.wallnutState = AVAILABLE;
-        }
-        if (icons.snowShooterState == COOLDOWN && icons.snowshooterclock.getElapsedTime().asSeconds() > snowshooterCooldown)
-        {
-            icons.snowShooterState = AVAILABLE;
-        }
+        updateZombie();
+        updatePlant();
+        updateSun();
+        updateIcon();
     }
 }
 
@@ -839,7 +858,6 @@ void System::add_stationary_sun()
                 Sun *new_sun = new Sun(sunflower->getSprite().getPosition() - modpos, 0);
                 sunflower->hasSun = true;
                 suns.push_back(new_sun);
-                // clockStarted = false;
             }
         }
     }

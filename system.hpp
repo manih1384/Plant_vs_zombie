@@ -110,6 +110,12 @@ public:
     void plants_setting();
     void wave_setting();
     void sun_setting();
+    void SpriteSetup();
+    void handleWave();
+    void updateZombie();
+    void updatePlant();
+    void updateSun();
+    void updateIcon();
     vector<vector<Vector2f>> playground;
     bool clockStarted = false;
     RenderWindow window;
