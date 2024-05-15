@@ -128,16 +128,19 @@ void System::zombie_plant_collision()
             else
 
             {
-                if (zombies[i]->isFrozen)
+               /* if (zombies[i]->isFrozen)
                 {
                     zombies[i]->applyEffect();
+                    cout<<"what2";
                 }
                 else
                 {
                     zombies[i]->startZombie();
+                    cout<<"what";
                 }
-
+                */
                 j++;
+
             }
         }
     }
@@ -382,12 +385,12 @@ void System::update()
 {
     if (state == IN_GAME)
     {
-        if (zombies.size() == 0 && total_clock.getElapsedTime().asSeconds() > total_time)
+        if (zombies.size() == 0 && total_clock.getElapsedTime().asSeconds() > total_time+0.1)
         {
             state = VICTORY;
             return;
         }
-        if (total_clock.getElapsedTime().asSeconds() < total_time)
+        if (total_clock.getElapsedTime().asSeconds() < total_time+0.1)
         {
             if (wave_clock.getElapsedTime().asSeconds() > wave_time)
             {
@@ -400,6 +403,9 @@ void System::update()
                 if (spawn_clock.getElapsedTime().asSeconds() > wave_time / wave_attack)
                 {
                     add_zombie();
+                    cout << "spawn: "<<spawn_clock.getElapsedTime().asSeconds()<<endl;
+                    cout <<"wave: " <<wave_clock.getElapsedTime().asSeconds()<<endl;
+                    cout <<"total: " <<total_clock.getElapsedTime().asSeconds()<<endl;
                     spawn_clock.restart();
                 }
             }
@@ -504,8 +510,8 @@ void System::sun_clicked(sf::Vector2f floatMousePos)
                     Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[j]);
                     sunflower->hasSun = false;
                     sunflower->stationarySunClock.restart();
-                    // sunflower->clockStarted=true;
-                    break; // Break if we've found and handled a sunflower
+    
+                    break;
                 }
             }
             break;
@@ -602,7 +608,7 @@ void System::handle_mouse_press(Event event, bool &isDragging, int &draggingPlan
 
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
         sf::Vector2f floatMousePos = static_cast<sf::Vector2f>(mousePos);
-        if (startBottonrect.contains(floatMousePos))
+        if (startBottonrect.contains(floatMousePos) && state==MAIN_MENU)
         {
             state = IN_GAME;
             restartAllClocks();
@@ -650,9 +656,6 @@ void System::handle_mouse_release(Event event, bool &isDragging, int &draggingPl
         if (isSunflower(plants[draggingPlantIndex]))
         {
             Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[draggingPlantIndex]);
-            // stationarySunClock.restart();
-            // sunflower->clockStarted = true;
-
             sunflower->stationarySunClock.restart();
         }
         isDragging = false;
@@ -835,14 +838,14 @@ void System::add_sun()
 void System::add_stationary_sun()
 {
 
-    // Time time_passed = stationarySunClock.getElapsedTime();
+    
     for (int i = 0; i < plants.size(); i++)
     {
         if (isSunflower(plants[i]))
         {
             Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[i]);
             Time time_passed = sunflower->stationarySunClock.getElapsedTime();
-            if (!sunflower->hasSun /*&& sunflower->clockStarted */ && time_passed.asMilliseconds() > sunflower_hit_rate)
+            if (!sunflower->hasSun && time_passed.asMilliseconds() > sunflower_hit_rate)
             {
                 Vector2f modpos = {40, 50};
                 Sun *new_sun = new Sun(sunflower->getSprite().getPosition() - modpos, 0);
