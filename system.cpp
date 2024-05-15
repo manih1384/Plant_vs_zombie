@@ -2,69 +2,12 @@
 #include "global.hpp"
 #include "zombie.hpp"
 #include <cstdlib>
+#include <SFML/Audio.hpp>
 #include "projectile.hpp"
 #include "zombiesglobal.hpp"
 #include "sunglobal.hpp"
 using namespace std;
-bool isSunflower(Plant *plant)
-{
-    return dynamic_cast<Sunflower *>(plant) != nullptr;
-}
-void System::plants_setting()
-{
-    ifstream file_name;
-    string new_line;
-    file_name.open("files/setting/plants_setting.csv");
-    getline(file_name, new_line);
-    while (getline(file_name, new_line))
-    {
-        stringstream ssnew_line(new_line);
-        string name, damage, health, cooldown, hit_rate, speed, price;
-        getline(ssnew_line, name, ',');
-        getline(ssnew_line, damage, ',');
-        getline(ssnew_line, health, ',');
-        getline(ssnew_line, cooldown, ',');
-        getline(ssnew_line, hit_rate, ',');
-        getline(ssnew_line, speed, ',');
-        getline(ssnew_line, price, ',');
-        if (name == "peashooter")
-        {
-            icons.PeashooterExistance = EXISTS;
-            peashooterHealth = stoi(health);
-            peashooterCooldown = stoi(cooldown);
-            peashooterPrice = stoi(price);
-            peashooter_hit_rate = stoi(hit_rate);
-            NormalPeadamage = stoi(damage);
-            NormalPeaSpeed = stof(speed);
-        }
-        else if (name == "snowshooter")
-        {
-            icons.snowShooterExistance = EXISTS;
-            snowshooterHealth = stoi(health);
-            snowshooterCooldown = stoi(cooldown);
-            snowshooterPrice = stoi(price);
-            snowshooter_hit_rate = stoi(hit_rate);
-            snowPeadamage = stoi(damage);
-            snowPeaspeed = stof(speed);
-        }
-        else if (name == "sunflower")
-        {
-            icons.sunflowerExistance = EXISTS;
-            sunflowerHealth = stoi(health);
-            sunflowerCooldown = stoi(cooldown);
-            sunflowerPrice = stoi(price);
-            sunflower_hit_rate = stoi(hit_rate);
-        }
-        else if (name == "wallnut")
-        {
-            icons.wallnutExistance = EXISTS;
-            wallnutHealth = stoi(health);
-            wallnutCooldown = stoi(cooldown);
-            wallnutPrice = stoi(price);
-        }
-    }
-    file_name.close();
-}
+
 System::System(int width, int height)
 {
     plants_setting();
@@ -85,8 +28,9 @@ System::System(int width, int height)
     victory_background.loadFromFile("files/Images/victoryscreen.jpeg");
     victory_sprite.setTexture(victory_background);
     victory_sprite.scale(1.5f, 1.0f);
-
     sprite.setTexture(background);
+    //music.openFromFile("files/music/rick.mp3");
+    //music.play();
     srand(time(NULL));
     rng = rand();
     zombie_setting();
@@ -97,6 +41,7 @@ System::System(int width, int height)
 System::~System()
 {
 }
+
 void System::run()
 {
     while (window.isOpen() && state != EXIT)
@@ -120,7 +65,7 @@ void System::zombie_plant_collision()
         {
             FloatRect z_rect = zombies[i]->getRect();
             FloatRect p_rect = plants[j]->get_rect();
-            if (z_rect.intersects(p_rect))
+            if (z_rect.intersects(p_rect) && is_center(plants[j]))
             {
                 zombies[i]->stopZombie();
                 Time time_passed = zombies[i]->attackClock.getElapsedTime();
@@ -219,7 +164,65 @@ void System::zombie_setting()
         zombie_type = BOTH;
     }
 }
-
+bool isSunflower(Plant *plant)
+{
+    return dynamic_cast<Sunflower *>(plant) != nullptr;
+}
+void System::plants_setting()
+{
+    ifstream file_name;
+    string new_line;
+    file_name.open("files/setting/plants_setting.csv");
+    getline(file_name, new_line);
+    while (getline(file_name, new_line))
+    {
+        stringstream ssnew_line(new_line);
+        string name, damage, health, cooldown, hit_rate, speed, price;
+        getline(ssnew_line, name, ',');
+        getline(ssnew_line, damage, ',');
+        getline(ssnew_line, health, ',');
+        getline(ssnew_line, cooldown, ',');
+        getline(ssnew_line, hit_rate, ',');
+        getline(ssnew_line, speed, ',');
+        getline(ssnew_line, price, ',');
+        if (name == "peashooter")
+        {
+            icons.PeashooterExistance = EXISTS;
+            peashooterHealth = stoi(health);
+            peashooterCooldown = stoi(cooldown);
+            peashooterPrice = stoi(price);
+            peashooter_hit_rate = stoi(hit_rate);
+            NormalPeadamage = stoi(damage);
+            NormalPeaSpeed = stof(speed);
+        }
+        else if (name == "snowshooter")
+        {
+            icons.snowShooterExistance = EXISTS;
+            snowshooterHealth = stoi(health);
+            snowshooterCooldown = stoi(cooldown);
+            snowshooterPrice = stoi(price);
+            snowshooter_hit_rate = stoi(hit_rate);
+            snowPeadamage = stoi(damage);
+            snowPeaspeed = stof(speed);
+        }
+        else if (name == "sunflower")
+        {
+            icons.sunflowerExistance = EXISTS;
+            sunflowerHealth = stoi(health);
+            sunflowerCooldown = stoi(cooldown);
+            sunflowerPrice = stoi(price);
+            sunflower_hit_rate = stoi(hit_rate);
+        }
+        else if (name == "wallnut")
+        {
+            icons.wallnutExistance = EXISTS;
+            wallnutHealth = stoi(health);
+            wallnutCooldown = stoi(cooldown);
+            wallnutPrice = stoi(price);
+        }
+    }
+    file_name.close();
+}
 void System::wave_setting()
 {
     vector<string> lines = read_csv("files/setting/wave_setting.csv");
@@ -478,25 +481,24 @@ void System::sun_clicked(sf::Vector2f floatMousePos)
     {
         if (suns[i]->get_rect().contains(floatMousePos))
         {
-            // Handle the sun click logic
+
             delete suns[i];
             suns.erase(find(suns.begin(), suns.end(), suns[i]));
             totalsuns.setSun(100);
 
-            // Now check if there's also a sunflower at this position
             for (int j = 0; j < plants.size(); j++)
             {
                 if (plants[j]->get_rect().contains(floatMousePos) && isSunflower(plants[j]))
                 {
-                    // If it's a sunflower, cast it and set hasSun to false
+
                     Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[j]);
                     sunflower->hasSun = false;
                     stationarySunClock.restart();
-                    sunflower->clockStarted=true;
-                    break; // Break if we've found and handled a sunflower
+                    sunflower->clockStarted = true;
+                    break;
                 }
             }
-            break; // Break if we've handled a sun click
+            break;
         }
     }
 }
@@ -614,6 +616,7 @@ bool System::is_occupied(Vector2f position)
 
 void System::handle_mouse_release(Event event, bool &isDragging, int &draggingPlantIndex)
 {
+
     if (isDragging &&
         !is_out_of_bound(plants[draggingPlantIndex]) &&
         !is_occupied(plants[draggingPlantIndex]->getPos()))

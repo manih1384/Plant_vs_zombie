@@ -1,2 +1,2 @@
 type,damage,health,hit rate,speed,freeze_time
-regular,100,500,1,0.5,5
+regular,100,500,1,0,5

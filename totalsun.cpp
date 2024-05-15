@@ -1,7 +1,7 @@
 #include "totalsun.hpp"
 TotalSun::TotalSun()
 {
-    if (!font.loadFromFile("files/Fonts/digit_font.ttf")) // replace with your font file path
+    if (!font.loadFromFile("files/Fonts/digit_font.ttf"))
     {
         cerr << "eror";
     }

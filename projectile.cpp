@@ -14,7 +14,6 @@ void Projectile::update()
 
 void Projectile::render(sf::RenderWindow &window)
 {
-    //sprite.setPosition(position);
     window.draw(sprite);
 }
 

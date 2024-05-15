@@ -91,6 +91,7 @@ private:
 public:
     System(int width, int height);
     ~System();
+    sf::Music music;
     vector<string> cut_string(string str, string delim);
     void zombie_projectile_collision();
     void zombie_plant_collision();

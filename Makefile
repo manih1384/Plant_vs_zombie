@@ -1,23 +1,23 @@
-# Variables
-CXX = g++  # The C++ compiler
-CXXFLAGS = -std=c++20  # Compiler flags (you can set your C++ standard here)
-LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system  # Libraries to link with SFML
-SOURCES = main.cpp system.cpp plants.cpp zombie.cpp projectile.cpp icons.cpp sun.cpp totalsun.cpp global.cpp# The source files (add more if you have other files)
-HEADERS = system.hpp plants.hpp zombie.hpp projectile.hpp icons.hpp sun.hpp totalsun.hpp global.hpp zombiesglobal.hpp
-OBJECTS = $(SOURCES:.cpp=.o)  # Object files derived from source files
-TARGET = pvz.out  # The output executable name
 
-# Default target to compile and link the program
+CXX = g++ 
+CXXFLAGS = -std=c++20 
+LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio 
+SOURCES = main.cpp system.cpp plants.cpp zombie.cpp projectile.cpp icons.cpp sun.cpp totalsun.cpp global.cpp
+HEADERS = system.hpp plants.hpp zombie.hpp projectile.hpp icons.hpp sun.hpp totalsun.hpp global.hpp zombiesglobal.hpp
+OBJECTS = $(SOURCES:.cpp=.o)  
+TARGET = pvz.out  
+
+
 all: $(TARGET)
 
-# Compile object files
+
 %.o: %.cpp $(HEADERS)
 	$(CXX) -c $(CXXFLAGS) -o $@ $<
 
-# Link object files to create the executable
+
 $(TARGET): $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $(TARGET) $(LDFLAGS)
 
-# Clean target to remove object files and the executable
+
 clean:
 	rm -f $(OBJECTS) $(TARGET)
