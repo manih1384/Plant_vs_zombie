@@ -128,17 +128,6 @@ void System::zombie_plant_collision()
             else
 
             {
-               /* if (zombies[i]->isFrozen)
-                {
-                    zombies[i]->applyEffect();
-                    cout<<"what2";
-                }
-                else
-                {
-                    zombies[i]->startZombie();
-                    cout<<"what";
-                }
-                */
                 j++;
 
             }
@@ -403,9 +392,6 @@ void System::update()
                 if (spawn_clock.getElapsedTime().asSeconds() > wave_time / wave_attack)
                 {
                     add_zombie();
-                    cout << "spawn: "<<spawn_clock.getElapsedTime().asSeconds()<<endl;
-                    cout <<"wave: " <<wave_clock.getElapsedTime().asSeconds()<<endl;
-                    cout <<"total: " <<total_clock.getElapsedTime().asSeconds()<<endl;
                     spawn_clock.restart();
                 }
             }
