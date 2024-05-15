@@ -52,14 +52,16 @@ private:
     Sprite bsprite;
     Texture victory_background;
     Sprite victory_sprite;
+    Texture start_background;
+    Sprite start_sprite;
     Clock add_zombie_clock;
     Clock wave_clock;
     Clock add_sun_clock;
     Clock total_clock;
     Clock spawn_clock;
-    Clock stationarySunClock;
+    //Clock stationarySunClock;
     float total_time;
-    vector< Vector2f> occupied_positions;
+    vector<Vector2f> occupied_positions;
     bool is_occupied(Vector2f position);
     float wave_time;
     float wave_attack;
@@ -104,7 +106,7 @@ public:
     void wave_setting();
     void sun_setting();
     vector<vector<Vector2f>> playground;
-    bool clockStarted=false;
+    bool clockStarted = false;
     RenderWindow window;
     int rng;
     void run();

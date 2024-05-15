@@ -86,6 +86,7 @@ System::System(int width, int height)
     victory_sprite.setTexture(victory_background);
     victory_sprite.scale(1.5f, 1.0f);
 
+    start_background.loadFromFile("files/Images/victoryscreen.jpeg");
     sprite.setTexture(background);
     srand(time(NULL));
     rng = rand();
@@ -491,8 +492,8 @@ void System::sun_clicked(sf::Vector2f floatMousePos)
                     // If it's a sunflower, cast it and set hasSun to false
                     Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[j]);
                     sunflower->hasSun = false;
-                    stationarySunClock.restart();
-                    sunflower->clockStarted=true;
+                    sunflower->stationarySunClock.restart();
+                    //sunflower->clockStarted=true;
                     break; // Break if we've found and handled a sunflower
                 }
             }
@@ -623,8 +624,10 @@ void System::handle_mouse_release(Event event, bool &isDragging, int &draggingPl
         if (isSunflower(plants[draggingPlantIndex]))
         {
             Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[draggingPlantIndex]);
-            stationarySunClock.restart();
-            sunflower->clockStarted = true;
+            //stationarySunClock.restart();
+            //sunflower->clockStarted = true;
+
+            sunflower->stationarySunClock.restart();
         }
         isDragging = false;
         draggingPlantIndex = -1;
@@ -802,19 +805,20 @@ void System::add_sun()
 void System::add_stationary_sun()
 {
 
-    Time time_passed = stationarySunClock.getElapsedTime();
+    //Time time_passed = stationarySunClock.getElapsedTime();
     for (int i = 0; i < plants.size(); i++)
     {
         if (isSunflower(plants[i]))
         {
             Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[i]);
-            if (!sunflower->hasSun && sunflower->clockStarted && time_passed.asMilliseconds() > sunflower_hit_rate)
+            Time time_passed = sunflower->stationarySunClock.getElapsedTime();
+            if (!sunflower->hasSun /*&& sunflower->clockStarted */&& time_passed.asMilliseconds() > sunflower_hit_rate)
             {
                 Vector2f modpos = {40, 50};
                 Sun *new_sun = new Sun(sunflower->getSprite().getPosition() - modpos, 0);
                 sunflower->hasSun = true;
                 suns.push_back(new_sun);
-                clockStarted = false;
+                //clockStarted = false;
             }
         }
     }

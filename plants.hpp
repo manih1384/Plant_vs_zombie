@@ -84,6 +84,7 @@ public:
     bool hasSun = false;
     bool clockStarted = false;
     sf::Sprite getSprite() override;
+    Clock stationarySunClock;
 
 private:
     sf::Texture texturePlanted;
