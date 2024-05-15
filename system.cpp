@@ -13,7 +13,7 @@ System::System(int width, int height)
     plants_setting();
     window.create(sf::VideoMode(width, height), "PLANTS_VS_ZOMBIES", sf::Style::Close);
     window.setFramerateLimit(60);
-    state = IN_GAME;
+    state = MAIN_MENU;
 
     makeplayground(playground);
     if (!background.loadFromFile("files/Images/Frontyard.png"))
@@ -28,6 +28,16 @@ System::System(int width, int height)
     victory_background.loadFromFile("files/Images/victoryscreen.jpeg");
     victory_sprite.setTexture(victory_background);
     victory_sprite.scale(1.5f, 1.0f);
+
+    start_background.loadFromFile("files/Images/startscreen.png");
+    start_sprite.setTexture(start_background);
+    start_sprite.setScale(0.75f, 0.5f);
+
+    startBotton_background.loadFromFile("files/Images/startbotton.png");
+    startBotton_sprite.setTexture(startBotton_background);
+    startBotton_sprite.setPosition({550, 300});
+    startBottonrect = startBotton_sprite.getGlobalBounds();
+
     sprite.setTexture(background);
     //music.openFromFile("files/music/rick.mp3");
     //music.play();
@@ -394,56 +404,56 @@ void System::update()
                 }
             }
         }
-    }
 
-    add_sun();
-    add_stationary_sun();
-    zombie_plant_collision();
-    zombie_projectile_collision();
-    handle_shooting();
+        add_sun();
+        add_stationary_sun();
+        zombie_plant_collision();
+        zombie_projectile_collision();
+        handle_shooting();
 
-    for (int i = 0; i < zombies.size(); i++)
-    {
-        if (!zombies[i]->checkCollision(playground))
+        for (int i = 0; i < zombies.size(); i++)
         {
-            zombies[i]->move();
+            if (!zombies[i]->checkCollision(playground))
+            {
+                zombies[i]->move();
+            }
+            else
+            {
+                state = GAMEOVER;
+                break;
+            }
         }
-        else
-        {
-            state = GAMEOVER;
-            break;
-        }
-    }
 
-    for (int i = 0; i < suns.size(); i++)
-    {
-        if (!suns[i]->checkcollision(playground))
+        for (int i = 0; i < suns.size(); i++)
         {
-            suns[i]->move();
+            if (!suns[i]->checkcollision(playground))
+            {
+                suns[i]->move();
+            }
+            else
+            {
+                delete suns[i];
+                suns.erase(find(suns.begin(), suns.end(), suns[i]));
+                break;
+            }
         }
-        else
-        {
-            delete suns[i];
-            suns.erase(find(suns.begin(), suns.end(), suns[i]));
-            break;
-        }
-    }
 
-    if (icons.PeashooterState == COOLDOWN && icons.peashooterclock.getElapsedTime().asSeconds() > peashooterCooldown)
-    {
-        icons.PeashooterState = AVAILABLE;
-    }
-    if (icons.sunflowerState == COOLDOWN && icons.sunflowerclock.getElapsedTime().asSeconds() > sunflowerCooldown)
-    {
-        icons.sunflowerState = AVAILABLE;
-    }
-    if (icons.wallnutState == COOLDOWN && icons.wallnutclock.getElapsedTime().asSeconds() > wallnutCooldown)
-    {
-        icons.wallnutState = AVAILABLE;
-    }
-    if (icons.snowShooterState == COOLDOWN && icons.snowshooterclock.getElapsedTime().asSeconds() > snowshooterCooldown)
-    {
-        icons.snowShooterState = AVAILABLE;
+        if (icons.PeashooterState == COOLDOWN && icons.peashooterclock.getElapsedTime().asSeconds() > peashooterCooldown)
+        {
+            icons.PeashooterState = AVAILABLE;
+        }
+        if (icons.sunflowerState == COOLDOWN && icons.sunflowerclock.getElapsedTime().asSeconds() > sunflowerCooldown)
+        {
+            icons.sunflowerState = AVAILABLE;
+        }
+        if (icons.wallnutState == COOLDOWN && icons.wallnutclock.getElapsedTime().asSeconds() > wallnutCooldown)
+        {
+            icons.wallnutState = AVAILABLE;
+        }
+        if (icons.snowShooterState == COOLDOWN && icons.snowshooterclock.getElapsedTime().asSeconds() > snowshooterCooldown)
+        {
+            icons.snowShooterState = AVAILABLE;
+        }
     }
 }
 
@@ -493,9 +503,9 @@ void System::sun_clicked(sf::Vector2f floatMousePos)
 
                     Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[j]);
                     sunflower->hasSun = false;
-                    stationarySunClock.restart();
-                    sunflower->clockStarted = true;
-                    break;
+                    sunflower->stationarySunClock.restart();
+                    // sunflower->clockStarted=true;
+                    break; // Break if we've found and handled a sunflower
                 }
             }
             break;
@@ -575,6 +585,16 @@ void System::sunCartHandler()
         icons.sunflowerState = AVAILABLE;
     }
 }
+void System::restartAllClocks()
+{
+    attack_plant_clock.restart();
+    attack_zombie_clock.restart();
+    spawn_clock.restart();
+    total_clock.restart();
+    add_sun_clock.restart();
+    wave_clock.restart();
+    add_zombie_clock.restart();
+}
 void System::handle_mouse_press(Event event, bool &isDragging, int &draggingPlantIndex)
 {
     if (event.mouseButton.button == sf::Mouse::Left)
@@ -582,7 +602,11 @@ void System::handle_mouse_press(Event event, bool &isDragging, int &draggingPlan
 
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
         sf::Vector2f floatMousePos = static_cast<sf::Vector2f>(mousePos);
-
+        if (startBottonrect.contains(floatMousePos))
+        {
+            state = IN_GAME;
+            restartAllClocks();
+        }
         sun_clicked(floatMousePos);
         cartHandler(floatMousePos);
         for (int i = 0; i < plants.size(); i++)
@@ -626,8 +650,10 @@ void System::handle_mouse_release(Event event, bool &isDragging, int &draggingPl
         if (isSunflower(plants[draggingPlantIndex]))
         {
             Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[draggingPlantIndex]);
-            stationarySunClock.restart();
-            sunflower->clockStarted = true;
+            // stationarySunClock.restart();
+            // sunflower->clockStarted = true;
+
+            sunflower->stationarySunClock.restart();
         }
         isDragging = false;
         draggingPlantIndex = -1;
@@ -709,6 +735,10 @@ void System::render()
 
     switch (state)
     {
+    case MAIN_MENU:
+        window.draw(start_sprite);
+        window.draw(startBotton_sprite);
+        break;
     case IN_GAME:
         window.draw(sprite);
         totalsuns.render(window);
@@ -805,19 +835,20 @@ void System::add_sun()
 void System::add_stationary_sun()
 {
 
-    Time time_passed = stationarySunClock.getElapsedTime();
+    // Time time_passed = stationarySunClock.getElapsedTime();
     for (int i = 0; i < plants.size(); i++)
     {
         if (isSunflower(plants[i]))
         {
             Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[i]);
-            if (!sunflower->hasSun && sunflower->clockStarted && time_passed.asMilliseconds() > sunflower_hit_rate)
+            Time time_passed = sunflower->stationarySunClock.getElapsedTime();
+            if (!sunflower->hasSun /*&& sunflower->clockStarted */ && time_passed.asMilliseconds() > sunflower_hit_rate)
             {
                 Vector2f modpos = {40, 50};
                 Sun *new_sun = new Sun(sunflower->getSprite().getPosition() - modpos, 0);
                 sunflower->hasSun = true;
                 suns.push_back(new_sun);
-                clockStarted = false;
+                // clockStarted = false;
             }
         }
     }
