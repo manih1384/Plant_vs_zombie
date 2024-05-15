@@ -39,8 +39,8 @@ System::System(int width, int height)
     startBottonrect = startBotton_sprite.getGlobalBounds();
 
     sprite.setTexture(background);
-    //music.openFromFile("files/music/rick.mp3");
-    //music.play();
+    music.openFromFile("files/music/rick_astley_-_never_gonna_give_you_up.ogg");
+    music.play();
     srand(time(NULL));
     rng = rand();
     zombie_setting();
