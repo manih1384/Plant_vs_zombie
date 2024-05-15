@@ -492,7 +492,7 @@ void System::sun_clicked(sf::Vector2f floatMousePos)
                     Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[j]);
                     sunflower->hasSun = false;
                     stationarySunClock.restart();
-                    clockStarted = true;
+                    sunflower->clockStarted=true;
                     break; // Break if we've found and handled a sunflower
                 }
             }
@@ -622,8 +622,9 @@ void System::handle_mouse_release(Event event, bool &isDragging, int &draggingPl
 
         if (isSunflower(plants[draggingPlantIndex]))
         {
+            Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[draggingPlantIndex]);
             stationarySunClock.restart();
-            clockStarted = true;
+            sunflower->clockStarted = true;
         }
         isDragging = false;
         draggingPlantIndex = -1;
@@ -807,7 +808,7 @@ void System::add_stationary_sun()
         if (isSunflower(plants[i]))
         {
             Sunflower *sunflower = dynamic_cast<Sunflower *>(plants[i]);
-            if (!sunflower->hasSun && clockStarted && time_passed.asMilliseconds() > sunflower_hit_rate)
+            if (!sunflower->hasSun && sunflower->clockStarted && time_passed.asMilliseconds() > sunflower_hit_rate)
             {
                 Vector2f modpos = {40, 50};
                 Sun *new_sun = new Sun(sunflower->getSprite().getPosition() - modpos, 0);

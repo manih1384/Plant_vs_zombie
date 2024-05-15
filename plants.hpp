@@ -81,7 +81,8 @@ public:
     void shoot() override;
     void update_shots() override;
     void render(RenderWindow &window) override;
-    bool hasSun=false;
+    bool hasSun = false;
+    bool clockStarted = false;
     sf::Sprite getSprite() override;
 
 private:
