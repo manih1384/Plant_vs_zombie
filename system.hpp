@@ -54,12 +54,15 @@ private:
     Sprite victory_sprite;
     Texture start_background;
     Sprite start_sprite;
+    Texture startBotton_background;
+    Sprite startBotton_sprite;
+    FloatRect startBottonrect;
     Clock add_zombie_clock;
     Clock wave_clock;
     Clock add_sun_clock;
     Clock total_clock;
     Clock spawn_clock;
-    //Clock stationarySunClock;
+    // Clock stationarySunClock;
     float total_time;
     vector<Vector2f> occupied_positions;
     bool is_occupied(Vector2f position);
@@ -95,6 +98,7 @@ public:
     ~System();
     vector<string> cut_string(string str, string delim);
     void zombie_projectile_collision();
+    void restartAllClocks();
     void zombie_plant_collision();
     void handle_shooting();
     bool is_center(Plant *plant);
