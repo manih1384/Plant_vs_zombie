@@ -21,7 +21,7 @@ A C++ implementation of the classic tower defense game using SFML, developed for
   - Dynamic game state management
   - Config file parsing for game balance
 
-## 🛠Tech Stack
+## Tech Stack
 | Component       | Technologies               |
 |-----------------|----------------------------|
 | Core Framework  | C++20                      |
@@ -69,5 +69,5 @@ make
 
 
 
-## 📝 Course Context
+## Course Context
 Developed for Advanced Programming (Spring 2024) at University of Tehran under Professor Ramin Khosravi.
